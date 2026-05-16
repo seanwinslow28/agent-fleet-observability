@@ -66,3 +66,27 @@ def test_read_council_spend_aggregates_files(tmp_path):
 def test_read_council_spend_empty_dir(tmp_path):
     out = readers.read_council_spend(tmp_path / "missing")
     assert out["month_total_usd"] == 0.0
+
+
+def test_read_eval_last_run_extracts_counts():
+    out = readers.read_eval_last_run(FIXTURES / "sample-eval-last-run.md")
+    assert out["passed"] == 7
+    assert out["total_cases"] == 10
+    assert len(out["cases"]) == 10
+    failed = [c for c in out["cases"] if c["status"] == "failed"]
+    assert len(failed) == 2
+
+
+def test_read_eval_last_run_missing_file(tmp_path):
+    out = readers.read_eval_last_run(tmp_path / "no.md")
+    assert out["passed"] == 0
+    assert out["cases"] == []
+
+
+def test_read_lint_reports_returns_latest(tmp_path):
+    fixture = (FIXTURES / "sample-lint-report.md").read_text()
+    (tmp_path / "2026-05-12-lint-report.md").write_text(fixture)
+    (tmp_path / "2026-05-19-lint-report.md").write_text(fixture)
+    out = readers.read_lint_reports(tmp_path)
+    assert out["latest_date"] == "2026-05-19"
+    assert out["issues_total"] == 4

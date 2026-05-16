@@ -12,6 +12,8 @@ import re
 from datetime import UTC, date, datetime
 from pathlib import Path
 
+import yaml
+
 
 def _parse_ts(date_str: str, time_str: str) -> datetime:
     iso = f"{date_str}T{time_str}"
@@ -105,4 +107,54 @@ def read_council_spend(dir_path: Path) -> dict:
         "month_total_usd": round(total, 2),
         "day_count": len(days),
         "days": days,
+    }
+
+
+def _parse_frontmatter(text: str) -> dict:
+    if not text.startswith("---"):
+        return {}
+    end = text.find("\n---", 3)
+    if end < 0:
+        return {}
+    return yaml.safe_load(text[3:end]) or {}
+
+
+def read_eval_last_run(path: Path) -> dict:
+    """Parse evals/vault-synthesizer/last-run.md frontmatter."""
+    empty = {"passed": 0, "failed": 0, "skipped": 0, "total_cases": 0, "cases": []}
+    if not path.exists():
+        return empty
+    fm = _parse_frontmatter(path.read_text())
+    return {
+        "passed": int(fm.get("passed", 0)),
+        "failed": int(fm.get("failed", 0)),
+        "skipped": int(fm.get("skipped", 0)),
+        "total_cases": int(fm.get("total_cases", 0)),
+        "cases": list(fm.get("cases", []) or []),
+        "run_id": fm.get("run_id"),
+    }
+
+
+_LINT_NAME_RE = re.compile(r"(\d{4}-\d{2}-\d{2})-lint-report\.md$")
+
+
+def read_lint_reports(dir_path: Path) -> dict:
+    """Find the most recent lint report; return its summary."""
+    if not dir_path.exists():
+        return {"latest_date": None, "issues_total": 0, "issues_by_severity": {}}
+    dated: list[tuple[str, Path]] = []
+    for p in dir_path.glob("*-lint-report.md"):
+        m = _LINT_NAME_RE.search(p.name)
+        if m:
+            dated.append((m.group(1), p))
+    if not dated:
+        return {"latest_date": None, "issues_total": 0, "issues_by_severity": {}}
+    dated.sort(reverse=True)
+    latest_date, latest_path = dated[0]
+    fm = _parse_frontmatter(latest_path.read_text())
+    return {
+        "latest_date": latest_date,
+        "issues_total": int(fm.get("issues_total", 0)),
+        "issues_by_severity": dict(fm.get("issues_by_severity", {}) or {}),
+        "raw_body": latest_path.read_text(),
     }
