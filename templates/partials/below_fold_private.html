@@ -26,6 +26,14 @@
       </div>
     </div>
     <div style="margin-top: 12px;">
+      <div class="subtitle">Tier 1 companies</div>
+      <ul style="font-family: var(--font-mono); font-size: 11px; list-style: none; padding: 0; display: flex; gap: 12px; flex-wrap: wrap;">
+        {% for c in target_companies.tier_1 %}
+          <li><strong>{{ c.company }}</strong> <span style="color: var(--text-tertiary);">{{ c.status }}</span></li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div style="margin-top: 8px;">
       <div class="subtitle">By status</div>
       <ul style="font-family: var(--font-mono); font-size: 11px; list-style: none; padding: 0; display: flex; gap: 16px; flex-wrap: wrap;">
         {% for status, n in target_companies.by_status.items() %}
