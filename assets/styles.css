@@ -1,0 +1,140 @@
+/* Agent Fleet Observability — Personality D (dark hybrid) */
+/* Palette + typography per design doc Section 5b-5c */
+
+:root {
+  --bg-primary: #0a0d12;
+  --bg-panel: #11151c;
+  --bg-recessed: #0d1219;
+  --border-subtle: #1a2230;
+  --text-primary: #e6edf3;
+  --text-secondary: #8b949e;
+  --text-tertiary: #6e7681;
+  --accent-green: #3fb950;
+  --accent-teal: #18b894;
+  --accent-amber: #f0b429;
+  --accent-purple: #c084fc;
+  --accent-red: #f85149;
+  --accent-blue: #58a6ff;
+  --font-heading: 'Sora', 'SF Pro', system-ui, sans-serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Monaco, monospace;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg-primary); color: var(--text-primary); }
+body {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent-blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.priv-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-4);
+}
+
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.panel-recessed { background: var(--bg-recessed); }
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.mono { font-family: var(--font-mono); }
+
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+.kpi-card { padding: var(--space-3); }
+.kpi-label { font-family: var(--font-mono); font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; }
+.kpi-value { font-family: var(--font-heading); font-size: 28px; font-weight: 600; margin-top: var(--space-1); }
+.kpi-sub { font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary); margin-top: var(--space-1); }
+.kpi-value.green { color: var(--accent-green); }
+.kpi-value.amber { color: var(--accent-amber); }
+.kpi-value.red { color: var(--accent-red); }
+
+.agent-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+.agent-tile {
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.agent-name { font-family: var(--font-heading); font-size: 12px; font-weight: 600; }
+.agent-sub { font-family: var(--font-mono); font-size: 10px; color: var(--text-secondary); }
+.status-dot {
+  display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  vertical-align: middle; margin-right: var(--space-1);
+}
+.status-dot.healthy { background: var(--accent-green); box-shadow: 0 0 6px var(--accent-green); }
+.status-dot.degraded { background: var(--accent-amber); box-shadow: 0 0 6px var(--accent-amber); }
+.status-dot.down { background: var(--accent-red); box-shadow: 0 0 6px var(--accent-red); }
+.status-dot.unknown { background: var(--text-tertiary); }
+
+.topbar {
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.wordmark { font-family: var(--font-heading); font-size: 16px; font-weight: 600; }
+.subtitle { font-family: var(--font-mono); font-size: 11px; color: var(--text-tertiary); }
+.status-pill {
+  font-family: var(--font-mono); font-size: 10px; padding: 2px 8px;
+  border-radius: 999px; background: var(--bg-recessed);
+  border: 1px solid var(--border-subtle);
+}
+.nav-link {
+  font-family: var(--font-mono); font-size: 11px; padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm); color: var(--text-secondary);
+}
+.nav-link.active { background: var(--bg-recessed); border: 1px solid var(--border-subtle); color: var(--text-primary); }
+.private-badge {
+  font-family: var(--font-mono); font-size: 10px;
+  background: #2d1f3a; color: var(--accent-purple);
+  padding: 2px 8px; border-radius: var(--radius-sm);
+}
+
+.footer {
+  border-top: 1px solid var(--border-subtle);
+  padding: var(--space-5) var(--space-4);
+  font-family: var(--font-mono); font-size: 11px; color: var(--text-tertiary);
+  text-align: center;
+}
+
+.hero-headline { font-family: var(--font-heading); font-size: 18px; line-height: 1.4; margin: var(--space-2) 0; }
+.hero-headline .accent { color: var(--accent-amber); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
