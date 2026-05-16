@@ -269,3 +269,192 @@ def read_job_feed_manifests(dir_path: Path) -> dict:
         return {"latest": None, "last_7": []}
     last_7 = [json.loads(p.read_text()) for p in paths[-7:]]
     return {"latest": last_7[-1], "last_7": last_7}
+
+
+_PIPE_ROW_RE = re.compile(r"^\s*\|.*\|\s*$")
+_SEP_CELL_RE = re.compile(r"^:?-+:?$")
+_BOLD_RE = re.compile(r"^\*\*(.+?)\*\*$")
+_PLACEHOLDER_RE = re.compile(r"_\(to fill", re.IGNORECASE)
+
+
+def _normalize_col_key(header: str) -> str:
+    """Normalize a pipe-table header cell to a Python-safe dict key.
+
+    Examples:
+        "#" → "id"
+        "Loc / Policy" → "loc_policy"
+        "Date Applied" → "date_applied"
+        "Role / Company" → "role_company"
+        "2nd-Degree Intros" → "2nd_degree_intros"
+    """
+    h = header.strip()
+    if h == "#":
+        return "id"
+    # Lowercase, replace runs of non-alphanumeric chars with underscore
+    h = h.lower()
+    h = re.sub(r"[^a-z0-9]+", "_", h)
+    h = h.strip("_")
+    return h
+
+
+def _parse_pipe_table(lines: list[str]) -> list[dict]:
+    """Find the FIRST pipe table in `lines` and parse it into a list of dicts.
+
+    - Header row → column keys via _normalize_col_key
+    - Separator row (cells all match ^:?-+:?$) → skipped
+    - Bold stripped from each cell: **Foo** → Foo
+    - Rows where ALL cells are empty → dropped
+    - Rows where first non-empty cell matches the placeholder pattern → dropped
+    - Returns [] if no table is found
+    """
+    # Find table start: first line matching pipe-row pattern
+    start = None
+    for i, line in enumerate(lines):
+        if _PIPE_ROW_RE.match(line):
+            start = i
+            break
+    if start is None:
+        return []
+
+    # Collect contiguous pipe rows
+    table_lines: list[str] = []
+    for line in lines[start:]:
+        if _PIPE_ROW_RE.match(line):
+            table_lines.append(line)
+        else:
+            # blank line or non-pipe line ends the table
+            if not line.strip():
+                break
+            # A non-pipe, non-blank line also ends the table
+            break
+
+    if not table_lines:
+        return []
+
+    # Parse header (first row)
+    def split_row(line: str) -> list[str]:
+        # strip outer pipes then split
+        inner = line.strip()
+        if inner.startswith("|"):
+            inner = inner[1:]
+        if inner.endswith("|"):
+            inner = inner[:-1]
+        return [cell.strip() for cell in inner.split("|")]
+
+    headers = [_normalize_col_key(h) for h in split_row(table_lines[0])]
+
+    rows: list[dict] = []
+    for line in table_lines[1:]:
+        cells = split_row(line)
+        # Pad or trim to match header count
+        cells = (cells + [""] * len(headers))[: len(headers)]
+
+        # Detect separator row: all non-empty cells match ---
+        non_empty_cells = [c for c in cells if c]
+        if non_empty_cells and all(_SEP_CELL_RE.match(c) for c in non_empty_cells):
+            continue
+
+        # Strip bold from each cell
+        stripped = [_BOLD_RE.sub(r"\1", c) for c in cells]
+
+        # All-empty check
+        if all(c == "" for c in stripped):
+            continue
+
+        # Placeholder check: first non-empty cell contains "_(to fill"
+        first_non_empty = next((c for c in stripped if c), "")
+        if _PLACEHOLDER_RE.search(first_non_empty):
+            continue
+
+        row = dict(zip(headers, stripped, strict=False))
+        rows.append(row)
+
+    return rows
+
+
+def read_target_companies(path: Path) -> dict:
+    """Parse a target-companies.md tracker into tier lists + by_status aggregate.
+
+    Returns:
+        {
+            "tier_1": [row, ...],
+            "tier_2": [row, ...],
+            "tier_3": [row, ...],
+            "by_status": {"not-applied": N, ...},
+            "total": N,
+        }
+
+    PRIVATE-ONLY: callers must zero this out on public render pass.
+    """
+    empty: dict = {"tier_1": [], "tier_2": [], "tier_3": [], "by_status": {}, "total": 0}
+    if not path.exists():
+        return empty
+
+    sections = _split_sections(path.read_text())
+
+    tier_1: list[dict] = []
+    tier_2: list[dict] = []
+    tier_3: list[dict] = []
+
+    for key, lines in sections.items():
+        rows = _parse_pipe_table(lines)
+        # Coerce "id" column to int when present
+        for row in rows:
+            if "id" in row and row["id"].lstrip("-").isdigit():
+                row["id"] = int(row["id"])
+        if key.startswith("tier_1"):
+            tier_1.extend(rows)
+        elif key.startswith("tier_2"):
+            tier_2.extend(rows)
+        elif key.startswith("tier_3"):
+            tier_3.extend(rows)
+
+    by_status: dict[str, int] = {}
+    for row in tier_1 + tier_2 + tier_3:
+        status = row.get("status", "")
+        if status:
+            by_status[status] = by_status.get(status, 0) + 1
+
+    total = len(tier_1) + len(tier_2) + len(tier_3)
+
+    return {
+        "tier_1": tier_1,
+        "tier_2": tier_2,
+        "tier_3": tier_3,
+        "by_status": by_status,
+        "total": total,
+    }
+
+
+def read_warm_intros(path: Path) -> dict:
+    """Parse a warm-intros.md tracker into active / prospecting / second_degree lists.
+
+    "total" counts active rows only — those are the warm intros that matter.
+
+    PRIVATE-ONLY: callers must zero this out on public render pass.
+    """
+    empty: dict = {"active": [], "prospecting": [], "second_degree": [], "total": 0}
+    if not path.exists():
+        return empty
+
+    sections = _split_sections(path.read_text())
+
+    active: list[dict] = []
+    prospecting: list[dict] = []
+    second_degree: list[dict] = []
+
+    for key, lines in sections.items():
+        rows = _parse_pipe_table(lines)
+        if key.startswith("active"):
+            active.extend(rows)
+        elif key.startswith("prospecting"):
+            prospecting.extend(rows)
+        elif key.startswith(("2nd-degree", "2nd_degree", "second_degree")):
+            second_degree.extend(rows)
+
+    return {
+        "active": active,
+        "prospecting": prospecting,
+        "second_degree": second_degree,
+        "total": len(active),
+    }

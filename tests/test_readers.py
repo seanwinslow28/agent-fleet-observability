@@ -128,3 +128,50 @@ def test_read_job_feed_manifests(tmp_path):
     out = readers.read_job_feed_manifests(tmp_path)
     assert out["latest"]["new_postings"] == 14
     assert out["latest"]["date"] == "2026-05-13"
+
+
+def test_read_target_companies_parses_three_tiers():
+    out = readers.read_target_companies(FIXTURES / "sample-target-companies.md")
+    assert out["total"] == 6
+    assert len(out["tier_1"]) == 3
+    assert len(out["tier_2"]) == 2
+    assert len(out["tier_3"]) == 1
+    # First Tier-1 row — strips markdown bold from company
+    anthropic = out["tier_1"][0]
+    assert anthropic["company"] == "Anthropic"
+    assert anthropic["role"] == "Forward Deployed Engineer"
+    assert anthropic["status"] == "not-applied"
+    assert anthropic["id"] == 1
+
+
+def test_read_target_companies_by_status_aggregates():
+    out = readers.read_target_companies(FIXTURES / "sample-target-companies.md")
+    # 3 not-applied (Anthropic, Scale AI, Sierra), 1 applied (Glean),
+    # 1 talking (Pair Team), 1 rejected (OpenAI) — 6 rows, 6 statuses
+    assert out["by_status"]["not-applied"] == 3
+    assert out["by_status"]["applied"] == 1
+    assert out["by_status"]["talking"] == 1
+    assert out["by_status"]["rejected"] == 1
+
+
+def test_read_target_companies_missing_file(tmp_path):
+    out = readers.read_target_companies(tmp_path / "nope.md")
+    assert out == {"tier_1": [], "tier_2": [], "tier_3": [], "by_status": {}, "total": 0}
+
+
+def test_read_warm_intros_parses_active_skips_placeholders():
+    out = readers.read_warm_intros(FIXTURES / "sample-warm-intros.md")
+    # Active has 2 real rows; prospecting + 2nd-degree have placeholder-only rows
+    assert len(out["active"]) == 2
+    assert out["active"][0]["person"] == "Larry"
+    assert out["active"][0]["strength"] == "strong"
+    assert out["active"][0]["target_company"] == "Messari (#29)"
+    # Placeholder rows containing "_(to fill...)_" are dropped
+    assert len(out["prospecting"]) == 0
+    assert len(out["second_degree"]) == 0
+    assert out["total"] == 2
+
+
+def test_read_warm_intros_missing_file(tmp_path):
+    out = readers.read_warm_intros(tmp_path / "nope.md")
+    assert out == {"active": [], "prospecting": [], "second_degree": [], "total": 0}
