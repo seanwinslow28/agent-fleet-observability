@@ -1,0 +1,8 @@
+{
+  "date": "2026-05-14",
+  "runs": [
+    {"profile": "premium", "cost_usd": 0.29},
+    {"profile": "variance", "cost_usd": 0.12}
+  ],
+  "day_total_usd": 0.41
+}

@@ -71,3 +71,38 @@ def read_synth_manifests(dir_path: Path) -> list[dict]:
         raw["date"] = date(yr, mo, dy)
         records.append(raw)
     return sorted(records, key=lambda r: r["date"])
+
+
+def read_gemini_spend(path: Path) -> dict:
+    """Aggregate a single gemini-spend-YYYY-MM.json (array of interactions)."""
+    if not path.exists():
+        return {"total_usd": 0.0, "run_count": 0, "tiers": {}}
+    items = json.loads(path.read_text())
+    total = sum(it.get("cost_usd", 0.0) or 0.0 for it in items)
+    tiers: dict[str, int] = {}
+    for it in items:
+        tier = it.get("tier", "unknown")
+        tiers[tier] = tiers.get(tier, 0) + 1
+    return {
+        "total_usd": round(total, 2),
+        "run_count": len(items),
+        "tiers": tiers,
+    }
+
+
+def read_council_spend(dir_path: Path) -> dict:
+    """Aggregate all council-spend-YYYY-MM-DD.json files in dir_path for the month."""
+    if not dir_path.exists():
+        return {"month_total_usd": 0.0, "day_count": 0, "days": []}
+    days: list[dict] = []
+    total = 0.0
+    for path in sorted(dir_path.glob("council-spend-*.json")):
+        raw = json.loads(path.read_text())
+        day_total = raw.get("day_total_usd", 0.0) or 0.0
+        days.append({"date": raw.get("date"), "total_usd": day_total})
+        total += day_total
+    return {
+        "month_total_usd": round(total, 2),
+        "day_count": len(days),
+        "days": days,
+    }

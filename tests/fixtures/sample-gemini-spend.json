@@ -1,0 +1,18 @@
+[
+  {
+    "interaction_id": "v1_test1",
+    "agent_id": "deep-research-preview-04-2026",
+    "tier": "dr",
+    "cost_usd": 2.80,
+    "wall_seconds": 423,
+    "created": "2026-05-03T21:09:27Z"
+  },
+  {
+    "interaction_id": "v1_test2",
+    "agent_id": "deep-research-preview-04-2026",
+    "tier": "max",
+    "cost_usd": 5.40,
+    "wall_seconds": 612,
+    "created": "2026-05-06T11:14:00Z"
+  }
+]
