@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+  {% if is_private %}
+    {% include "partials/alerts_banner.html" %}
+  {% endif %}
+  {% include "partials/hero_regression.html" %}
+  {% include "partials/kpi_row.html" %}
+  {% include "partials/agent_grid.html" %}
+  {% if is_private %}
+    {% include "partials/below_fold_private.html" %}
+  {% else %}
+    {% include "partials/below_fold_public.html" %}
+  {% endif %}
+{% endblock %}

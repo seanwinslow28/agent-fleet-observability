@@ -1,0 +1,14 @@
+{# Vars: hero_svg (rendered string), regression_window (dict), end_date #}
+<div class="panel">
+  <div class="eyebrow">Vault Synthesizer · concepts written per night · 60 days</div>
+  <p class="hero-headline">
+    {% if regression_window.nights and regression_window.nights >= 3 %}
+      For
+      <span class="accent">{{ regression_window.nights }} consecutive nights</span>,
+      the synthesizer wrote zero concepts. The eval suite caught it on day {{ regression_window.nights + 1 }}.
+    {% else %}
+      Synthesizer running cleanly. No regression window in the last 60 nights.
+    {% endif %}
+  </p>
+  {{ hero_svg|safe }}
+</div>
