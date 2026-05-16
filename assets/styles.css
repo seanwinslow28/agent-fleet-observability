@@ -173,3 +173,63 @@ a:hover { text-decoration: underline; }
 }
 .spark .eye-l { left: 3px; }
 .spark .eye-r { right: 3px; }
+
+/* Kanban */
+.kanban-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.filter-chip {
+  font-family: var(--font-mono); font-size: 11px;
+  padding: 4px 10px; border-radius: 999px;
+  background: var(--bg-recessed); border: 1px solid var(--border-subtle);
+  color: var(--text-secondary); cursor: pointer; user-select: none;
+}
+.filter-chip[data-active="true"] { color: var(--text-primary); border-color: currentColor; }
+.filter-chip.research { color: var(--accent-purple); }
+.filter-chip.lint { color: var(--accent-amber); }
+.filter-chip.eval { color: var(--accent-red); }
+.filter-chip.manual { color: var(--text-secondary); }
+.filter-chip.feed { color: var(--accent-blue); }
+
+.kanban-board {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+.kanban-column {
+  background: var(--bg-recessed);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 12px;
+  min-height: 200px;
+}
+.kanban-column-header {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 12px; font-family: var(--font-mono); font-size: 11px;
+  color: var(--text-tertiary); text-transform: uppercase;
+}
+.ticket {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--text-tertiary);
+  border-radius: 4px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+.ticket[data-source="research"] { border-left-color: var(--accent-purple); }
+.ticket[data-source="lint"] { border-left-color: var(--accent-amber); }
+.ticket[data-source="eval"] { border-left-color: var(--accent-red); }
+.ticket[data-source="manual"] { border-left-color: var(--text-secondary); }
+.ticket[data-source="feed"] { border-left-color: var(--accent-blue); }
+.ticket-meta { font-family: var(--font-mono); font-size: 10px; color: var(--text-tertiary); margin-top: 4px; }
+
+/* Live pulse — design doc Section 3e */
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.pulse-dot {
+  display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent-green); margin-right: 6px;
+  animation: live-pulse 2s ease-in-out infinite;
+}
+.ticket.hidden { display: none; }

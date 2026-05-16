@@ -1,0 +1,48 @@
+{# Vars: tickets (list with .column / .source / .is_running), is_private (bool) #}
+{% set chips = [
+  ('research', 'Research'),
+  ('lint', 'Lint'),
+  ('eval', 'Eval'),
+  ('manual', 'Manual'),
+] %}
+{% if is_private %}
+  {% set chips = chips + [('feed', 'Job Feed')] %}
+{% endif %}
+
+<div class="kanban-filters">
+  {% for src, label in chips %}
+    {% set count = tickets|selectattr('source','equalto', src)|list|length %}
+    <button class="filter-chip {{ src }}" data-source="{{ src }}" data-active="true">
+      ● {{ label }} {{ count }}{% if src == 'feed' %} [private]{% endif %}
+    </button>
+  {% endfor %}
+</div>
+
+<div class="kanban-board">
+  {% set columns = [
+    ('backlog', 'Backlog'),
+    ('todo', 'ToDo'),
+    ('in_progress', 'InProgress'),
+    ('testing', 'Testing'),
+    ('done', 'Done'),
+  ] %}
+  {% for col_key, col_label in columns %}
+    {% set col_tickets = tickets|selectattr('column','equalto', col_key)|list %}
+    <div class="kanban-column" data-column="{{ col_key }}">
+      <div class="kanban-column-header">
+        <span>{{ col_label }}</span><span>{{ col_tickets|length }}</span>
+      </div>
+      {% for t in col_tickets %}
+        <div class="ticket" data-source="{{ t.source }}" data-id="{{ t.id }}">
+          {% if t.is_running %}<span class="pulse-dot"></span>{% endif %}
+          {{ t.title }}
+          <div class="ticket-meta">
+            {{ t.source }}
+            {% if t.assigned_agent %} · @{{ t.assigned_agent }}{% endif %}
+            {% if t.details %} · {{ t.details }}{% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endfor %}
+</div>
