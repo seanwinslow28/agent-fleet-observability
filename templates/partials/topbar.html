@@ -1,0 +1,18 @@
+{# Vars: is_private (bool), active_route, snapshot_ts, fleet_health_label, extra_pills (list) #}
+<div class="topbar">
+  {% include "partials/mascot.html" %}
+  <div>
+    <div class="wordmark">Agent Fleet Observability</div>
+    <div class="subtitle">fleet.seanwinslow.com</div>
+  </div>
+  {% if is_private %}<span class="private-badge">PRIVATE</span>{% endif %}
+  <span class="status-pill mono">● {{ fleet_health_label }}</span>
+  {% for pill in extra_pills %}
+    <span class="status-pill mono">{{ pill }}</span>
+  {% endfor %}
+  <span class="subtitle" style="margin-left: auto;">{{ snapshot_ts }}</span>
+  <nav style="display: flex; gap: 4px;">
+    <a class="nav-link {% if active_route == 'fleet' %}active{% endif %}" href="./index.html">/fleet</a>
+    <a class="nav-link {% if active_route == 'kanban' %}active{% endif %}" href="./kanban.html">/kanban</a>
+  </nav>
+</div>
