@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import hashlib
 import re
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 
 _LINT_LINE_RE = re.compile(r"^- \[(HIGH|MEDIUM|LOW)\]\s+(.+?)(?:\s+—\s+`(.+?)`)?\s*$")
 
@@ -94,3 +94,54 @@ def compose_tickets(data: dict, *, include_job_feed: bool) -> list[dict]:
             })
 
     return out
+
+
+RUNNING_WINDOW = timedelta(minutes=10)
+
+
+def _recent_started_agents(runs: list[dict], now: datetime) -> set[str]:
+    started: set[str] = set()
+    completed: set[str] = set()
+    for r in runs:
+        if r["ts"] < now - RUNNING_WINDOW:
+            continue
+        if r["status"] == "started":
+            started.add(r["agent"])
+        elif r["status"] in ("ok", "error", "failed", "completed"):
+            completed.add(r["agent"])
+    return started - completed
+
+
+def compute_columns(tickets: list[dict], runs: list[dict]) -> list[dict]:
+    """Apply design doc Section 3e column rules to every ticket.
+
+    Mutates each dict to add `column` and `is_running` keys; returns the list.
+    """
+    now = datetime.now(UTC)
+    running = _recent_started_agents(runs, now)
+    for t in tickets:
+        agent = t.get("assigned_agent")
+        section = t.get("_section_hint")
+        if section == "done":
+            t["column"] = "done"
+            t["is_running"] = False
+            continue
+        if agent and agent in running:
+            t["column"] = "in_progress"
+            t["is_running"] = True
+            continue
+        if section == "in_progress":
+            t["column"] = "in_progress"
+            t["is_running"] = False
+            continue
+        if section == "todo":
+            t["column"] = "todo"
+            t["is_running"] = False
+            continue
+        if agent or (t["source"] == "eval"):
+            t["column"] = "todo"
+            t["is_running"] = False
+            continue
+        t["column"] = "backlog"
+        t["is_running"] = False
+    return tickets

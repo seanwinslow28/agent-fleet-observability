@@ -1,3 +1,5 @@
+from datetime import UTC, datetime, timedelta
+
 from lib import kanban
 
 
@@ -62,3 +64,45 @@ def test_compose_tickets_eval_failures_only():
     assert len(eval_tickets) == 2
     titles = [t["title"] for t in eval_tickets]
     assert all("cross-domain" in t or "duplicate-merge" in t for t in titles)
+
+
+def test_compute_columns_unassigned_research_goes_backlog():
+    t = {"source": "research", "assigned_agent": None, "_section_hint": "pending",
+         "title": "x", "id": "x"}
+    out = kanban.compute_columns([t], runs=[])
+    assert out[0]["column"] == "backlog"
+
+
+def test_compute_columns_assigned_research_goes_todo():
+    t = {"source": "research", "assigned_agent": "deep_researcher",
+         "_section_hint": "in_flight", "title": "x", "id": "x"}
+    out = kanban.compute_columns([t], runs=[])
+    assert out[0]["column"] == "todo"
+
+
+def test_compute_columns_eval_failure_in_todo():
+    t = {"source": "eval", "assigned_agent": None, "_section_hint": "todo",
+         "title": "Eval failing: case-03", "id": "x"}
+    out = kanban.compute_columns([t], runs=[])
+    assert out[0]["column"] == "todo"
+
+
+def test_compute_columns_in_progress_when_started_recently():
+    now = datetime.now(UTC)
+    runs = [
+        {"agent": "deep_researcher", "status": "started",
+         "ts": now - timedelta(minutes=2), "cost_usd": 0.0,
+         "duration_ms": None, "notes": "x", "mode": None, "turns": None},
+    ]
+    t = {"source": "research", "assigned_agent": "deep_researcher",
+         "_section_hint": "in_flight", "title": "x", "id": "x"}
+    out = kanban.compute_columns([t], runs=runs)
+    assert out[0]["column"] == "in_progress"
+    assert out[0]["is_running"] is True
+
+
+def test_compute_columns_done_recent():
+    t = {"source": "manual", "assigned_agent": None, "_section_hint": "done",
+         "title": "x", "id": "x"}
+    out = kanban.compute_columns([t], runs=[])
+    assert out[0]["column"] == "done"
