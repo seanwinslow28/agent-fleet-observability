@@ -1,0 +1,11 @@
+date,time,agent,mode,status,cost_usd,duration_ms,turns,notes
+2026-05-13,02:30:05,vault_synthesizer,nightly,ok,0.0000,2719760,,114 concepts
+2026-05-13,02:00:00,vault_indexer,nightly,ok,0.0000,180400,,62 files
+2026-05-13,02:45:00,deep_researcher,nightly,ok,0.0000,420000,,1 topic
+2026-05-13,08:45:00,daily_driver,morning,ok,0.3812,540000,18,
+2026-05-13,08:35:00,meta_agent,nightly,ok,0.0000,8200,,
+2026-05-12,22:00:00,knowledge_lint,weekly,ok,0.0000,15400,,
+2026-05-13,12:34:00,flush,session-end,ok,0.0000,4200,,12 msgs
+2026-05-13,09:30:00,job_feed,morning,ok,0.0000,18500,,14 new
+2026-05-13,02:30:05,vault_synthesizer,nightly,error,0.0000,12000,,model timeout
+2026-05-12,02:30:00,vault_synthesizer,nightly,skipped,0.0000,,,mbp_asleep
