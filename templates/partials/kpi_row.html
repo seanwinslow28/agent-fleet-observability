@@ -1,0 +1,31 @@
+{# Vars: kpis (dict from compute_kpis), eval_sparkline_svg, is_private #}
+<div class="kpi-row">
+  <div class="panel kpi-card">
+    <div class="kpi-label">Eval pass · last night</div>
+    <div class="kpi-value green">{{ kpis.eval_pass }}</div>
+    <div class="kpi-sub">{{ eval_sparkline_svg|safe }}</div>
+  </div>
+  <div class="panel kpi-card">
+    <div class="kpi-label">Fleet spend · 30 days</div>
+    <div class="kpi-value">{{ kpis.fleet_spend_30d_label }}</div>
+    <div class="kpi-sub">{{ kpis.local_only_share_pct }}% local · {{ kpis.run_count_30d }} runs</div>
+  </div>
+  <div class="panel kpi-card">
+    <div class="kpi-label">{% if is_private %}Monthly headroom{% else %}Local-only share{% endif %}</div>
+    <div class="kpi-value {% if is_private %}amber{% else %}green{% endif %}">
+      {% if is_private %}${{ "%.0f"|format(kpis.monthly_headroom_usd) }} / $50
+      {% else %}{{ kpis.local_only_share_pct }}%
+      {% endif %}
+    </div>
+    <div class="kpi-sub">
+      {% if is_private %}Gemini DR · {{ "%.0f"|format(50 - kpis.monthly_headroom_usd) }}% used
+      {% else %}Most agents · $0/run
+      {% endif %}
+    </div>
+  </div>
+  <div class="panel kpi-card">
+    <div class="kpi-label">Spend governors</div>
+    <div class="kpi-value amber">{{ kpis.spend_governors }}</div>
+    <div class="kpi-sub">$7 task · $20 daily breaker</div>
+  </div>
+</div>

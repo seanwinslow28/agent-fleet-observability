@@ -1,0 +1,25 @@
+{# Vars: fleet_status (list of dicts), is_private #}
+<div class="agent-grid">
+  {% for tile in fleet_status %}
+    <div class="panel agent-tile">
+      <div>
+        <span class="status-dot {{ tile.health }}"></span>
+        <span class="agent-name">{{ tile.agent }}</span>
+      </div>
+      <div class="agent-sub">
+        {% if tile.last_run %}
+          last run {{ tile.last_run.strftime('%Y-%m-%d %H:%M') }}
+        {% else %}
+          no runs in last 7 days
+        {% endif %}
+      </div>
+      <div class="agent-sub">
+        {% if tile.last_cost is defined %}${{ "%.4f"|format(tile.last_cost) }}{% endif %}
+        {% if tile.last_status %} · {{ tile.last_status }}{% endif %}
+      </div>
+      {% if is_private and tile.last_notes %}
+        <div class="agent-sub">{{ tile.last_notes }}</div>
+      {% endif %}
+    </div>
+  {% endfor %}
+</div>
