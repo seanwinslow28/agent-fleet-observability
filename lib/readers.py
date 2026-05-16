@@ -7,7 +7,9 @@ not None, so callers can blindly iterate.
 from __future__ import annotations
 
 import csv
-from datetime import UTC, datetime
+import json
+import re
+from datetime import UTC, date, datetime
 from pathlib import Path
 
 
@@ -46,3 +48,26 @@ def read_run_history(path: Path) -> list[dict]:
                 "notes": raw["notes"] or "",
             })
     return rows
+
+
+_SYNTH_NAME_RE = re.compile(r"(?:sample-)?synth-manifest-(\d{4})-(\d{2})-(\d{2})\.json$")
+
+
+def read_synth_manifests(dir_path: Path) -> list[dict]:
+    """Load all synth-manifest-YYYY-MM-DD.json files in `dir_path`.
+
+    Returns list sorted ascending by date. Each record adds a parsed `date`
+    field on top of the raw manifest JSON.
+    """
+    if not dir_path.exists():
+        return []
+    records: list[dict] = []
+    for path in sorted(dir_path.glob("*synth-manifest-*.json")):
+        m = _SYNTH_NAME_RE.search(path.name)
+        if not m:
+            continue
+        yr, mo, dy = (int(g) for g in m.groups())
+        raw = json.loads(path.read_text())
+        raw["date"] = date(yr, mo, dy)
+        records.append(raw)
+    return sorted(records, key=lambda r: r["date"])
