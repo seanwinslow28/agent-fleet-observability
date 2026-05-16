@@ -11,6 +11,7 @@ functions, establishing the pattern. Task 11 will propagate it to compute_all.
 """
 from __future__ import annotations
 
+from collections import Counter
 from datetime import UTC, datetime, timedelta
 from datetime import date as _date
 
@@ -142,3 +143,94 @@ def compute_eval_sparkline(eval_run: dict, days: int = 14) -> list[int]:
     """
     today_pass = eval_run.get("passed", 0)
     return [today_pass] * days
+
+
+def compute_cost_trend(runs: list[dict], days: int, end: _date) -> dict:
+    """Per-day per-agent cost totals for stacked area rendering."""
+    by_date_agent: dict[tuple[_date, str], float] = {}
+    agents: set[str] = set()
+    for r in runs:
+        d = r["ts"].date()
+        if d > end or d < end - timedelta(days=days - 1):
+            continue
+        a = r["agent"]
+        agents.add(a)
+        key = (d, a)
+        by_date_agent[key] = by_date_agent.get(key, 0.0) + r["cost_usd"]
+    ordered_agents = sorted(agents)
+    day_axis = [end - timedelta(days=i) for i in range(days - 1, -1, -1)]
+    series: dict[str, list[float]] = {a: [0.0] * days for a in ordered_agents}
+    for (d, a), v in by_date_agent.items():
+        idx = day_axis.index(d)
+        series[a][idx] = round(v, 4)
+    return {"days": [d.isoformat() for d in day_axis], "agents": ordered_agents, "series": series}
+
+
+def compute_model_mix(runs: list[dict]) -> dict[str, dict]:
+    """Bucket runs by local-vs-cloud + family. Returns {label: {count, pct}}."""
+    buckets: Counter = Counter()
+    for r in runs:
+        model = (r.get("model") or "").lower()
+        if "qwen" in model or "ollama" in model:
+            label = "local-qwen"
+        elif "nomic" in model:
+            label = "local-nomic"
+        elif "gemma" in model or "kokoro" in model:
+            label = "local-other"
+        elif "sonnet" in model or "opus" in model or "haiku" in model:
+            label = "cloud-anthropic"
+        elif "gemini" in model:
+            label = "cloud-gemini"
+        elif r["cost_usd"] == 0.0:
+            label = "local"
+        else:
+            label = "cloud"
+        buckets[label] += 1
+    total = sum(buckets.values()) or 1
+    return {label: {"count": n, "pct": round(n / total * 100, 1)} for label, n in buckets.items()}
+
+
+def compute_recent_runs(runs: list[dict], n: int = 50) -> list[dict]:
+    return sorted(runs, key=lambda r: r["ts"], reverse=True)[:n]
+
+
+def compute_all(data: dict, *, end: _date | None = None) -> dict:
+    """Single entry point: build every aggregate the renderers need."""
+    end = end or datetime.now(UTC).date()
+    runs = data["agent_runs"]
+    eval_run = data["eval_last_run"]
+    gemini = data["gemini_spend"]
+    council = data["council_spend"]
+    manifests = data["synth_manifests"]
+    agent_names = data["agent_names"]
+    return {
+        "fleet_status": compute_fleet_status(runs, agent_names),
+        "kpis": compute_kpis(runs, eval_run, gemini["total_usd"], council["month_total_usd"]),
+        "synth_series_60d": compute_synth_series(manifests, days=60, end=end),
+        "synth_series_14d": compute_synth_series(manifests, days=14, end=end),
+        "regression_window": compute_regression_window(manifests),
+        "eval_sparkline": compute_eval_sparkline(eval_run, days=14),
+        "cost_trend_30d": compute_cost_trend(runs, days=30, end=end),
+        "model_mix": compute_model_mix(
+            [r for r in runs if r["ts"].date() >= end - timedelta(days=30)]
+        ),
+        "recent_runs": compute_recent_runs(runs, n=50),
+        "gemini": gemini,
+        "council": council,
+        "eval": eval_run,
+        "lint": data.get("lint_reports", {}),
+        "job_feed": data.get("job_feed_db", {}),
+        "job_feed_manifests": data.get("job_feed_manifests", {}),
+        "research_queue": data.get("research_queue", {}),
+        "manual_tickets": data.get("manual_tickets", {}),
+        # §4d live-wire additions per Sean's 2026-05-16 decision:
+        "target_companies": data.get(
+            "target_companies",
+            {"tier_1": [], "tier_2": [], "tier_3": [], "by_status": {}, "total": 0},
+        ),
+        "warm_intros": data.get(
+            "warm_intros",
+            {"active": [], "prospecting": [], "second_degree": [], "total": 0},
+        ),
+        "end_date": end,
+    }

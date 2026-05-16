@@ -82,3 +82,31 @@ def test_compute_eval_sparkline_returns_14_values():
     assert len(spark) == 14
     assert all(0 <= v <= 10 for v in spark)
     assert spark[-1] == 7
+
+
+def test_compute_cost_trend_30_day_stacked():
+    runs = _runs()
+    trend = aggregations.compute_cost_trend(runs, days=30, end=date(2026, 5, 14))
+    assert len(trend["days"]) == 30
+    assert set(trend["agents"]) <= set(AGENT_NAMES) | {"other"}
+    # series[agent] is a list of `days` floats
+    for _agent, series in trend["series"].items():
+        assert len(series) == 30
+
+
+def test_compute_model_mix_buckets():
+    runs = _runs()
+    mix = aggregations.compute_model_mix(runs)
+    assert "local" in mix
+    assert "cloud" in mix
+    # fixture has one daily_driver run (cloud-ish) and several local
+    total_pct = sum(v["pct"] for v in mix.values())
+    assert 99.0 <= total_pct <= 101.0  # rounding slack
+
+
+def test_compute_recent_runs_returns_last_50_desc():
+    runs = _runs()
+    recent = aggregations.compute_recent_runs(runs, n=5)
+    assert len(recent) == 5
+    timestamps = [r["ts"] for r in recent]
+    assert timestamps == sorted(timestamps, reverse=True)
