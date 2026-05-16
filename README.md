@@ -1,6 +1,6 @@
 # Agent Fleet Observability
 
-Static observability dashboard for an 8-agent local-first AI fleet.
+Static observability dashboard for a multi-agent local-first AI fleet.
 
 - **Public:** [fleet.seanwinslow.com](https://fleet.seanwinslow.com)
 - **Build:** local Python on Mac Mini, cron 06:00 ET daily
