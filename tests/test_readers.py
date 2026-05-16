@@ -90,3 +90,18 @@ def test_read_lint_reports_returns_latest(tmp_path):
     out = readers.read_lint_reports(tmp_path)
     assert out["latest_date"] == "2026-05-19"
     assert out["issues_total"] == 4
+
+
+def test_read_job_feed_db_returns_funnel(job_feed_db_path):
+    out = readers.read_job_feed_db(job_feed_db_path)
+    assert out["total_postings"] == 4
+    assert out["by_status"]["new"] == 1
+    assert out["by_status"]["applied"] == 1
+    assert out["by_status"]["screen-scheduled"] == 1
+    assert out["by_status"]["rejected"] == 1
+    assert out["top_fit"][0]["company"] == "Sierra"
+
+
+def test_read_job_feed_db_missing(tmp_path):
+    out = readers.read_job_feed_db(tmp_path / "missing.db")
+    assert out["total_postings"] == 0

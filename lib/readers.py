@@ -9,6 +9,7 @@ from __future__ import annotations
 import csv
 import json
 import re
+import sqlite3
 from datetime import UTC, date, datetime
 from pathlib import Path
 
@@ -132,6 +133,53 @@ def read_eval_last_run(path: Path) -> dict:
         "total_cases": int(fm.get("total_cases", 0)),
         "cases": list(fm.get("cases", []) or []),
         "run_id": fm.get("run_id"),
+    }
+
+
+def read_job_feed_db(path: Path) -> dict:
+    """Read aggregate stats from vault/.job-feed.db.
+
+    Returns funnel by status, top-N fit-score rows, and timestamps.
+    PRIVATE-ONLY: callers must skip this on public render pass.
+    """
+    empty = {"total_postings": 0, "by_status": {}, "top_fit": [], "active_count": 0}
+    if not path.exists():
+        return empty
+    conn = sqlite3.connect(f"file:{path}?mode=ro", uri=True)
+    try:
+        cur = conn.execute("SELECT COUNT(*) FROM job_postings")
+        total = cur.fetchone()[0]
+        cur = conn.execute("SELECT status, COUNT(*) FROM job_postings GROUP BY status")
+        by_status = {row[0] or "new": row[1] for row in cur.fetchall()}
+        cur = conn.execute(
+            """SELECT company, title, fit_score, status, first_seen_at
+               FROM job_postings
+               WHERE rules_passed = 1 AND fit_score IS NOT NULL
+                 AND status NOT IN ('rejected', 'archived')
+               ORDER BY fit_score DESC
+               LIMIT 10"""
+        )
+        top_fit = [
+            {
+                "company": r[0],
+                "title": r[1],
+                "fit_score": r[2],
+                "status": r[3],
+                "first_seen_at": r[4],
+            }
+            for r in cur.fetchall()
+        ]
+        cur = conn.execute(
+            "SELECT COUNT(*) FROM job_postings WHERE status NOT IN ('rejected', 'archived')"
+        )
+        active = cur.fetchone()[0]
+    finally:
+        conn.close()
+    return {
+        "total_postings": total,
+        "by_status": by_status,
+        "top_fit": top_fit,
+        "active_count": active,
     }
 
 
