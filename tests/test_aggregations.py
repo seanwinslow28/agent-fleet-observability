@@ -6,6 +6,8 @@ Both functions call datetime.now(UTC) internally. These tests are correct as
 long as they run within 7 days of 2026-05-16 (fleet status) and within 30 days
 (kpis). Task 10 will establish the end-parameter pattern for proper date injection.
 """
+from datetime import date
+
 import pytest
 
 from lib import aggregations, readers
@@ -46,3 +48,37 @@ def test_compute_kpis_eval_pass_and_spend():
     assert kpis["fleet_spend_30d_usd"] == pytest.approx(0.3812)
     assert 0 < kpis["local_only_share_pct"] <= 100
     assert kpis["spend_governors"] == "$50 / mo"
+
+
+def test_compute_synth_series_60_days():
+    manifests = [
+        {"date": date(2026, 5, 1), "concepts_written": 0},
+        {"date": date(2026, 5, 2), "concepts_written": 0},
+        {"date": date(2026, 5, 10), "concepts_written": 0},
+        {"date": date(2026, 5, 11), "concepts_written": 90},
+        {"date": date(2026, 5, 13), "concepts_written": 114},
+    ]
+    series = aggregations.compute_synth_series(manifests, days=14, end=date(2026, 5, 14))
+    assert len(series) == 14
+    # day 2026-05-13 = index 12 in 14-day series ending 5/14
+    assert series[12]["concepts"] == 114
+    # missing dates fill with None (not 0 — we want a visible gap)
+    assert series[7]["concepts"] is None  # 2026-05-07
+
+
+def test_compute_regression_window_detects_silent_nights():
+    manifests = [{"date": date(2026, 5, d), "concepts_written": 0} for d in range(1, 11)]
+    manifests.append({"date": date(2026, 5, 11), "concepts_written": 90})
+    window = aggregations.compute_regression_window(manifests)
+    assert window["start"] == date(2026, 5, 1)
+    assert window["end"] == date(2026, 5, 10)
+    assert window["nights"] == 10
+
+
+def test_compute_eval_sparkline_returns_14_values():
+    # eval suite history isn't on disk yet — we synthesize from last_run only for v1
+    eval_run = {"passed": 7, "total_cases": 10, "cases": []}
+    spark = aggregations.compute_eval_sparkline(eval_run, days=14)
+    assert len(spark) == 14
+    assert all(0 <= v <= 10 for v in spark)
+    assert spark[-1] == 7

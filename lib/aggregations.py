@@ -12,6 +12,7 @@ functions, establishing the pattern. Task 11 will propagate it to compute_all.
 from __future__ import annotations
 
 from datetime import UTC, datetime, timedelta
+from datetime import date as _date
 
 
 def _is_local(model: str | None) -> bool:
@@ -96,3 +97,48 @@ def compute_kpis(
         "monthly_headroom_usd": round(50.0 - gemini_total, 2),
         "council_month_total": round(council_total, 2),
     }
+
+
+def compute_synth_series(manifests: list[dict], days: int, end: _date) -> list[dict]:
+    """Build a `days`-long series ending on `end`. Missing dates → concepts=None."""
+    by_date = {m["date"]: m for m in manifests}
+    out: list[dict] = []
+    for i in range(days - 1, -1, -1):
+        d = end - timedelta(days=i)
+        m = by_date.get(d)
+        out.append({
+            "date": d,
+            "concepts": m["concepts_written"] if m else None,
+            "connections": m.get("connections_written") if m else None,
+        })
+    return out
+
+
+def compute_regression_window(manifests: list[dict]) -> dict:
+    """Find the longest run of consecutive zero-concept nights."""
+    if not manifests:
+        return {"start": None, "end": None, "nights": 0}
+    sorted_m = sorted(manifests, key=lambda m: m["date"])
+    best = {"start": None, "end": None, "nights": 0}
+    run_start = None
+    run_len = 0
+    for m in sorted_m:
+        if m.get("concepts_written", 0) == 0:
+            run_start = run_start or m["date"]
+            run_len += 1
+            if run_len > best["nights"]:
+                best = {"start": run_start, "end": m["date"], "nights": run_len}
+        else:
+            run_start = None
+            run_len = 0
+    return best
+
+
+def compute_eval_sparkline(eval_run: dict, days: int = 14) -> list[int]:
+    """v1: no historical eval store, so emit a flat-tail sparkline ending at today.
+
+    Day 2 Task 11 follow-up: when we wire an evals/vault-synthesizer/history.jsonl,
+    swap this to read real history.
+    """
+    today_pass = eval_run.get("passed", 0)
+    return [today_pass] * days
