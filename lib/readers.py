@@ -184,6 +184,8 @@ def read_job_feed_db(path: Path) -> dict:
 
 
 _LINT_NAME_RE = re.compile(r"(\d{4}-\d{2}-\d{2})-lint-report\.md$")
+_BULLET_RE = re.compile(r"^- \[[ x]\]\s*(.+?)(?:\s*—\s*assigned:\s*(\S+))?\s*$")
+_PLAIN_BULLET_RE = re.compile(r"^-\s+(.+?)(?:\s*—\s*assigned:\s*(\S+))?\s*$")
 
 
 def read_lint_reports(dir_path: Path) -> dict:
@@ -206,3 +208,64 @@ def read_lint_reports(dir_path: Path) -> dict:
         "issues_by_severity": dict(fm.get("issues_by_severity", {}) or {}),
         "raw_body": latest_path.read_text(),
     }
+
+
+def _parse_section_items(lines: list[str], regex: re.Pattern) -> list[dict]:
+    items: list[dict] = []
+    for line in lines:
+        m = regex.match(line.strip())
+        if not m:
+            continue
+        title = m.group(1).strip().strip("*_~")
+        title = re.sub(r"\*\*(.+?)\*\*", r"\1", title)
+        agent = m.group(2) if m.lastindex and m.lastindex >= 2 else None
+        items.append({"title": title, "assigned_agent": agent})
+    return items
+
+
+def _split_sections(text: str) -> dict[str, list[str]]:
+    sections: dict[str, list[str]] = {}
+    current = "_pre"
+    sections[current] = []
+    for line in text.splitlines():
+        if line.startswith("## "):
+            current = line[3:].strip().lower().replace(" ", "_")
+            sections[current] = []
+        else:
+            sections[current].append(line)
+    return sections
+
+
+def read_research_queue(path: Path) -> dict:
+    """Parse research-queue.md into pending / in_flight / done item lists."""
+    if not path.exists():
+        return {"pending": [], "in_flight": [], "done": []}
+    sections = _split_sections(path.read_text())
+    return {
+        "pending": _parse_section_items(sections.get("pending", []), _BULLET_RE),
+        "in_flight": _parse_section_items(sections.get("in_flight", []), _BULLET_RE),
+        "done": _parse_section_items(sections.get("done", []), _BULLET_RE),
+    }
+
+
+def read_manual_tickets(path: Path) -> dict:
+    """Parse manual-tickets.md into todo / in_progress / done item lists."""
+    if not path.exists():
+        return {"todo": [], "in_progress": [], "done": []}
+    sections = _split_sections(path.read_text())
+    return {
+        "todo": _parse_section_items(sections.get("todo", []), _PLAIN_BULLET_RE),
+        "in_progress": _parse_section_items(sections.get("in_progress", []), _PLAIN_BULLET_RE),
+        "done": _parse_section_items(sections.get("done", []), _PLAIN_BULLET_RE),
+    }
+
+
+def read_job_feed_manifests(dir_path: Path) -> dict:
+    """Return the latest job-feed-manifest-*.json plus a 7-day rollup."""
+    if not dir_path.exists():
+        return {"latest": None, "last_7": []}
+    paths = sorted(dir_path.glob("job-feed-manifest-*.json"))
+    if not paths:
+        return {"latest": None, "last_7": []}
+    last_7 = [json.loads(p.read_text()) for p in paths[-7:]]
+    return {"latest": last_7[-1], "last_7": last_7}

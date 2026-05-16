@@ -1,0 +1,8 @@
+{
+  "date": "2026-05-13",
+  "new_postings": 14,
+  "rules_passed": 9,
+  "fit_scored": 9,
+  "duration_seconds": 18.5,
+  "feeds_checked": ["greenhouse", "lever", "rss-1", "ats-watch"]
+}

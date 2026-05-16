@@ -105,3 +105,26 @@ def test_read_job_feed_db_returns_funnel(job_feed_db_path):
 def test_read_job_feed_db_missing(tmp_path):
     out = readers.read_job_feed_db(tmp_path / "missing.db")
     assert out["total_postings"] == 0
+
+
+def test_read_research_queue_parses_sections():
+    out = readers.read_research_queue(FIXTURES / "sample-research-queue.md")
+    assert len(out["pending"]) == 3
+    assert len(out["in_flight"]) == 1
+    assert out["in_flight"][0]["assigned_agent"] == "deep_researcher"
+
+
+def test_read_manual_tickets_parses():
+    out = readers.read_manual_tickets(FIXTURES / "sample-tickets.md")
+    assert len(out["todo"]) == 2
+    assert len(out["in_progress"]) == 1
+    sean_ticket = [t for t in out["todo"] if t["assigned_agent"] == "Sean"][0]
+    assert "Rotate" in sean_ticket["title"]
+
+
+def test_read_job_feed_manifests(tmp_path):
+    src = FIXTURES / "sample-job-feed-manifest-2026-05-13.json"
+    (tmp_path / src.name.replace("sample-", "")).write_text(src.read_text())
+    out = readers.read_job_feed_manifests(tmp_path)
+    assert out["latest"]["new_postings"] == 14
+    assert out["latest"]["date"] == "2026-05-13"
