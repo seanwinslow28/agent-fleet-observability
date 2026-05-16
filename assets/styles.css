@@ -233,3 +233,27 @@ a:hover { text-decoration: underline; }
   animation: live-pulse 2s ease-in-out infinite;
 }
 .ticket.hidden { display: none; }
+
+/* Mobile + responsive — design doc Section 8 */
+@media (max-width: 1023px) {
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .agent-grid { grid-template-columns: repeat(2, 1fr); }
+  .kanban-board { grid-template-columns: 1fr; gap: 16px; }
+  .topbar { flex-wrap: wrap; }
+}
+@media (max-width: 767px) {
+  .priv-wrap { padding: 16px 12px; }
+  .kpi-value { font-size: 22px; }
+  .topbar { gap: 8px; }
+  .nav-link { font-size: 10px; padding: 2px 6px; }
+}
+@media (max-width: 479px) {
+  .kpi-row { grid-template-columns: 1fr; }
+  .agent-grid { grid-template-columns: 1fr; }
+  .wordmark { font-size: 14px; }
+  .subtitle { font-size: 10px; }
+  table { font-size: 10px; }
+}
+
+/* Hero SVG fluid */
+.panel svg { max-width: 100%; height: auto; }
