@@ -1,0 +1,18 @@
+{# Vars: alerts (list of {severity, message, ts}). Renders nothing if empty. #}
+{% if alerts %}
+<div class="panel" style="border-color: var(--accent-amber);">
+  <div style="display: flex; justify-content: space-between; align-items: baseline;">
+    <strong style="color: var(--accent-amber); font-family: var(--font-heading);">
+      ⚠ {{ alerts|length }} thing{% if alerts|length != 1 %}s{% endif %} need{% if alerts|length == 1 %}s{% endif %} your attention
+    </strong>
+    <span class="subtitle">overnight · last 12h</span>
+  </div>
+  {% for a in alerts %}
+    <div style="display: flex; gap: 12px; padding: 8px 0; border-top: 1px solid var(--border-subtle);">
+      <span class="status-dot {{ a.severity }}"></span>
+      <span style="flex: 1;">{{ a.message }}</span>
+      <span class="subtitle">{{ a.ts }}</span>
+    </div>
+  {% endfor %}
+</div>
+{% endif %}

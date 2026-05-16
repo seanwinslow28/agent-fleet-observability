@@ -1,0 +1,140 @@
+{# MODIFIED per Sean's 2026-05-16 §4d live-wire decision.
+   Vars: cost_trend_svg, model_mix_svg, model_mix_segments, synth_60d_svg, recent_runs,
+         eval_cases, job_feed (DB-side funnel), gemini (spend), council (spend),
+         target_companies (live from vault/.../target-companies.md),
+         warm_intros (live from vault/.../warm-intros.md). is_private = True here. #}
+{% include "partials/below_fold_public.html" %}
+
+{# ===== Job Hunt — Target funnel (LIVE from target-companies.md) ===== #}
+<section class="panel">
+  <div class="eyebrow">Job Hunt · Target funnel · Strategic {{ target_companies.total }}</div>
+  {% if target_companies.total == 0 %}
+    <p class="subtitle">Target list not yet populated.</p>
+  {% else %}
+    <div style="display: flex; gap: 24px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 12px;">
+      <div>
+        <div class="subtitle">Tier 1 · "Yes please"</div>
+        <strong style="font-size: 20px;">{{ target_companies.tier_1|length }}</strong>
+      </div>
+      <div>
+        <div class="subtitle">Tier 2 · "Would consider"</div>
+        <strong style="font-size: 20px;">{{ target_companies.tier_2|length }}</strong>
+      </div>
+      <div>
+        <div class="subtitle">Tier 3 · "Wildcards"</div>
+        <strong style="font-size: 20px;">{{ target_companies.tier_3|length }}</strong>
+      </div>
+    </div>
+    <div style="margin-top: 12px;">
+      <div class="subtitle">By status</div>
+      <ul style="font-family: var(--font-mono); font-size: 11px; list-style: none; padding: 0; display: flex; gap: 16px; flex-wrap: wrap;">
+        {% for status, n in target_companies.by_status.items() %}
+          <li>{{ status }} — <strong>{{ n }}</strong></li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+</section>
+
+{# ===== Job Hunt — Top 10 by fit score (from .job-feed.db, separate from Strategic 30) ===== #}
+<section class="panel">
+  <div class="eyebrow">Job Hunt · Top 10 by fit score · from job-feed.db</div>
+  {% if not job_feed.top_fit %}
+    <p class="subtitle">No scored postings in window.</p>
+  {% else %}
+    <table style="width: 100%; font-family: var(--font-mono); font-size: 11px; border-collapse: collapse;">
+      <thead><tr style="color: var(--text-tertiary); text-align: left;">
+        <th style="padding: 4px;">company</th><th>title</th><th>fit</th><th>status</th>
+      </tr></thead>
+      <tbody>
+        {% for p in job_feed.top_fit %}
+          <tr style="border-top: 1px solid var(--border-subtle);">
+            <td style="padding: 4px;">{{ p.company }}</td>
+            <td>{{ p.title }}</td>
+            <td><strong>{{ p.fit_score }}</strong></td>
+            <td>{{ p.status }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+</section>
+
+{# ===== Job Hunt — Next actions (empty-state; no backing schema) ===== #}
+<section class="panel">
+  <div class="eyebrow">Job Hunt · Next actions</div>
+  <p class="subtitle">Pipeline not yet structured — see <span class="mono">vault/20_projects/prj-job-hunt-2026/</span> notes.</p>
+</section>
+
+{# ===== Job Hunt — Warm-intro pipeline (LIVE from warm-intros.md) ===== #}
+<section class="panel">
+  <div class="eyebrow">Job Hunt · Warm-intro pipeline · {{ warm_intros.total }} active</div>
+  {% if warm_intros.total == 0 %}
+    <p class="subtitle">No warm intros active. Time to audit the LinkedIn 1st-degree.</p>
+  {% else %}
+    <table style="width: 100%; font-family: var(--font-mono); font-size: 11px; border-collapse: collapse;">
+      <thead><tr style="color: var(--text-tertiary); text-align: left;">
+        <th style="padding: 4px;">person</th><th>target company</th><th>strength</th><th>last contact</th>
+      </tr></thead>
+      <tbody>
+        {% for w in warm_intros.active %}
+          <tr style="border-top: 1px solid var(--border-subtle);">
+            <td style="padding: 4px;">{{ w.person }}</td>
+            <td>{{ w.target_company }}</td>
+            <td>
+              <span class="status-dot {% if w.strength == 'strong' %}healthy{% elif w.strength == 'medium' %}degraded{% else %}unknown{% endif %}"></span>
+              {{ w.strength }}
+            </td>
+            <td>{{ w.last_contact }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% if warm_intros.prospecting or warm_intros.second_degree %}
+      <p class="subtitle" style="margin-top: 12px;">
+        +{{ warm_intros.prospecting|length }} prospecting ·
+        +{{ warm_intros.second_degree|length }} 2nd-degree
+      </p>
+    {% endif %}
+  {% endif %}
+</section>
+
+{# ===== Cloud spend governance ===== #}
+<section class="panel">
+  <div class="eyebrow">Cloud spend · Gemini DR (this month)</div>
+  <p>
+    <strong class="mono">${{ "%.2f"|format(gemini.total_usd) }}</strong>
+    of $50 cap · {{ gemini.run_count }} runs
+  </p>
+  <div style="height: 8px; background: var(--bg-recessed); border-radius: 4px; overflow: hidden;">
+    <div style="height: 100%; width: {{ ((gemini.total_usd / 50.0) * 100)|round(1) }}%; background: var(--accent-amber);"></div>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="eyebrow">Cloud spend · LLM Council</div>
+  <p>
+    <strong class="mono">${{ "%.2f"|format(council.month_total_usd) }}</strong>
+    of $40 cap · {{ council.day_count }} days with runs
+  </p>
+  <div style="height: 8px; background: var(--bg-recessed); border-radius: 4px; overflow: hidden;">
+    <div style="height: 100%; width: {{ ((council.month_total_usd / 40.0) * 100)|round(1) }}%; background: var(--accent-blue);"></div>
+  </div>
+</section>
+
+{# ===== Recent failures ===== #}
+<section class="panel">
+  <div class="eyebrow">Recent failures · last 5</div>
+  {% set fails = recent_runs|selectattr('status', 'in', ['error', 'failed', 'capped'])|list %}
+  {% if not fails %}
+    <p class="subtitle">Nothing on fire. Carry on.</p>
+  {% else %}
+    <ul style="font-family: var(--font-mono); font-size: 11px; list-style: none; padding: 0;">
+      {% for f in fails[:5] %}
+        <li style="padding: 4px 0; border-top: 1px solid var(--border-subtle);">
+          <strong>{{ f.agent }}</strong> · {{ f.status }} · {{ f.ts.strftime('%Y-%m-%d %H:%M') }} — {{ f.notes }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</section>
