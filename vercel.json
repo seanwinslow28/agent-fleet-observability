@@ -2,6 +2,10 @@
   "version": 2,
   "public": true,
   "cleanUrls": true,
+  "framework": null,
+  "buildCommand": "",
+  "installCommand": "",
+  "outputDirectory": ".",
   "headers": [
     {
       "source": "/assets/(.*)",
