@@ -124,9 +124,62 @@ def compose_tickets(data: dict, *, include_job_feed: bool) -> list[dict]:
     return out
 
 
+_ERR_STATUSES = {"error", "failed", "capped", "timeout"}
+_OK_STATUSES = {"ok", "success", "completed", "passed"}
+_FAILURE_WINDOW = timedelta(days=7)
+
+
 def _failures_to_tickets(runs: list[dict]) -> list[dict]:
-    """Stub — populated in Task 5. Returns [] so compose_tickets is callable."""
-    return []
+    """Emit one ticket per (agent × most-recent unresolved failure within 7 days).
+
+    "Unresolved" = there is no `ok`/`success`/`completed`/`passed` run for the
+    same agent at a timestamp AFTER the failure. Failures older than 7 days
+    age off; subsequent successes resolve. Title format:
+    "{agent} failed: {notes_or_status_word}" truncated to 60 chars + ….
+    """
+    now = datetime.now(UTC)
+    cutoff = now - _FAILURE_WINDOW
+    by_agent: dict[str, list[dict]] = {}
+    for r in runs:
+        if r["ts"] < cutoff:
+            continue
+        by_agent.setdefault(r["agent"], []).append(r)
+
+    out: list[dict] = []
+    for agent, agent_runs in by_agent.items():
+        # Sort newest first so we find the latest failure quickly
+        agent_runs.sort(key=lambda r: r["ts"], reverse=True)
+        latest_failure: dict | None = None
+        latest_success_ts = None
+        for r in agent_runs:
+            status = r["status"].lower()
+            if status in _OK_STATUSES and latest_success_ts is None:
+                latest_success_ts = r["ts"]
+            if status in _ERR_STATUSES:
+                latest_failure = r
+                break
+        if not latest_failure:
+            continue
+        # If any success exists after the failure timestamp, ticket is resolved
+        if latest_success_ts is not None and latest_success_ts > latest_failure["ts"]:
+            continue
+
+        notes = (latest_failure.get("notes") or "").strip()
+        tail = notes if notes else latest_failure["status"].lower()
+        if len(tail) > 60:
+            tail = tail[:60].rstrip() + "…"
+        title = f"{agent} failed: {tail}"
+        out.append({
+            "id": _stable_id("eval", f"{agent}|{latest_failure['ts'].isoformat()}"),
+            "title": title,
+            "source": "eval",
+            "assigned_agent": agent,
+            "_section_hint": "todo",
+            "created_at": latest_failure["ts"].isoformat(),
+            "moved_at": latest_failure["ts"].isoformat(),
+            "details": notes or None,
+        })
+    return out
 
 
 RUNNING_WINDOW = timedelta(minutes=10)

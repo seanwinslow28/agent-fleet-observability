@@ -54,17 +54,20 @@ def _data():
 
 
 def test_compose_tickets_includes_all_sources_private():
-    tickets = kanban.compose_tickets(_data(), include_job_feed=True)
+    d = _data()
+    d["agent_runs"] = [_run("vault_indexer", "failed", 60)]
+    tickets = kanban.compose_tickets(d, include_job_feed=True)
     sources = {t["source"] for t in tickets}
-    # eval re-enters via agent_runs in Task 5
-    assert sources == {"research", "lint", "manual", "feed"}
+    assert sources == {"research", "lint", "eval", "manual", "feed"}
 
 
 def test_compose_tickets_excludes_job_feed_when_public():
-    tickets = kanban.compose_tickets(_data(), include_job_feed=False)
+    d = _data()
+    d["agent_runs"] = [_run("vault_indexer", "failed", 60)]
+    tickets = kanban.compose_tickets(d, include_job_feed=False)
     sources = {t["source"] for t in tickets}
     assert "feed" not in sources
-    assert sources == {"research", "lint", "manual"}
+    assert sources == {"research", "lint", "eval", "manual"}
 
 
 def test_compose_tickets_ids_are_stable():
@@ -73,12 +76,6 @@ def test_compose_tickets_ids_are_stable():
     ids1 = sorted(t["id"] for t in t1)
     ids2 = sorted(t["id"] for t in t2)
     assert ids1 == ids2
-
-
-def test_compose_tickets_eval_source_pending_for_task_5():
-    """Eval-source assertions live in test_compose_failures_to_tickets_*
-    after Task 5 wires agent_runs into compose_tickets."""
-    pass
 
 
 def test_compute_columns_unassigned_research_goes_backlog():
@@ -204,3 +201,68 @@ def test_compose_tickets_research_title_parsed():
     # Full prose preserved in details for one of the Topic-N items
     topic_5 = next(t for t in research if t["title"].startswith("Topic 5"))
     assert "Some long prose" in topic_5["details"]
+
+
+def _run(agent, status, minutes_ago, notes=""):
+    return {
+        "agent": agent, "status": status,
+        "ts": datetime.now(UTC) - timedelta(minutes=minutes_ago),
+        "cost_usd": 0.0, "duration_ms": None, "turns": None,
+        "mode": None, "notes": notes,
+    }
+
+
+def test_failures_to_tickets_one_per_unresolved_failure():
+    runs = [
+        _run("vault_indexer", "ok", 60 * 24),         # yesterday: ok
+        _run("vault_indexer", "failed", 60 * 5),      # 5h ago: failed
+        _run("vault_synthesizer", "failed", 60 * 3),  # 3h ago: failed
+    ]
+    out = kanban._failures_to_tickets(runs)
+    agents = sorted(t["assigned_agent"] for t in out)
+    assert agents == ["vault_indexer", "vault_synthesizer"]
+    assert all(t["source"] == "eval" for t in out)
+
+
+def test_failures_to_tickets_resolved_by_subsequent_success():
+    runs = [
+        _run("vault_indexer", "failed", 60 * 5),  # 5h ago: failed
+        _run("vault_indexer", "ok", 60 * 2),      # 2h ago: recovered
+    ]
+    out = kanban._failures_to_tickets(runs)
+    assert out == []
+
+
+def test_failures_to_tickets_ages_off_after_7_days():
+    runs = [
+        _run("vault_indexer", "failed", 60 * 24 * 8),  # 8 days ago
+    ]
+    out = kanban._failures_to_tickets(runs)
+    assert out == []
+
+
+def test_failures_to_tickets_title_uses_notes_then_status():
+    runs = [
+        _run("agent_a", "failed", 30, notes="ConnectTimeout to backend"),
+        _run("agent_b", "failed", 60),  # no notes
+    ]
+    out = sorted(kanban._failures_to_tickets(runs), key=lambda t: t["assigned_agent"])
+    assert "ConnectTimeout" in out[0]["title"]
+    assert out[0]["title"].startswith("agent_a failed:")
+    assert "failed" in out[1]["title"]
+
+
+def test_failures_to_tickets_title_truncates_at_60_chars():
+    long_notes = "x" * 200
+    runs = [_run("agent_a", "failed", 30, notes=long_notes)]
+    out = kanban._failures_to_tickets(runs)
+    # "agent_a failed: " is 16 chars; the tail must be 60 chars + "…"
+    tail = out[0]["title"].split("failed: ", 1)[1]
+    assert len(tail) <= 61
+    assert tail.endswith("…")
+
+
+def test_failures_to_tickets_section_hint_is_todo():
+    runs = [_run("agent_a", "failed", 30)]
+    out = kanban._failures_to_tickets(runs)
+    assert out[0]["_section_hint"] == "todo"
