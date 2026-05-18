@@ -1,4 +1,4 @@
-{# Vars: tickets (list with .column / .source / .is_running), is_private (bool) #}
+{# Vars: tickets, is_private, agent_state (dict), column_sparkline_svgs (dict) #}
 {% set chips = [
   ('research', 'Research'),
   ('lint', 'Lint'),
@@ -30,19 +30,32 @@
     {% set col_tickets = tickets|selectattr('column','equalto', col_key)|list %}
     <div class="kanban-column" data-column="{{ col_key }}">
       <div class="kanban-column-header">
-        <span>{{ col_label }}</span><span>{{ col_tickets|length }}</span>
+        <span class="column-label">{{ col_label }}</span>
+        <span class="column-count">{{ col_tickets|length }}</span>
+        {% if column_sparkline_svgs and col_key in column_sparkline_svgs %}
+          <span class="column-spark">{{ column_sparkline_svgs[col_key] | safe }}</span>
+        {% endif %}
       </div>
       {% for t in col_tickets %}
         <div class="ticket" data-source="{{ t.source }}" data-id="{{ t.id }}">
-          {% if t.is_running %}<span class="pulse-dot"></span>{% endif %}
-          {{ t.title }}
+          <div class="ticket-title">
+            {% if t.is_running %}<span class="pulse-dot"></span>{% endif %}
+            {{ t.title }}
+          </div>
           <div class="ticket-meta">
             {{ t.source }}
-            {% if t.assigned_agent %} · @{{ t.assigned_agent }}{% endif %}
-            {% if t.details %} · {{ t.details }}{% endif %}
+            {% if t.assigned_agent %}
+              {% set state = agent_state.get(t.assigned_agent|lower|replace('-', '_'), 'unknown') %}
+              · <span class="agent-dot agent-dot--{{ state }}"></span>@{{ t.assigned_agent }}
+            {% endif %}
+            {% if t._tier %} · {{ t._tier }}{% endif %}
+            {% if t.details and t.source == 'feed' %} · {{ t.details }}{% endif %}
           </div>
         </div>
       {% endfor %}
+      {% if col_tickets|length == 0 %}
+        <div class="kanban-empty">Nothing in {{ col_label }} right now.</div>
+      {% endif %}
     </div>
   {% endfor %}
 </div>

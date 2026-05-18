@@ -83,6 +83,16 @@ def _build_charts(agg: dict) -> dict:
     synth_60d_svg = svg_charts.line_chart(synth_series, width=1100, height=180,
                                           color=svg_charts.AMBER)
 
+    col_spark = agg.get("column_sparklines", {})
+    column_sparkline_svgs = {
+        "todo": svg_charts.sparkline(
+            col_spark.get("todo", []), width=48, height=12, color=svg_charts.ALERT),
+        "in_progress": svg_charts.sparkline(
+            col_spark.get("in_progress", []), width=48, height=12, color=svg_charts.AMBER),
+        "done": svg_charts.sparkline(
+            col_spark.get("done", []), width=48, height=12, color=svg_charts.OK),
+    }
+
     return {
         "hero_svg": hero_svg,
         "eval_sparkline_svg": eval_spark_svg,
@@ -90,6 +100,7 @@ def _build_charts(agg: dict) -> dict:
         "model_mix_svg": model_mix_svg,
         "model_mix_segments": mix_segments,
         "synth_60d_svg": synth_60d_svg,
+        "column_sparkline_svgs": column_sparkline_svgs,
     }
 
 
@@ -136,6 +147,7 @@ def _common_context(agg: dict, *, is_private: bool, snapshot_ts: str | None = No
         "extra_pills": extra_pills,
         "kpis": agg["kpis"],
         "fleet_status": agg["fleet_status"],
+        "agent_state": agg.get("agent_state", {}),
         "regression_window": agg["regression_window"],
         "end_date": agg["end_date"],
         "recent_runs": agg["recent_runs"],

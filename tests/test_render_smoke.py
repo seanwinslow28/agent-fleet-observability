@@ -78,3 +78,16 @@ def test_render_private_includes_job_feed_lane(tmp_path):
     assert "Strategic" in fleet  # "Strategic 6" in target funnel header
     assert "Larry" in fleet  # warm-intro active row
     assert "Anthropic" in fleet  # tier-1 row
+
+
+def test_render_kanban_includes_agent_dot_and_column_spark(tmp_path):
+    """Smoke: rendered kanban.html contains the new chrome markers (Task 8
+    wires the Python side; Task 9 lands the template that emits the markers)."""
+    data = _data()
+    agg = aggregations.compute_all(data, end=date(2026, 5, 14))
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    tickets = kanban.compute_columns(tickets, data["agent_runs"])
+    render.render_public(agg, tickets, tmp_path)
+    html = (tmp_path / "kanban.html").read_text()
+    assert "agent-dot" in html
+    assert "column-spark" in html
