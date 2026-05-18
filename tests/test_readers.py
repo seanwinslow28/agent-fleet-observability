@@ -90,6 +90,14 @@ def test_read_lint_reports_returns_latest(tmp_path):
     out = readers.read_lint_reports(tmp_path)
     assert out["latest_date"] == "2026-05-19"
     assert out["issues_total"] == 4
+    # New: parsed issues list with structured fields
+    assert len(out["issues"]) == 4
+    by_sev = {iss["severity"]: iss for iss in out["issues"]}
+    assert by_sev["CRITICAL"]["rule"] == "contradiction"
+    assert by_sev["CRITICAL"]["tier"] == "T2"
+    assert by_sev["HIGH"]["rule"] == "broken-wikilink"
+    assert by_sev["HIGH"]["path"] == "knowledge/connections/baz.md"
+    assert by_sev["MEDIUM"]["context"] == "old format"
 
 
 def test_read_job_feed_db_returns_funnel(job_feed_db_path):

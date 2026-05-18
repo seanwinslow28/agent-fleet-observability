@@ -1,17 +1,19 @@
----
-date: 2026-05-12
-issues_total: 4
-issues_by_severity:
-  HIGH: 1
-  MEDIUM: 2
-  LOW: 1
----
+# Knowledge Lint Report — 2026-05-12
 
-# Knowledge Lint Report 2026-05-12
+_4 issues found (3 structural, 1 semantic)._
 
-## Issues
+## CRITICAL (1)
 
-- [HIGH] broken-wikilink — `concepts/foo.md`
-- [MEDIUM] orphan-concept — `concepts/bar.md`
-- [MEDIUM] stale-frontmatter — `vault/.../baz.md`
-- [LOW] duplicate-title — `concepts/qux.md`
+- **contradiction** (T2): `knowledge/concepts/foo.md` — contradicts bar (source=sql)
+
+## HIGH (1)
+
+- **broken-wikilink** (T1): `knowledge/connections/baz.md` — concept_edges
+
+## MEDIUM (1)
+
+- **stale-frontmatter** (T2): `vault/qux/quux.md` — old format
+
+## LOW (1)
+
+- **duplicate-title** (T2): `concepts/dup.md` — same as concepts/dup-2.md

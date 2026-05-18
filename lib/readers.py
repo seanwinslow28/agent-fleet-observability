@@ -244,30 +244,75 @@ def read_job_feed_db(path: Path) -> dict:
 
 
 _LINT_NAME_RE = re.compile(r"(\d{4}-\d{2}-\d{2})-lint-report\.md$")
+# Bullet format: "- **rule** (Tn): `path` — context"
+# `—` is the field separator, so the path group intentionally excludes it.
+# Paths containing a literal em-dash would be truncated; the report format
+# reserves `—` for this delimiter.
+_LINT_BULLET_RE = re.compile(
+    r"^- \*\*(?P<rule>[\w\-]+)\*\*\s*\((?P<tier>T\d+)\)\s*:\s*"
+    r"`?(?P<path>[^`—]+?)`?\s*—\s*(?P<context>.+?)\s*$"
+)
+_LINT_SECTION_RE = re.compile(r"^##\s+(CRITICAL|HIGH|MEDIUM|LOW)\b", re.IGNORECASE)
+
+
+def _parse_lint_sections(text: str) -> list[dict]:
+    """Walk a lint-report body and emit one dict per bullet under each
+    ## CRITICAL / HIGH / MEDIUM / LOW section.
+
+    Severity comes from the section header; rule/tier/path/context come
+    from the bullet itself.
+    """
+    issues: list[dict] = []
+    current_severity: str | None = None
+    for line in text.splitlines():
+        head = _LINT_SECTION_RE.match(line)
+        if head:
+            current_severity = head.group(1).upper()
+            continue
+        if current_severity is None:
+            continue
+        m = _LINT_BULLET_RE.match(line.strip())
+        if not m:
+            continue
+        issues.append({
+            "severity": current_severity,
+            "rule": m.group("rule"),
+            "tier": m.group("tier"),
+            "path": m.group("path").strip(),
+            "context": m.group("context").strip(),
+        })
+    return issues
+
+
 _BULLET_PENDING_RE = re.compile(r"^- \[ \]\s*(.+?)(?:\s*—\s*assigned:\s*(\S+))?\s*$")
 _BULLET_DONE_RE = re.compile(r"^- \[x\]\s*(.+?)(?:\s*—\s*assigned:\s*(\S+))?\s*$")
 _PLAIN_BULLET_RE = re.compile(r"^-\s+(.+?)(?:\s*—\s*assigned:\s*(\S+))?\s*$")
 
 
 def read_lint_reports(dir_path: Path) -> dict:
-    """Find the most recent lint report; return its summary."""
+    """Find the most recent lint report; return summary + parsed issues."""
+    empty = {"latest_date": None, "issues_total": 0, "issues_by_severity": {}, "issues": []}
     if not dir_path.exists():
-        return {"latest_date": None, "issues_total": 0, "issues_by_severity": {}}
+        return empty
     dated: list[tuple[str, Path]] = []
     for p in dir_path.glob("*-lint-report.md"):
         m = _LINT_NAME_RE.search(p.name)
         if m:
             dated.append((m.group(1), p))
     if not dated:
-        return {"latest_date": None, "issues_total": 0, "issues_by_severity": {}}
+        return empty
     dated.sort(reverse=True)
     latest_date, latest_path = dated[0]
-    fm = _parse_frontmatter(latest_path.read_text())
+    body = latest_path.read_text()
+    issues = _parse_lint_sections(body)
+    by_severity: dict[str, int] = {}
+    for iss in issues:
+        by_severity[iss["severity"]] = by_severity.get(iss["severity"], 0) + 1
     return {
         "latest_date": latest_date,
-        "issues_total": int(fm.get("issues_total", 0)),
-        "issues_by_severity": dict(fm.get("issues_by_severity", {}) or {}),
-        "raw_body": latest_path.read_text(),
+        "issues_total": len(issues),
+        "issues_by_severity": by_severity,
+        "issues": issues,
     }
 
 
