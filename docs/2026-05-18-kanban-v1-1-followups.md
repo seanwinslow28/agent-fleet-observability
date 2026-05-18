@@ -54,6 +54,13 @@ These were flagged by the per-task code-quality reviews as nice-to-haves. None b
 - `_parse_research_title` produces `"Topic 1 —"` (trailing em-dash) for malformed input `"Topic 1 — "` (trailing space, no body). Extremely unlikely in practice.
 - `_LINT_BULLET_RE` em-dash separator: paths containing a literal `—` truncate. Format-by-design — already noted with a code comment.
 
+### Template / visual polish
+
+- **Tier redundancy on lint cards.** Composer (Task 4) emits ticket title `"broken-wikilink (T1) · foo.md"`, then meta footer adds another `· T1`. Spec §4 explicitly asks for `lint · T{tier}` in meta — so the dual appearance is spec-correct, but visually `T1` appears twice. Resolve by either stripping `(Tn)` from the composer title OR dropping `_tier` from the meta footer for lint specifically.
+- **Per-source dates dropped from card meta.** Spec §4 mentions `{parsed_date}` (research), `{date_of_report}` (lint), `{failure_ts}` (eval) in the meta line. The v1.1 template surfaces only `source · agent_dot · agent · tier? · feed_details?` — all timestamps silently dropped. Accepted v1.1 scope cut; revisit when v2 spec stabilizes.
+- **Agent dot has no `aria-label`.** A 6px colored circle conveys agent health visually but not semantically. Single-user daily-driver dashboard, so low priority. Pre-existing `.pulse-dot` has the same pattern. Add `aria-label="agent {{ state }}"` if a11y becomes a goal.
+- **`agent_state` template guard.** `agent_state.get(...)` in `templates/partials/kanban_board.html` would `AttributeError` if `agent_state` were ever `None`. Render-layer guard (`agg.get("agent_state", {})`) currently prevents this, but a template-level `{% set _agent_state = agent_state or {} %}` would close the second layer cheaply.
+
 ## v2 gate is still locked
 
 This list does NOT alter the v1.1 gate. The gate stays at: **1+ recruiter engagement attributed to v1.1 OR 4 weeks live, whichever first**. Anything in this file blocks neither v1.1 ship nor v2 entry — these are sequenced after the gate trips.
