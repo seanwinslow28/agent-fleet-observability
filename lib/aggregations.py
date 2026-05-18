@@ -114,6 +114,37 @@ def compute_agent_state(fleet_status: list[dict]) -> dict[str, str]:
     return {_norm_agent(t["agent"]): t["health"] for t in fleet_status}
 
 
+def compute_column_sparklines(runs: list[dict]) -> dict[str, list[int]]:
+    """7-day per-day series for ToDo / InProgress / Done columns.
+
+    - todo:        count of `failed`/`error`/`capped`/`timeout` runs per day
+    - in_progress: count of `started` runs per day
+    - done:        count of `ok`/`success`/`completed`/`passed` runs per day
+
+    Backlog and Testing are intentionally absent — we don't snapshot ticket
+    state history daily, so there's no honest 7-day series for them.
+    """
+    now = datetime.now(UTC)
+    todo = [0] * 7
+    in_progress = [0] * 7
+    done = [0] * 7
+    err = {"failed", "error", "capped", "timeout"}
+    ok = {"ok", "success", "completed", "passed"}
+    for r in runs:
+        delta_days = (now - r["ts"]).days
+        if delta_days < 0 or delta_days >= 7:
+            continue
+        idx = 6 - delta_days  # oldest=0, today=6
+        status = r["status"].lower()
+        if status in err:
+            todo[idx] += 1
+        elif status == "started":
+            in_progress[idx] += 1
+        elif status in ok:
+            done[idx] += 1
+    return {"todo": todo, "in_progress": in_progress, "done": done}
+
+
 def compute_kpis(
     runs: list[dict],
     eval_run: dict,
@@ -259,6 +290,7 @@ def compute_all(data: dict, *, end: _date | None = None) -> dict:
     return {
         "fleet_status": fleet_status,
         "agent_state": compute_agent_state(fleet_status),
+        "column_sparklines": compute_column_sparklines(runs),
         "activity_timeline": activity_timeline.compose_timeline(runs, agent_names),
         "kpis": compute_kpis(runs, eval_run, gemini["total_usd"], council["month_total_usd"]),
         "synth_series_60d": compute_synth_series(manifests, days=60, end=end),

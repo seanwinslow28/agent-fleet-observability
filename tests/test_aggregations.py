@@ -6,7 +6,7 @@ Both functions call datetime.now(UTC) internally. These tests are correct as
 long as they run within 7 days of 2026-05-16 (fleet status) and within 30 days
 (kpis). Task 10 will establish the end-parameter pattern for proper date injection.
 """
-from datetime import date
+from datetime import UTC, date, datetime, timedelta
 
 import pytest
 
@@ -126,3 +126,32 @@ def test_compute_agent_state_maps_normalized_names_to_health():
     assert out["deep_researcher"] == "down"
     # unknown is kept (caller decides whether to render a dot)
     assert out["flush"] == "unknown"
+
+
+def test_compute_column_sparklines_has_todo_in_progress_done_only():
+    out = aggregations.compute_column_sparklines([])
+    assert set(out.keys()) == {"todo", "in_progress", "done"}
+    # Backlog and Testing intentionally absent — no honest 7-day series
+
+
+def test_compute_column_sparklines_counts_per_day_7_points():
+    now = datetime.now(UTC)
+    runs = [
+        # 2 starts today, 1 failed yesterday, 1 ok 3 days ago
+        {"agent": "a", "status": "started", "ts": now, "cost_usd": 0,
+         "duration_ms": None, "turns": None, "mode": None, "notes": ""},
+        {"agent": "a", "status": "started", "ts": now - timedelta(hours=2),
+         "cost_usd": 0, "duration_ms": None, "turns": None, "mode": None, "notes": ""},
+        {"agent": "b", "status": "failed", "ts": now - timedelta(days=1),
+         "cost_usd": 0, "duration_ms": None, "turns": None, "mode": None, "notes": ""},
+        {"agent": "c", "status": "ok", "ts": now - timedelta(days=3),
+         "cost_usd": 0, "duration_ms": None, "turns": None, "mode": None, "notes": ""},
+    ]
+    out = aggregations.compute_column_sparklines(runs)
+    # 7 data points each, oldest → newest (last index = today)
+    assert len(out["todo"]) == 7
+    assert len(out["in_progress"]) == 7
+    assert len(out["done"]) == 7
+    assert out["in_progress"][-1] == 2  # 2 starts today
+    assert out["todo"][-2] == 1  # 1 failed yesterday
+    assert out["done"][-4] == 1  # 1 ok 3 days ago
