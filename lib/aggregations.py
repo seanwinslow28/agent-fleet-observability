@@ -138,7 +138,7 @@ def compute_column_sparklines(runs: list[dict]) -> dict[str, list[int]]:
         status = r["status"].lower()
         if status in err:
             todo[idx] += 1
-        elif status == "started":
+        elif status == "started":  # single status, not a set — no synonyms for in-progress
             in_progress[idx] += 1
         elif status in ok:
             done[idx] += 1

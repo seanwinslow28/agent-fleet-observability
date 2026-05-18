@@ -155,3 +155,31 @@ def test_compute_column_sparklines_counts_per_day_7_points():
     assert out["in_progress"][-1] == 2  # 2 starts today
     assert out["todo"][-2] == 1  # 1 failed yesterday
     assert out["done"][-4] == 1  # 1 ok 3 days ago
+
+
+def test_compute_column_sparklines_filters_runs_older_than_7_days():
+    now = datetime.now(UTC)
+    runs = [
+        {"agent": "a", "status": "failed", "ts": now - timedelta(days=8),
+         "cost_usd": 0, "duration_ms": None, "turns": None, "mode": None, "notes": ""},
+    ]
+    out = aggregations.compute_column_sparklines(runs)
+    assert sum(out["todo"]) == 0
+    assert sum(out["in_progress"]) == 0
+    assert sum(out["done"]) == 0
+
+
+def test_compute_column_sparklines_normalizes_status_case():
+    now = datetime.now(UTC)
+    runs = [
+        {"agent": "a", "status": "FAILED", "ts": now,
+         "cost_usd": 0, "duration_ms": None, "turns": None, "mode": None, "notes": ""},
+        {"agent": "b", "status": "Started", "ts": now,
+         "cost_usd": 0, "duration_ms": None, "turns": None, "mode": None, "notes": ""},
+        {"agent": "c", "status": "OK", "ts": now,
+         "cost_usd": 0, "duration_ms": None, "turns": None, "mode": None, "notes": ""},
+    ]
+    out = aggregations.compute_column_sparklines(runs)
+    assert out["todo"][-1] == 1
+    assert out["in_progress"][-1] == 1
+    assert out["done"][-1] == 1
