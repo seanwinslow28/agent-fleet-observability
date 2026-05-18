@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agent Fleet Observability</title>
+  <meta name="description" content="Static observability dashboard for a multi-agent local-first AI fleet.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<div class="topbar">
+<div class="spark" data-state="degraded" aria-hidden="true">
+  <div class="arms">
+    <div class="arm arm-v"></div>
+    <div class="arm arm-h"></div>
+    <div class="arm arm-d1"></div>
+    <div class="arm arm-d2"></div>
+  </div>
+  <div class="core">
+    <div class="eye eye-l"></div>
+    <div class="eye eye-r"></div>
+  </div>
+</div>  <div>
+    <div class="wordmark">Agent Fleet Observability</div>
+    <div class="subtitle">fleet.seanwinslow.com</div>
+  </div>
+  <span class="status-pill mono">● 5/8 HEALTHY</span>
+  <span class="subtitle" style="margin-left: auto;">2026-05-18 15:02 UTC</span>
+  <nav style="display: flex; gap: 4px;">
+    <a class="nav-link active" href="./index.html">/fleet</a>
+    <a class="nav-link " href="./kanban.html">/kanban</a>
+  </nav>
+</div>  <main class="priv-wrap">
+<section class="hero-plate" aria-labelledby="hero-headline">
+  <div class="eyebrow">Vault Synthesizer · concepts written per night · 60 nights</div>
+
+    <h1 class="hero-display" id="hero-headline">
+      <span class="num" data-countup="8" aria-label="8">8</span>
+      <span class="label">consecutive nights</span>
+    </h1>
+    <p class="hero-prose">
+      The synthesizer wrote <strong>zero concepts</strong> for 8 nights running.
+      The vault-synthesizer <strong>eval suite</strong> caught it on day 9.
+      Recovered 2026-05-11 — the dashboard preserves the incident as proof of operational maturity.
+    </p>
+
+  <div class="hero-chart-wrap">
+    <svg viewBox="0 0 1100 240" xmlns="http://www.w3.org/2000/svg" font-family="JetBrains Mono, ui-monospace, monospace">
+<line x1="44" y1="24.0" x2="1076" y2="24.0" stroke="#C084FC" stroke-opacity="0.06" stroke-width="1"/>
+<line x1="44" y1="85.3" x2="1076" y2="85.3" stroke="#C084FC" stroke-opacity="0.06" stroke-width="1"/>
+<line x1="44" y1="146.7" x2="1076" y2="146.7" stroke="#C084FC" stroke-opacity="0.06" stroke-width="1"/>
+<line x1="44" y1="208.0" x2="1076" y2="208.0" stroke="#C084FC" stroke-opacity="0.06" stroke-width="1"/>
+<rect class="hero-band-wipe" x="796.1" y="24" width="157.4" height="184" fill="#C084FC" fill-opacity="0.12" stroke="#C084FC" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="802.1" y="16" font-size="9" fill="#C084FC" font-weight="700" letter-spacing="0.06em">8-DAY SILENT REGRESSION</text>
+<polygon fill="#F0B429" fill-opacity="0.10" points="796.1,208.0 796.1,208.0 813.6,208.0 813.6,208.0"/>
+<polygon fill="#F0B429" fill-opacity="0.10" points="866.1,208.0 866.1,208.0 883.6,208.0 901.1,208.0 918.6,208.0 936.1,208.0 953.6,208.0 971.1,179.0 988.5,24.0 1006.0,104.7 1023.5,208.0 1041.0,175.4 1058.5,170.8 1076.0,179.0 1076.0,208.0"/>
+<polyline fill="none" stroke="#F0B429" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="796.1,208.0 813.6,208.0"/>
+<polyline fill="none" stroke="#F0B429" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="866.1,208.0 883.6,208.0 901.1,208.0 918.6,208.0 936.1,208.0 953.6,208.0 971.1,179.0 988.5,24.0 1006.0,104.7 1023.5,208.0 1041.0,175.4 1058.5,170.8 1076.0,179.0"/>
+<text x="44.0" y="232" font-size="9" fill="#6B6478" text-anchor="middle" letter-spacing="0.04em">2026-03-20</text>
+<text x="568.7" y="232" font-size="9" fill="#6B6478" text-anchor="middle" letter-spacing="0.04em">2026-04-19</text>
+<text x="1076.0" y="232" font-size="9" fill="#6B6478" text-anchor="middle" letter-spacing="0.04em">2026-05-18</text>
+</svg>
+  </div>
+</section><div class="kpi-row" data-stagger>
+  <div class="panel kpi-card">
+    <div class="kpi-label">Eval pass · last night</div>
+    <div class="kpi-value green">7 / 10</div>
+    <div class="kpi-sub"><svg viewBox="0 0 80 18" width="80" height="18" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#F0B429" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,17.0 7.0,17.0 13.0,17.0 19.0,17.0 25.0,17.0 31.0,17.0 37.0,17.0 43.0,17.0 49.0,17.0 55.0,17.0 61.0,17.0 67.0,17.0 73.0,17.0 79.0,17.0"/></svg></div>
+  </div>
+  <div class="panel kpi-card">
+    <div class="kpi-label">Fleet spend · 30 days</div>
+    <div class="kpi-value">$35.26</div>
+    <div class="kpi-sub">92.5% local · 360 runs</div>
+  </div>
+  <div class="panel kpi-card">
+    <div class="kpi-label">Local-only share</div>
+    <div class="kpi-value green">
+92.5%
+    </div>
+    <div class="kpi-sub">
+Most agents · $0/run
+    </div>
+  </div>
+  <div class="panel kpi-card">
+    <div class="kpi-label">Spend governors</div>
+    <div class="kpi-value amber">$50 / mo</div>
+    <div class="kpi-sub">$7 task · $20 daily breaker</div>
+  </div>
+</div><section class="fleet-ribbon" aria-label="Fleet state — 8 agents, last 7 days" data-stagger>
+    <div class="matchstick" title="vault_indexer · 7 runs in 7 days · healthy">
+      <div class="matchstick-head">
+        <span class="status-dot healthy"></span>
+        <span class="matchstick-name">vault_indexer</span>
+      </div>
+      <div class="matchstick-sparkline" aria-hidden="true">
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+      </div>
+      <div class="matchstick-foot">
+          7 runs · 7d
+      </div>
+    </div>
+    <div class="matchstick" title="vault_synthesizer · 9 runs in 7 days · degraded">
+      <div class="matchstick-head">
+        <span class="status-dot degraded"></span>
+        <span class="matchstick-name">vault_synthesizer</span>
+      </div>
+      <div class="matchstick-sparkline" aria-hidden="true">
+          <span class="matchstick-tick degraded"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 33.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 33.0%;"></span>
+          <span class="matchstick-tick down"
+                style="height: 33.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 33.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 33.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 33.0%;"></span>
+      </div>
+      <div class="matchstick-foot">
+          9 runs · 7d
+      </div>
+    </div>
+    <div class="matchstick" title="deep_researcher · 7 runs in 7 days · healthy">
+      <div class="matchstick-head">
+        <span class="status-dot healthy"></span>
+        <span class="matchstick-name">deep_researcher</span>
+      </div>
+      <div class="matchstick-sparkline" aria-hidden="true">
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+      </div>
+      <div class="matchstick-foot">
+          7 runs · 7d
+      </div>
+    </div>
+    <div class="matchstick" title="meta_agent · 0 runs in 7 days · unknown">
+      <div class="matchstick-head">
+        <span class="status-dot unknown"></span>
+        <span class="matchstick-name">meta_agent</span>
+      </div>
+      <div class="matchstick-sparkline" aria-hidden="true">
+          <span class="matchstick-tick "
+                style="height: 8%;"></span>
+          <span class="matchstick-tick "
+                style="height: 8%;"></span>
+          <span class="matchstick-tick "
+                style="height: 8%;"></span>
+          <span class="matchstick-tick "
+                style="height: 8%;"></span>
+          <span class="matchstick-tick "
+                style="height: 8%;"></span>
+          <span class="matchstick-tick "
+                style="height: 8%;"></span>
+          <span class="matchstick-tick "
+                style="height: 8%;"></span>
+      </div>
+      <div class="matchstick-foot">
+          quiet · 7d
+      </div>
+    </div>
+    <div class="matchstick" title="daily_driver · 7 runs in 7 days · degraded">
+      <div class="matchstick-head">
+        <span class="status-dot degraded"></span>
+        <span class="matchstick-name">daily_driver</span>
+      </div>
+      <div class="matchstick-sparkline" aria-hidden="true">
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick down"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick down"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick down"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+      </div>
+      <div class="matchstick-foot">
+          7 runs · 7d
+      </div>
+    </div>
+    <div class="matchstick" title="knowledge_lint · 1 runs in 7 days · healthy">
+      <div class="matchstick-head">
+        <span class="status-dot healthy"></span>
+        <span class="matchstick-name">knowledge_lint</span>
+      </div>
+      <div class="matchstick-sparkline" aria-hidden="true">
+          <span class="matchstick-tick "
+                style="height: 8%;"></span>
+          <span class="matchstick-tick "
+                style="height: 8%;"></span>
+          <span class="matchstick-tick "
+                style="height: 8%;"></span>
+          <span class="matchstick-tick "
+                style="height: 8%;"></span>
+          <span class="matchstick-tick "
+                style="height: 8%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick "
+                style="height: 8%;"></span>
+      </div>
+      <div class="matchstick-foot">
+          1 runs · 7d
+      </div>
+    </div>
+    <div class="matchstick" title="flush · 46 runs in 7 days · healthy">
+      <div class="matchstick-head">
+        <span class="status-dot healthy"></span>
+        <span class="matchstick-name">flush</span>
+      </div>
+      <div class="matchstick-sparkline" aria-hidden="true">
+          <span class="matchstick-tick healthy"
+                style="height: 50.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 50.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 8%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 8%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 71.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 8%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+      </div>
+      <div class="matchstick-foot">
+          46 runs · 7d
+      </div>
+    </div>
+    <div class="matchstick" title="job_feed · 54 runs in 7 days · healthy">
+      <div class="matchstick-head">
+        <span class="status-dot healthy"></span>
+        <span class="matchstick-name">job_feed</span>
+      </div>
+      <div class="matchstick-sparkline" aria-hidden="true">
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
+      </div>
+      <div class="matchstick-foot">
+          54 runs · 7d
+      </div>
+    </div>
+</section>
+<section class="panel timeline-wrap" aria-label="24-hour fleet activity">
+  <div class="eyebrow">
+    24-hour activity · 8 agents ·
+    26 runs
+  </div>
+  <div class="timeline-grid">
+      <div class="timeline-label">vault_indexer</div>
+      <div class="timeline-lane">
+          <span class="timeline-dot success"
+                style="left: 45.74%;"
+                title="vault_indexer · 02:01 · success · 1.7m"></span>
+      </div>
+      <div class="timeline-label">vault_synthesizer</div>
+      <div class="timeline-lane">
+          <span class="timeline-dot success"
+                style="left: 52.3%;"
+                title="vault_synthesizer · 03:36 · success · 46.8m"></span>
+      </div>
+      <div class="timeline-label">deep_researcher</div>
+      <div class="timeline-lane">
+          <span class="timeline-dot other"
+                style="left: 48.76%;"
+                title="deep_researcher · 02:45 · empty-queue"></span>
+      </div>
+      <div class="timeline-label">meta_agent</div>
+      <div class="timeline-lane">
+      </div>
+      <div class="timeline-label">daily_driver</div>
+      <div class="timeline-lane">
+          <span class="timeline-dot success"
+                style="left: 73.86%;"
+                title="daily_driver · 08:46 · success · 1.2m · $0.5503"></span>
+      </div>
+      <div class="timeline-label">knowledge_lint</div>
+      <div class="timeline-lane">
+          <span class="timeline-dot success"
+                style="left: 30.41%;"
+                title="knowledge_lint · 22:20 · success"></span>
+      </div>
+      <div class="timeline-label">flush</div>
+      <div class="timeline-lane">
+          <span class="timeline-dot guarded"
+                style="left: 73.86%;"
+                title="flush · 08:46 · recursion-guard"></span>
+          <span class="timeline-dot guarded"
+                style="left: 73.99%;"
+                title="flush · 08:48 · recursion-guard"></span>
+          <span class="timeline-dot guarded"
+                style="left: 73.99%;"
+                title="flush · 08:48 · recursion-guard"></span>
+          <span class="timeline-dot guarded"
+                style="left: 80.95%;"
+                title="flush · 10:28 · recursion-guard"></span>
+          <span class="timeline-dot guarded"
+                style="left: 82.31%;"
+                title="flush · 10:48 · recursion-guard"></span>
+          <span class="timeline-dot guarded"
+                style="left: 82.35%;"
+                title="flush · 10:48 · recursion-guard"></span>
+          <span class="timeline-dot guarded"
+                style="left: 82.35%;"
+                title="flush · 10:48 · recursion-guard"></span>
+          <span class="timeline-dot guarded"
+                style="left: 82.35%;"
+                title="flush · 10:48 · recursion-guard"></span>
+          <span class="timeline-dot guarded"
+                style="left: 82.35%;"
+                title="flush · 10:48 · recursion-guard"></span>
+          <span class="timeline-dot guarded"
+                style="left: 82.35%;"
+                title="flush · 10:48 · recursion-guard · 0.0s"></span>
+          <span class="timeline-dot guarded"
+                style="left: 82.35%;"
+                title="flush · 10:48 · recursion-guard"></span>
+          <span class="timeline-dot guarded"
+                style="left: 82.35%;"
+                title="flush · 10:48 · recursion-guard"></span>
+          <span class="timeline-dot guarded"
+                style="left: 82.35%;"
+                title="flush · 10:48 · recursion-guard"></span>
+          <span class="timeline-dot guarded"
+                style="left: 82.35%;"
+                title="flush · 10:48 · recursion-guard"></span>
+      </div>
+      <div class="timeline-label">job_feed</div>
+      <div class="timeline-lane">
+          <span class="timeline-dot other"
+                style="left: 70.65%;"
+                title="job_feed · 08:00 · partial · 18.3s"></span>
+          <span class="timeline-dot success"
+                style="left: 72.73%;"
+                title="job_feed · 08:30 · success · 17.4s"></span>
+          <span class="timeline-dot success"
+                style="left: 74.8%;"
+                title="job_feed · 09:00 · success · 0.0s"></span>
+          <span class="timeline-dot success"
+                style="left: 76.88%;"
+                title="job_feed · 09:30 · success · 0.0s"></span>
+          <span class="timeline-dot success"
+                style="left: 78.96%;"
+                title="job_feed · 10:00 · success · 0.0s"></span>
+          <span class="timeline-dot success"
+                style="left: 81.04%;"
+                title="job_feed · 10:30 · success · 0.0s"></span>
+          <span class="timeline-dot success"
+                style="left: 83.13%;"
+                title="job_feed · 11:00 · success · 0.0s"></span>
+      </div>
+    <div class="timeline-axis">
+        <span>15:02</span>
+        <span>21:02</span>
+        <span>03:02</span>
+        <span>09:02</span>
+        <span>15:02</span>
+    </div>
+  </div>
+</section>
+<section class="panel">
+  <div class="eyebrow">30-day cost trend · local vs cloud · stacked</div>
+  <svg viewBox="0 0 1100 180" xmlns="http://www.w3.org/2000/svg" font-family="JetBrains Mono, ui-monospace, monospace"><line x1="44" y1="24.0" x2="1076" y2="24.0" stroke="#C084FC" stroke-opacity="0.06" stroke-width="1"/><line x1="44" y1="65.3" x2="1076" y2="65.3" stroke="#C084FC" stroke-opacity="0.06" stroke-width="1"/><line x1="44" y1="106.7" x2="1076" y2="106.7" stroke="#C084FC" stroke-opacity="0.06" stroke-width="1"/><line x1="44" y1="148.0" x2="1076" y2="148.0" stroke="#C084FC" stroke-opacity="0.06" stroke-width="1"/><polygon fill="#F0B429" fill-opacity="0.42" points="44.0,148.0 79.6,148.0 115.2,148.0 150.8,148.0 186.3,148.0 221.9,140.6 257.5,140.3 293.1,141.1 328.7,141.2 364.3,141.6 399.9,141.9 435.4,141.4 471.0,133.0 506.6,141.3 542.2,140.5 577.8,148.0 613.4,148.0 649.0,139.6 684.6,138.5 720.1,139.1 755.7,139.9 791.3,140.1 826.9,139.0 862.5,139.1 898.1,139.2 933.7,139.2 969.2,148.0 1004.8,148.0 1040.4,148.0 1076.0,139.0 1076.0,148.0 1040.4,148.0 1004.8,148.0 969.2,148.0 933.7,148.0 898.1,148.0 862.5,148.0 826.9,148.0 791.3,148.0 755.7,148.0 720.1,148.0 684.6,148.0 649.0,148.0 613.4,148.0 577.8,148.0 542.2,148.0 506.6,148.0 471.0,148.0 435.4,148.0 399.9,148.0 364.3,148.0 328.7,148.0 293.1,148.0 257.5,148.0 221.9,148.0 186.3,148.0 150.8,148.0 115.2,148.0 79.6,148.0 44.0,148.0"/><polyline fill="none" stroke="#F0B429" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.9" points="44.0,148.0 79.6,148.0 115.2,148.0 150.8,148.0 186.3,148.0 221.9,140.6 257.5,140.3 293.1,141.1 328.7,141.2 364.3,141.6 399.9,141.9 435.4,141.4 471.0,133.0 506.6,141.3 542.2,140.5 577.8,148.0 613.4,148.0 649.0,139.6 684.6,138.5 720.1,139.1 755.7,139.9 791.3,140.1 826.9,139.0 862.5,139.1 898.1,139.2 933.7,139.2 969.2,148.0 1004.8,148.0 1040.4,148.0 1076.0,139.0"/><polygon fill="#C084FC" fill-opacity="0.42" points="44.0,148.0 79.6,148.0 115.2,148.0 150.8,148.0 186.3,148.0 221.9,140.6 257.5,140.3 293.1,141.1 328.7,141.2 364.3,141.6 399.9,141.9 435.4,141.4 471.0,133.0 506.6,141.3 542.2,94.7 577.8,102.2 613.4,148.0 649.0,48.0 684.6,24.0 720.1,24.7 755.7,139.9 791.3,140.1 826.9,139.0 862.5,139.1 898.1,139.2 933.7,139.2 969.2,148.0 1004.8,148.0 1040.4,148.0 1076.0,139.0 1076.0,139.0 1040.4,148.0 1004.8,148.0 969.2,148.0 933.7,139.2 898.1,139.2 862.5,139.1 826.9,139.0 791.3,140.1 755.7,139.9 720.1,139.1 684.6,138.5 649.0,139.6 613.4,148.0 577.8,148.0 542.2,140.5 506.6,141.3 471.0,133.0 435.4,141.4 399.9,141.9 364.3,141.6 328.7,141.2 293.1,141.1 257.5,140.3 221.9,140.6 186.3,148.0 150.8,148.0 115.2,148.0 79.6,148.0 44.0,148.0"/><polyline fill="none" stroke="#C084FC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.9" points="44.0,148.0 79.6,148.0 115.2,148.0 150.8,148.0 186.3,148.0 221.9,140.6 257.5,140.3 293.1,141.1 328.7,141.2 364.3,141.6 399.9,141.9 435.4,141.4 471.0,133.0 506.6,141.3 542.2,94.7 577.8,102.2 613.4,148.0 649.0,48.0 684.6,24.0 720.1,24.7 755.7,139.9 791.3,140.1 826.9,139.0 862.5,139.1 898.1,139.2 933.7,139.2 969.2,148.0 1004.8,148.0 1040.4,148.0 1076.0,139.0"/><circle cx="1076.0" cy="139.0" r="3" fill="#F0B429" stroke="#0A0810" stroke-width="1.5"/><text x="44" y="172" font-size="9" fill="#6B6478" letter-spacing="0.04em">2026-04-19</text><text x="1076" y="172" font-size="9" fill="#6B6478" text-anchor="end" letter-spacing="0.04em">2026-05-18 · today</text></svg>
+</section>
+
+<section class="panel mix-panel">
+  <div class="eyebrow">Model mix · last 30 days</div>
+  <div class="mix-row">
+    <div class="mix-donut"><svg viewBox="0 0 160 160" width="160" height="160" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0; display: block;" font-family="Sora, system-ui, sans-serif"><circle cx="80.0" cy="80.0" r="71.00" fill="none" stroke="#C084FC" stroke-opacity="0.10" stroke-width="18"/><path d="M 80.00 9.00 A 71.00 71.00 0 1 1 47.77 16.74" fill="none" stroke="#F0B429" stroke-width="18" stroke-linecap="round"/><path d="M 47.77 16.74 A 71.00 71.00 0 0 1 80.00 9.00" fill="none" stroke="#FF5C46" stroke-width="18" stroke-linecap="round"/><text x="80.0" y="78.0" text-anchor="middle" font-size="20" font-weight="700" fill="#F4EFE6" font-variant-numeric="tabular-nums" letter-spacing="-0.02em">92.5%</text><text x="80.0" y="94.0" text-anchor="middle" font-size="9" fill="#6B6478" letter-spacing="0.08em" font-family="JetBrains Mono, monospace">LOCAL</text></svg></div>
+    <ul class="mix-legend">
+        <li class="mix-legend-row">
+          <span class="mix-swatch" style="background: #F0B429;
+                                          box-shadow: 0 0 8px #F0B42955;"></span>
+          <span class="mix-label">local</span>
+          <span class="mix-pct">92.5%</span>
+          <span class="mix-count">333 runs</span>
+        </li>
+        <li class="mix-legend-row">
+          <span class="mix-swatch" style="background: #FF5C46;
+                                          box-shadow: 0 0 8px #FF5C4655;"></span>
+          <span class="mix-label">cloud</span>
+          <span class="mix-pct">7.5%</span>
+          <span class="mix-count">27 runs</span>
+        </li>
+    </ul>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="eyebrow">Synthesizer telemetry · concepts written · 60 nights</div>
+  <svg viewBox="0 0 1100 180" xmlns="http://www.w3.org/2000/svg" font-family="JetBrains Mono, ui-monospace, monospace">
+<line x1="44" y1="24.0" x2="1076" y2="24.0" stroke="#C084FC" stroke-opacity="0.06" stroke-width="1"/>
+<line x1="44" y1="65.3" x2="1076" y2="65.3" stroke="#C084FC" stroke-opacity="0.06" stroke-width="1"/>
+<line x1="44" y1="106.7" x2="1076" y2="106.7" stroke="#C084FC" stroke-opacity="0.06" stroke-width="1"/>
+<line x1="44" y1="148.0" x2="1076" y2="148.0" stroke="#C084FC" stroke-opacity="0.06" stroke-width="1"/>
+<polygon fill="#F0B429" fill-opacity="0.10" points="796.1,148.0 796.1,148.0 813.6,148.0 813.6,148.0"/>
+<polygon fill="#F0B429" fill-opacity="0.10" points="866.1,148.0 866.1,148.0 883.6,148.0 901.1,148.0 918.6,148.0 936.1,148.0 953.6,148.0 971.1,128.5 988.5,24.0 1006.0,78.4 1023.5,148.0 1041.0,126.0 1058.5,123.0 1076.0,128.5 1076.0,148.0"/>
+<polyline fill="none" stroke="#F0B429" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="796.1,148.0 813.6,148.0"/>
+<polyline fill="none" stroke="#F0B429" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="866.1,148.0 883.6,148.0 901.1,148.0 918.6,148.0 936.1,148.0 953.6,148.0 971.1,128.5 988.5,24.0 1006.0,78.4 1023.5,148.0 1041.0,126.0 1058.5,123.0 1076.0,128.5"/>
+<text x="44.0" y="172" font-size="9" fill="#6B6478" text-anchor="middle" letter-spacing="0.04em">2026-03-20</text>
+<text x="568.7" y="172" font-size="9" fill="#6B6478" text-anchor="middle" letter-spacing="0.04em">2026-04-19</text>
+<text x="1076.0" y="172" font-size="9" fill="#6B6478" text-anchor="middle" letter-spacing="0.04em">2026-05-18</text>
+</svg>
+</section>
+
+<section class="panel eval-grid-panel">
+  <div class="eyebrow">Eval suite · vault-synthesizer · latest run</div>
+    <ul class="eval-grid">
+        <li class="eval-case eval-case--skipped">
+          <span class="eval-marker" aria-hidden="true">
+—
+          </span>
+          <span class="eval-id">vs-014</span>
+          <span class="eval-category">output-completeness</span>
+          <span class="eval-status-pill">skipped</span>
+        </li>
+        <li class="eval-case eval-case--passed">
+          <span class="eval-marker" aria-hidden="true">
+●
+          </span>
+          <span class="eval-id">vs-015</span>
+          <span class="eval-category">output-completeness</span>
+          <span class="eval-status-pill">passed</span>
+        </li>
+        <li class="eval-case eval-case--passed">
+          <span class="eval-marker" aria-hidden="true">
+●
+          </span>
+          <span class="eval-id">vs-016</span>
+          <span class="eval-category">status-misreport</span>
+          <span class="eval-status-pill">passed</span>
+        </li>
+        <li class="eval-case eval-case--passed">
+          <span class="eval-marker" aria-hidden="true">
+●
+          </span>
+          <span class="eval-id">vs-017</span>
+          <span class="eval-category">status-misreport</span>
+          <span class="eval-status-pill">passed</span>
+        </li>
+        <li class="eval-case eval-case--passed">
+          <span class="eval-marker" aria-hidden="true">
+●
+          </span>
+          <span class="eval-id">vs-018</span>
+          <span class="eval-category">schema-integrity</span>
+          <span class="eval-status-pill">passed</span>
+        </li>
+        <li class="eval-case eval-case--passed">
+          <span class="eval-marker" aria-hidden="true">
+●
+          </span>
+          <span class="eval-id">vs-019</span>
+          <span class="eval-category">config-fail-loud</span>
+          <span class="eval-status-pill">passed</span>
+        </li>
+        <li class="eval-case eval-case--passed">
+          <span class="eval-marker" aria-hidden="true">
+●
+          </span>
+          <span class="eval-id">vs-020</span>
+          <span class="eval-category">index-integrity</span>
+          <span class="eval-status-pill">passed</span>
+        </li>
+        <li class="eval-case eval-case--passed">
+          <span class="eval-marker" aria-hidden="true">
+●
+          </span>
+          <span class="eval-id">vs-021</span>
+          <span class="eval-category">downstream-consumer</span>
+          <span class="eval-status-pill">passed</span>
+        </li>
+        <li class="eval-case eval-case--skipped">
+          <span class="eval-marker" aria-hidden="true">
+—
+          </span>
+          <span class="eval-id">vs-012</span>
+          <span class="eval-category">source-attribution</span>
+          <span class="eval-status-pill">skipped</span>
+        </li>
+        <li class="eval-case eval-case--skipped">
+          <span class="eval-marker" aria-hidden="true">
+—
+          </span>
+          <span class="eval-id">vs-013</span>
+          <span class="eval-category">stale-overweighting</span>
+          <span class="eval-status-pill">skipped</span>
+        </li>
+    </ul>
+</section>  </main>
+<footer class="footer">
+  <strong>Built by Sean Winslow.</strong>
+  Multi-agent fleet on macOS launchd, 99% local-first inference.
+  <a href="https://github.com/seanwinslow28/agent-fleet-observability">View source</a>
+  · last build 2026-05-18 15:02 UTC
+</footer>  <script src="assets/motion.js" defer></script>
+</body>
+</html>
