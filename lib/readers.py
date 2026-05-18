@@ -244,7 +244,8 @@ def read_job_feed_db(path: Path) -> dict:
 
 
 _LINT_NAME_RE = re.compile(r"(\d{4}-\d{2}-\d{2})-lint-report\.md$")
-_BULLET_RE = re.compile(r"^- \[[ x]\]\s*(.+?)(?:\s*—\s*assigned:\s*(\S+))?\s*$")
+_BULLET_PENDING_RE = re.compile(r"^- \[ \]\s*(.+?)(?:\s*—\s*assigned:\s*(\S+))?\s*$")
+_BULLET_DONE_RE = re.compile(r"^- \[x\]\s*(.+?)(?:\s*—\s*assigned:\s*(\S+))?\s*$")
 _PLAIN_BULLET_RE = re.compile(r"^-\s+(.+?)(?:\s*—\s*assigned:\s*(\S+))?\s*$")
 
 
@@ -297,14 +298,20 @@ def _split_sections(text: str) -> dict[str, list[str]]:
 
 
 def read_research_queue(path: Path) -> dict:
-    """Parse research-queue.md into pending / in_flight / done item lists."""
+    """Parse research-queue.md into pending / in_flight / done item lists.
+
+    `## Pending` and `## In Flight` only match unchecked `- [ ]` items; the
+    `## Done` section matches checked `- [x]` items. The old single regex
+    treated `[ ]` and `[x]` as equivalent, so completed items left under
+    a stale `## Pending` header were silently surfaced as live tickets.
+    """
     if not path.exists():
         return {"pending": [], "in_flight": [], "done": []}
     sections = _split_sections(path.read_text())
     return {
-        "pending": _parse_section_items(sections.get("pending", []), _BULLET_RE),
-        "in_flight": _parse_section_items(sections.get("in_flight", []), _BULLET_RE),
-        "done": _parse_section_items(sections.get("done", []), _BULLET_RE),
+        "pending": _parse_section_items(sections.get("pending", []), _BULLET_PENDING_RE),
+        "in_flight": _parse_section_items(sections.get("in_flight", []), _BULLET_PENDING_RE),
+        "done": _parse_section_items(sections.get("done", []), _BULLET_DONE_RE),
     }
 
 

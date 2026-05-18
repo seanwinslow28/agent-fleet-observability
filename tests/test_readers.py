@@ -114,6 +114,14 @@ def test_read_research_queue_parses_sections():
     assert out["in_flight"][0]["assigned_agent"] == "deep_researcher"
 
 
+def test_read_research_queue_excludes_done_items_from_pending():
+    """Items checked with [x] must not appear under pending, even when
+    they live under a stale ## Pending heading."""
+    out = readers.read_research_queue(FIXTURES / "sample-research-queue.md")
+    titles_pending = [item["title"] for item in out["pending"]]
+    assert not any("Old completed topic" in t for t in titles_pending)
+
+
 def test_read_manual_tickets_parses():
     out = readers.read_manual_tickets(FIXTURES / "sample-tickets.md")
     assert len(out["todo"]) == 2
