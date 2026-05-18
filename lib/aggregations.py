@@ -106,6 +106,14 @@ def compute_fleet_status(runs: list[dict], agent_names: list[str]) -> list[dict]
     return tiles
 
 
+def compute_agent_state(fleet_status: list[dict]) -> dict[str, str]:
+    """Adapt fleet_status (list of per-agent tiles) into a dict keyed by
+    normalized agent name. Used by the kanban template to render the
+    agent-state dot on cards with the same source of truth as /fleet.
+    """
+    return {_norm_agent(t["agent"]): t["health"] for t in fleet_status}
+
+
 def compute_kpis(
     runs: list[dict],
     eval_run: dict,
@@ -247,8 +255,10 @@ def compute_all(data: dict, *, end: _date | None = None) -> dict:
     council = data["council_spend"]
     manifests = data["synth_manifests"]
     agent_names = data["agent_names"]
+    fleet_status = compute_fleet_status(runs, agent_names)
     return {
-        "fleet_status": compute_fleet_status(runs, agent_names),
+        "fleet_status": fleet_status,
+        "agent_state": compute_agent_state(fleet_status),
         "activity_timeline": activity_timeline.compose_timeline(runs, agent_names),
         "kpis": compute_kpis(runs, eval_run, gemini["total_usd"], council["month_total_usd"]),
         "synth_series_60d": compute_synth_series(manifests, days=60, end=end),

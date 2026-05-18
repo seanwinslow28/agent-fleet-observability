@@ -110,3 +110,19 @@ def test_compute_recent_runs_returns_last_50_desc():
     assert len(recent) == 5
     timestamps = [r["ts"] for r in recent]
     assert timestamps == sorted(timestamps, reverse=True)
+
+
+def test_compute_agent_state_maps_normalized_names_to_health():
+    fleet_status = [
+        {"agent": "vault_indexer", "health": "healthy"},
+        {"agent": "vault-synthesizer", "health": "degraded"},  # CSV-style name
+        {"agent": "deep_researcher", "health": "down"},
+        {"agent": "flush", "health": "unknown"},
+    ]
+    out = aggregations.compute_agent_state(fleet_status)
+    # Normalized: dash→underscore
+    assert out["vault_indexer"] == "healthy"
+    assert out["vault_synthesizer"] == "degraded"
+    assert out["deep_researcher"] == "down"
+    # unknown is kept (caller decides whether to render a dot)
+    assert out["flush"] == "unknown"
