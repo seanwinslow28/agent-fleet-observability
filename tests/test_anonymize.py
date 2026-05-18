@@ -80,3 +80,29 @@ def test_public_pass_does_not_mutate_input():
     snapshot = copy.deepcopy(src)
     anonymize.public_pass(src)
     assert src == snapshot
+
+
+def test_public_pass_preserves_agent_state():
+    """Regression guard: agent_state + column_sparklines must survive public_pass unchanged."""
+    agg = {
+        "agent_state": {"vault_indexer": "healthy", "deep_researcher": "idle"},
+        "column_sparklines": {
+            "todo": [0] * 7,
+            "in_progress": [1, 0, 2, 0, 1, 0, 3],
+            "done": [2, 1, 0, 3, 1, 2, 1],
+        },
+        # Keys that public_pass iterates over — supply neutral defaults so no crash.
+        "fleet_status": [],
+        "recent_runs": [],
+        "research_queue": {},
+        "manual_tickets": {},
+        "job_feed": {},
+        "target_companies": {},
+        "warm_intros": {},
+    }
+    out = anonymize.public_pass(agg)
+    assert out["agent_state"] == {"vault_indexer": "healthy", "deep_researcher": "idle"}
+    assert out["column_sparklines"]["todo"] == [0] * 7
+    assert out["column_sparklines"]["in_progress"] == [1, 0, 2, 0, 1, 0, 3]
+    assert out["column_sparklines"]["done"] == [2, 1, 0, 3, 1, 2, 1]
+    assert out["_public_pass_applied"] is True
