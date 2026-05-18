@@ -1,0 +1,30 @@
+{# 24-Hour Activity Timeline — one lane per agent, dots at firing times.
+   Vars: activity_timeline = compose_timeline(...) #}
+<section class="panel timeline-wrap" aria-label="24-hour fleet activity">
+  <div class="eyebrow">
+    24-hour activity · {{ activity_timeline.lanes|length }} agents ·
+    {{ activity_timeline.total_runs }} runs
+  </div>
+  {% if activity_timeline.total_runs == 0 %}
+    <p style="font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary); margin-top: var(--space-3);">
+      Quiet 24 hours. Fleet may have been sleeping (MBP shut), or the cron didn't fire.
+    </p>
+  {% endif %}
+  <div class="timeline-grid">
+    {% for lane in activity_timeline.lanes %}
+      <div class="timeline-label">{{ lane.display_name }}</div>
+      <div class="timeline-lane">
+        {% for dot in lane.dots %}
+          <span class="timeline-dot {{ dot.status_class }}"
+                style="left: {{ dot.left_pct }}%;"
+                title="{{ dot.title }}"></span>
+        {% endfor %}
+      </div>
+    {% endfor %}
+    <div class="timeline-axis">
+      {% for label in activity_timeline.axis_labels %}
+        <span>{{ label }}</span>
+      {% endfor %}
+    </div>
+  </div>
+</section>
