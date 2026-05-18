@@ -27,14 +27,16 @@ _ENV = Environment(
 )
 
 
+# Donut/legend colors aligned with stacked_area bands (Spark palette only).
+# Local family = amber (primary signal · local-first), Anthropic = purple, Gemini = alert.
 _MODEL_MIX_COLORS = {
-    "local-qwen": svg_charts.TEAL,
-    "local-nomic": svg_charts.GREEN,
-    "local-other": svg_charts.AMBER,
-    "local": svg_charts.GREEN,
-    "cloud-anthropic": svg_charts.BLUE,
-    "cloud-gemini": svg_charts.PURPLE,
-    "cloud": svg_charts.RED,
+    "local-qwen":      svg_charts.AMBER,
+    "local-nomic":     svg_charts.AMBER,
+    "local-other":     svg_charts.AMBER,
+    "local":           svg_charts.AMBER,
+    "cloud-anthropic": svg_charts.PURPLE,
+    "cloud-gemini":    svg_charts.ALERT,
+    "cloud":           svg_charts.ALERT,
 }
 
 
@@ -62,13 +64,24 @@ def _build_charts(agg: dict) -> dict:
          "color": _MODEL_MIX_COLORS.get(label, svg_charts.AMBER)}
         for label, v in agg["model_mix"].items()
     ]
-    model_mix_svg = svg_charts.donut(mix_segments, size=120)
+    # Center label = dominant share, sub = its label uppercased
+    if mix_segments:
+        dom = max(mix_segments, key=lambda s: s["value"])
+        center_label = f"{dom['pct']}%"
+        center_sub = dom["label"].upper()
+    else:
+        center_label = "—"
+        center_sub = "NO RUNS"
+    model_mix_svg = svg_charts.donut(
+        mix_segments, size=160, stroke=18,
+        center_label=center_label, center_sub=center_sub,
+    )
 
     synth_series = [
         {"date": s["date"], "value": s["concepts"]} for s in agg["synth_series_60d"]
     ]
     synth_60d_svg = svg_charts.line_chart(synth_series, width=1100, height=180,
-                                          color=svg_charts.GREEN)
+                                          color=svg_charts.AMBER)
 
     return {
         "hero_svg": hero_svg,
@@ -98,8 +111,17 @@ def _build_alerts(agg: dict, is_private: bool) -> list[dict]:
 def _common_context(agg: dict, *, is_private: bool, snapshot_ts: str | None = None) -> dict:
     ts = snapshot_ts or datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC")
     healthy = sum(1 for t in agg["fleet_status"] if t["health"] == "healthy")
+    down = sum(1 for t in agg["fleet_status"] if t["health"] == "down")
+    degraded = sum(1 for t in agg["fleet_status"] if t["health"] == "degraded")
     total = len(agg["fleet_status"])
     fleet_health_label = f"{healthy}/{total} HEALTHY"
+    # Mascot core pulse color tracks fleet state — glanceable status light
+    if down:
+        mascot_state = "down"
+    elif degraded:
+        mascot_state = "degraded"
+    else:
+        mascot_state = "healthy"
     extra_pills: list[str] = []
     if is_private:
         active = agg.get("job_feed", {}).get("active_count", 0)
@@ -110,12 +132,17 @@ def _common_context(agg: dict, *, is_private: bool, snapshot_ts: str | None = No
         "is_private": is_private,
         "active_route": "fleet",
         "fleet_health_label": fleet_health_label,
+        "mascot_state": mascot_state,
         "extra_pills": extra_pills,
         "kpis": agg["kpis"],
         "fleet_status": agg["fleet_status"],
         "regression_window": agg["regression_window"],
         "end_date": agg["end_date"],
         "recent_runs": agg["recent_runs"],
+        "activity_timeline": agg.get(
+            "activity_timeline",
+            {"lanes": [], "axis_labels": [], "total_runs": 0, "window_hours": 24},
+        ),
         "eval_cases": agg["eval"].get("cases", []),
         "gemini": agg["gemini"],
         "council": agg["council"],

@@ -120,18 +120,78 @@ def _parse_frontmatter(text: str) -> dict:
     return yaml.safe_load(text[3:end]) or {}
 
 
+_EVAL_PASS_TOKENS = {"pass", "✅ pass", "✅"}
+_EVAL_FAIL_TOKENS = {"fail", "❌ fail", "❌"}
+_EVAL_SKIP_TOKENS = {"skipped", "⏸️ skipped", "⏸️", "skip"}
+
+
+def _parse_eval_markdown_table(text: str) -> list[dict]:
+    """Extract cases from a Markdown table whose header is `| ID | ... | Result | ... |`.
+
+    Returns list of {"id": str, "category": str, "status": "passed"|"failed"|"skipped"}.
+    Tolerant of leading prose and the table delimiter row (|---|---|...).
+    """
+    cases: list[dict] = []
+    header_cols: list[str] | None = None
+    for line in text.splitlines():
+        s = line.strip()
+        if not s.startswith("|"):
+            continue
+        cells = [c.strip() for c in s.strip("|").split("|")]
+        # Skip the delimiter row (|---|---|...)
+        if all(set(c) <= set("-: ") for c in cells if c):
+            continue
+        if header_cols is None:
+            header_cols = [c.lower() for c in cells]
+            continue
+        # Find id + result columns by name; tolerate column reordering
+        row = dict(zip(header_cols, cells, strict=False))
+        case_id = row.get("id") or row.get("case") or row.get("name")
+        result = (row.get("result") or row.get("status") or "").lower()
+        if not case_id:
+            continue
+        if any(t in result for t in _EVAL_PASS_TOKENS):
+            status = "passed"
+        elif any(t in result for t in _EVAL_FAIL_TOKENS):
+            status = "failed"
+        elif any(t in result for t in _EVAL_SKIP_TOKENS):
+            status = "skipped"
+        else:
+            status = "unknown"
+        cases.append({
+            "id": case_id,
+            "category": row.get("category", ""),
+            "status": status,
+        })
+    return cases
+
+
 def read_eval_last_run(path: Path) -> dict:
-    """Parse evals/vault-synthesizer/last-run.md frontmatter."""
+    """Parse evals/vault-synthesizer/last-run.md.
+
+    Supports two formats: YAML frontmatter with a `cases` list, or a Markdown
+    table whose header includes `ID` and `Result` columns.
+    """
     empty = {"passed": 0, "failed": 0, "skipped": 0, "total_cases": 0, "cases": []}
     if not path.exists():
         return empty
-    fm = _parse_frontmatter(path.read_text())
+    text = path.read_text()
+    fm = _parse_frontmatter(text)
+    cases = list(fm.get("cases", []) or [])
+    if not cases:
+        cases = _parse_eval_markdown_table(text)
+
+    passed = int(fm.get("passed", 0)) or sum(1 for c in cases if c.get("status") == "passed")
+    failed = int(fm.get("failed", 0)) or sum(1 for c in cases if c.get("status") == "failed")
+    skipped = int(fm.get("skipped", 0)) or sum(1 for c in cases if c.get("status") == "skipped")
+    total = int(fm.get("total_cases", 0)) or len(cases)
+
     return {
-        "passed": int(fm.get("passed", 0)),
-        "failed": int(fm.get("failed", 0)),
-        "skipped": int(fm.get("skipped", 0)),
-        "total_cases": int(fm.get("total_cases", 0)),
-        "cases": list(fm.get("cases", []) or []),
+        "passed": passed,
+        "failed": failed,
+        "skipped": skipped,
+        "total_cases": total,
+        "cases": cases,
         "run_id": fm.get("run_id"),
     }
 

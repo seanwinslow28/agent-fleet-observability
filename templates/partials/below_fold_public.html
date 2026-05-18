@@ -1,65 +1,61 @@
-{# Vars: cost_trend_svg, model_mix_svg, model_mix_segments, synth_60d_svg, recent_runs (list),
-         eval_cases (list), is_private (bool — false here) #}
+{# Public below-fold — Spark Console.
+   Vars: cost_trend_svg, model_mix_svg, model_mix_segments, synth_60d_svg,
+         activity_timeline, eval_cases, is_private (false here) #}
 
+{# ── 24-Hour Activity Timeline — replaces flat "Recent Runs" table ── #}
+{% include "partials/activity_timeline.html" %}
+
+{# ── 30-day cost trend ── #}
 <section class="panel">
-  <div class="eyebrow">30-day cost trend · stacked area</div>
+  <div class="eyebrow">30-day cost trend · local vs cloud · stacked</div>
   {{ cost_trend_svg|safe }}
 </section>
 
-<section class="panel">
+{# ── Model mix donut + legend — tight, editorial pairing ── #}
+<section class="panel mix-panel">
   <div class="eyebrow">Model mix · last 30 days</div>
-  <div style="display: flex; gap: 24px; align-items: center;">
-    {{ model_mix_svg|safe }}
-    <ul style="list-style: none; padding: 0; margin: 0; font-family: var(--font-mono); font-size: 11px;">
+  <div class="mix-row">
+    <div class="mix-donut">{{ model_mix_svg|safe }}</div>
+    <ul class="mix-legend">
       {% for seg in model_mix_segments %}
-        <li><span class="status-dot" style="background: {{ seg.color }};"></span>
-          {{ seg.label }} — {{ seg.pct }}%</li>
+        <li class="mix-legend-row">
+          <span class="mix-swatch" style="background: {{ seg.color }};
+                                          box-shadow: 0 0 8px {{ seg.color }}55;"></span>
+          <span class="mix-label">{{ seg.label }}</span>
+          <span class="mix-pct">{{ seg.pct }}%</span>
+          <span class="mix-count">{{ seg.value }} runs</span>
+        </li>
       {% endfor %}
     </ul>
   </div>
 </section>
 
+{# ── Synthesizer telemetry · 60 nights ── #}
 <section class="panel">
-  <div class="eyebrow">Synthesizer telemetry · 60 nights</div>
+  <div class="eyebrow">Synthesizer telemetry · concepts written · 60 nights</div>
   {{ synth_60d_svg|safe }}
 </section>
 
-<section class="panel">
-  <div class="eyebrow">Recent runs · last 50</div>
-  <table style="width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 11px;">
-    <thead>
-      <tr style="color: var(--text-tertiary); text-align: left;">
-        <th style="padding: 4px;">ts</th><th>agent</th><th>status</th>
-        <th>duration</th><th>cost</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for r in recent_runs %}
-        <tr style="border-top: 1px solid var(--border-subtle);">
-          <td style="padding: 4px;">{{ r.ts.strftime('%Y-%m-%d %H:%M') }}</td>
-          <td>{{ r.agent }}</td>
-          <td>{{ r.status }}</td>
-          <td>{% if r.duration_ms %}{{ (r.duration_ms / 1000)|int }}s{% else %}—{% endif %}</td>
-          <td>${{ "%.4f"|format(r.cost_usd) }}</td>
-        </tr>
+{# ── Eval suite case grid — redesigned ── #}
+<section class="panel eval-grid-panel">
+  <div class="eyebrow">Eval suite · vault-synthesizer · latest run</div>
+  {% if not eval_cases %}
+    <p class="empty-state">No eval cases parsed from <span class="mono">last-run.md</span>. Run the suite to populate.</p>
+  {% else %}
+    <ul class="eval-grid">
+      {% for case in eval_cases %}
+        <li class="eval-case eval-case--{{ case.status }}">
+          <span class="eval-marker" aria-hidden="true">
+            {% if case.status == 'passed' %}●
+            {% elif case.status == 'failed' %}✕
+            {% elif case.status == 'skipped' %}—
+            {% else %}?{% endif %}
+          </span>
+          <span class="eval-id">{{ case.id }}</span>
+          <span class="eval-category">{{ case.category }}</span>
+          <span class="eval-status-pill">{{ case.status }}</span>
+        </li>
       {% endfor %}
-    </tbody>
-  </table>
-</section>
-
-<section class="panel">
-  <div class="eyebrow">Eval suite · last 14 days</div>
-  <div style="display: grid; grid-template-columns: 180px repeat(14, 1fr); gap: 2px;">
-    <div></div>
-    {% for col in range(14) %}<div style="font-family: var(--font-mono); font-size: 9px; color: var(--text-tertiary); text-align: center;">{{ col + 1 }}</div>{% endfor %}
-    {% for case in eval_cases %}
-      <div style="font-family: var(--font-mono); font-size: 10px;">{{ case.id }}</div>
-      {% for col in range(14) %}
-        {% set s = case.status %}
-        <div style="height: 14px; border-radius: 2px;
-          background: {% if s == 'passed' %}var(--accent-green){% elif s == 'failed' %}var(--accent-red){% elif s == 'skipped' %}var(--accent-amber){% else %}var(--border-subtle){% endif %};
-          opacity: {% if col < 13 %}0.35{% else %}1{% endif %};"></div>
-      {% endfor %}
-    {% endfor %}
-  </div>
+    </ul>
+  {% endif %}
 </section>

@@ -23,6 +23,10 @@ def _is_local(model: str | None) -> bool:
     return any(tok in model.lower() for tok in ("qwen", "nomic", "gemma", "kokoro", "ollama"))
 
 
+def _norm_agent(name: str) -> str:
+    return (name or "").lower().replace("-", "_").strip()
+
+
 def compute_fleet_status(runs: list[dict], agent_names: list[str]) -> list[dict]:
     """One tile per agent. Health derived from the last 7 days of runs.
 
@@ -31,21 +35,57 @@ def compute_fleet_status(runs: list[dict], agent_names: list[str]) -> list[dict]
         "degraded" — mix of ok and error/failed/capped
         "down"     — only errors in window, no ok
         "unknown"  — no runs in window
+
+    Agent names normalized dash↔underscore so the CSV's `vault-indexer` matches
+    the canonical `vault_indexer` in AGENT_NAMES.
     """
-    cutoff = datetime.now(UTC) - timedelta(days=7)
-    by_agent: dict[str, list[dict]] = {n: [] for n in agent_names}
+    now = datetime.now(UTC)
+    cutoff = now - timedelta(days=7)
+    by_agent: dict[str, list[dict]] = {_norm_agent(n): [] for n in agent_names}
     for r in runs:
-        if r["agent"] in by_agent and r["ts"] >= cutoff:
-            by_agent[r["agent"]].append(r)
+        key = _norm_agent(r["agent"])
+        if key in by_agent and r["ts"] >= cutoff:
+            by_agent[key].append(r)
+
+    _ok_statuses = {"ok", "success", "completed", "passed"}
+    _err_statuses = {"error", "failed", "capped", "timeout"}
+
     tiles: list[dict] = []
     for name in agent_names:
-        agent_runs = sorted(by_agent[name], key=lambda r: r["ts"], reverse=True)
+        key = _norm_agent(name)
+        agent_runs = sorted(by_agent[key], key=lambda r: r["ts"], reverse=True)
+
+        # 7-day sparkline — run count per day, oldest → newest (left-to-right matchstick)
+        spark: list[dict] = []
+        for d in range(7):
+            day_start = (now - timedelta(days=6 - d)).replace(
+                hour=0, minute=0, second=0, microsecond=0)
+            day_end = day_start + timedelta(days=1)
+            day_runs = [r for r in agent_runs if day_start <= r["ts"] < day_end]
+            day_statuses = [r["status"].lower() for r in day_runs]
+            if not day_runs:
+                cls = "idle"
+            elif any(s in _err_statuses for s in day_statuses):
+                cls = "down" if not any(s in _ok_statuses for s in day_statuses) else "degraded"
+            else:
+                cls = "healthy"
+            spark.append({"count": len(day_runs), "cls": cls})
+
         if not agent_runs:
-            tiles.append({"agent": name, "health": "unknown", "last_run": None, "last_cost": 0.0})
+            tiles.append({
+                "agent": name,
+                "health": "unknown",
+                "last_run": None,
+                "last_cost": 0.0,
+                "last_status": None,
+                "last_notes": "",
+                "run_count_7d": 0,
+                "sparkline_7d": spark,
+            })
             continue
-        statuses = [r["status"] for r in agent_runs]
-        has_error = any(s in ("error", "failed", "capped") for s in statuses)
-        has_ok = any(s == "ok" for s in statuses)
+        statuses = [r["status"].lower() for r in agent_runs]
+        has_error = any(s in _err_statuses for s in statuses)
+        has_ok = any(s in _ok_statuses for s in statuses)
         if has_error and has_ok:
             health = "degraded"
         elif has_error:
@@ -61,6 +101,7 @@ def compute_fleet_status(runs: list[dict], agent_names: list[str]) -> list[dict]
             "last_status": last["status"],
             "last_notes": last["notes"],
             "run_count_7d": len(agent_runs),
+            "sparkline_7d": spark,
         })
     return tiles
 
@@ -196,6 +237,9 @@ def compute_recent_runs(runs: list[dict], n: int = 50) -> list[dict]:
 
 def compute_all(data: dict, *, end: _date | None = None) -> dict:
     """Single entry point: build every aggregate the renderers need."""
+    # Local import — keeps aggregations importable standalone in tests
+    from lib import activity_timeline
+
     end = end or datetime.now(UTC).date()
     runs = data["agent_runs"]
     eval_run = data["eval_last_run"]
@@ -205,6 +249,7 @@ def compute_all(data: dict, *, end: _date | None = None) -> dict:
     agent_names = data["agent_names"]
     return {
         "fleet_status": compute_fleet_status(runs, agent_names),
+        "activity_timeline": activity_timeline.compose_timeline(runs, agent_names),
         "kpis": compute_kpis(runs, eval_run, gemini["total_usd"], council["month_total_usd"]),
         "synth_series_60d": compute_synth_series(manifests, days=60, end=end),
         "synth_series_14d": compute_synth_series(manifests, days=14, end=end),
