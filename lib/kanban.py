@@ -91,10 +91,9 @@ def compose_tickets(data: dict, *, include_job_feed: bool) -> list[dict]:
         })
 
     # --- eval (failures from agent_runs) ---------------------------------
-    # Implemented in Task 5; passes through empty for now.
+    # One ticket per agent × unresolved failure within the last 7 days.
     runs = data.get("agent_runs") or []
-    for ticket in _failures_to_tickets(runs):
-        out.append(ticket)
+    out.extend(_failures_to_tickets(runs))
 
     # --- manual ----------------------------------------------------------
     mt = data.get("manual_tickets", {})
@@ -147,7 +146,9 @@ def _failures_to_tickets(runs: list[dict]) -> list[dict]:
 
     out: list[dict] = []
     for agent, agent_runs in by_agent.items():
-        # Sort newest first so we find the latest failure quickly
+        # Sort newest first: the `is None` guard on latest_success_ts then
+        # captures the most-recent success, and `break` after latest_failure
+        # skips older, irrelevant failures.
         agent_runs.sort(key=lambda r: r["ts"], reverse=True)
         latest_failure: dict | None = None
         latest_success_ts = None

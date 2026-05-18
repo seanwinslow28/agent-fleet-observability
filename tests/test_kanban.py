@@ -53,6 +53,15 @@ def _data():
     }
 
 
+def _run(agent, status, minutes_ago, notes=""):
+    return {
+        "agent": agent, "status": status,
+        "ts": datetime.now(UTC) - timedelta(minutes=minutes_ago),
+        "cost_usd": 0.0, "duration_ms": None, "turns": None,
+        "mode": None, "notes": notes,
+    }
+
+
 def test_compose_tickets_includes_all_sources_private():
     d = _data()
     d["agent_runs"] = [_run("vault_indexer", "failed", 60)]
@@ -201,15 +210,6 @@ def test_compose_tickets_research_title_parsed():
     # Full prose preserved in details for one of the Topic-N items
     topic_5 = next(t for t in research if t["title"].startswith("Topic 5"))
     assert "Some long prose" in topic_5["details"]
-
-
-def _run(agent, status, minutes_ago, notes=""):
-    return {
-        "agent": agent, "status": status,
-        "ts": datetime.now(UTC) - timedelta(minutes=minutes_ago),
-        "cost_usd": 0.0, "duration_ms": None, "turns": None,
-        "mode": None, "notes": notes,
-    }
 
 
 def test_failures_to_tickets_one_per_unresolved_failure():
