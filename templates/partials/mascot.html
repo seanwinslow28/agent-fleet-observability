@@ -1,4 +1,7 @@
-<div class="spark" aria-hidden="true">
+{# Asterisk Spark mascot — pure HTML/CSS, ~40 lines of CSS in styles.css.
+   `data-state` drives the core pulse color: healthy=amber, degraded=purple, down=red.
+   Falls through to mascot_state if not provided (defaults to "healthy"). #}
+<div class="spark" data-state="{{ mascot_state | default('healthy') }}" aria-hidden="true">
   <div class="arms">
     <div class="arm arm-v"></div>
     <div class="arm arm-h"></div>

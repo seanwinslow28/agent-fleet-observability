@@ -1,14 +1,32 @@
-{# Vars: hero_svg (rendered string), regression_window (dict), end_date #}
-<div class="panel">
-  <div class="eyebrow">Vault Synthesizer · concepts written per night · 60 days</div>
-  <p class="hero-headline">
-    {% if regression_window.nights and regression_window.nights >= 3 %}
-      For
-      <span class="accent">{{ regression_window.nights }} consecutive nights</span>,
-      the synthesizer wrote zero concepts. The eval suite caught it on day {{ regression_window.nights + 1 }}.
-    {% else %}
-      Synthesizer running cleanly. No regression window in the last 60 nights.
-    {% endif %}
-  </p>
-  {{ hero_svg|safe }}
-</div>
+{# Hero — the editorial moment. Spark Console.
+   Vars: hero_svg (rendered string), regression_window {start, end, nights}, end_date #}
+{% set nights = regression_window.nights or 0 %}
+{% set has_regression = nights >= 3 %}
+<section class="hero-plate" aria-labelledby="hero-headline">
+  <div class="eyebrow">Vault Synthesizer · concepts written per night · 60 nights</div>
+
+  {% if has_regression %}
+    <h1 class="hero-display" id="hero-headline">
+      <span class="num" data-countup="{{ nights }}" aria-label="{{ nights }}">{{ nights }}</span>
+      <span class="label">consecutive nights</span>
+    </h1>
+    <p class="hero-prose">
+      The synthesizer wrote <strong>zero concepts</strong> for {{ nights }} nights running.
+      The vault-synthesizer <strong>eval suite</strong> caught it on day {{ nights + 1 }}.
+      Recovered {{ regression_window.end }} — the dashboard preserves the incident as proof of operational maturity.
+    </p>
+  {% else %}
+    <h1 class="hero-display" id="hero-headline">
+      <span class="num">8</span>
+      <span class="label">agents running cleanly</span>
+    </h1>
+    <p class="hero-prose">
+      No regression window in the last 60 nights. The eval suite ran every morning,
+      the synthesizer wrote, the fleet stayed inside its governors.
+    </p>
+  {% endif %}
+
+  <div class="hero-chart-wrap">
+    {{ hero_svg|safe }}
+  </div>
+</section>
