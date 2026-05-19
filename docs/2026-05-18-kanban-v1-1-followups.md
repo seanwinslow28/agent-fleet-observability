@@ -9,6 +9,22 @@ parent: docs/2026-05-18-kanban-v1-1-redesign.md
 
 Captured during v1.1 implementation (2026-05-18) by the per-task code-quality reviews. Most items below are minor polish; the **status-set consolidation** is the only real architectural item.
 
+## Closed by v1.2 (this plan: 2026-05-19)
+
+- §1 Status sets consolidation → `lib/statuses.py` (Task 1)
+- Edge case: `_parse_research_title` empty-input guard (Task 2)
+- Template polish: tier redundancy on lint cards removed (Task 3)
+- Tests: empty-runs, status case-norm, multi-failure-same-agent, all-empty-inputs (Task 8)
+- Template polish: per-source dates now surfaced as subheadline (Tasks 3, 4)
+- Card distillation: bold headline + small mono date + click-to-modal full prose (Tasks 5, 6, 7)
+- Eval emitter now ALSO pulls failing eval cases from `eval_last_run` per design §3e (Task 4)
+
+The remaining followup items (multi-bullet `_parse_lint_sections` test, naming refactors,
+`_LINT_BULLET_RE` em-dash docstring, `_stable_id` severity-discriminator docstring) are
+still open — none blocks v1.2 ship.
+
+Plan reference: `docs/2026-05-19-kanban-v1-2-plan.md`.
+
 ## Material — worth doing before v2 ships
 
 ### 1. Promote status sets to a shared module
