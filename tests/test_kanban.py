@@ -136,14 +136,14 @@ def test_parse_research_title_topic_prefix():
     )
     out = kanban._parse_research_title(raw)
     expected_title = "Topic 8 — OpenRouter Python integration patterns for the agents-sdk fleet"
-    assert out["title"] == expected_title
+    assert out["headline"] == expected_title
     assert "Cover: (1) auth header pattern" in out["details"]
 
 
 def test_parse_research_title_short_question_passes_through():
     raw = "What are the practical differences between MLX and GGUF for 14B models?"
     out = kanban._parse_research_title(raw)
-    assert out["title"] == raw
+    assert out["headline"] == raw
     assert out["details"] == raw
 
 
@@ -153,16 +153,16 @@ def test_parse_research_title_long_falls_back_to_truncation():
         "and therefore has no Topic prefix and no internal sentence break for the parser to use"
     )
     out = kanban._parse_research_title(raw)
-    assert len(out["title"]) <= 81  # 80 + "…"
-    assert out["title"].endswith("…")
+    assert len(out["headline"]) <= 81  # 80 + "…"
+    assert out["headline"].endswith("…")
     assert out["details"] == raw
 
 
 def test_parse_research_title_strips_done_link_tail():
     raw = "Quick topic. — done 2026-05-01 02:00 → [[20_projects/research/old-topic]]"
     out = kanban._parse_research_title(raw)
-    assert "[[" not in out["title"]
-    assert "done 2026-05" not in out["title"]
+    assert "[[" not in out["headline"]
+    assert "done 2026-05" not in out["headline"]
 
 
 def test_compose_tickets_lint_drains_severity_in_order():
@@ -242,27 +242,258 @@ def test_failures_to_tickets_ages_off_after_7_days():
 
 
 def test_failures_to_tickets_title_uses_notes_then_status():
+    # New schema: title/headline = "{agent} failed: {status_word}"; notes go to details.
     runs = [
         _run("agent_a", "failed", 30, notes="ConnectTimeout to backend"),
         _run("agent_b", "failed", 60),  # no notes
     ]
     out = sorted(kanban._failures_to_tickets(runs), key=lambda t: t["assigned_agent"])
-    assert "ConnectTimeout" in out[0]["title"]
+    assert out[0]["title"] == "agent_a failed: failed"
     assert out[0]["title"].startswith("agent_a failed:")
+    assert "ConnectTimeout" in (out[0]["details"] or "")  # notes preserved in details
     assert "failed" in out[1]["title"]
 
 
-def test_failures_to_tickets_title_truncates_at_60_chars():
+def test_failures_to_tickets_title_is_status_word_notes_in_details():
+    # New schema: title is always "{agent} failed: {status_word}" — no truncation needed.
+    # Full notes are preserved verbatim in details instead.
     long_notes = "x" * 200
     runs = [_run("agent_a", "failed", 30, notes=long_notes)]
     out = kanban._failures_to_tickets(runs)
-    # "agent_a failed: " is 16 chars; the tail must be 60 chars + "…"
-    tail = out[0]["title"].split("failed: ", 1)[1]
-    assert len(tail) <= 61
-    assert tail.endswith("…")
+    assert out[0]["title"] == "agent_a failed: failed"
+    assert out[0]["details"] == long_notes
 
 
 def test_failures_to_tickets_section_hint_is_todo():
     runs = [_run("agent_a", "failed", 30)]
     out = kanban._failures_to_tickets(runs)
     assert out[0]["_section_hint"] == "todo"
+
+
+def test_failures_to_tickets_empty_runs_returns_empty():
+    """Followups: explicit contract — empty input → empty output."""
+    assert kanban._failures_to_tickets([]) == []
+
+
+def test_failures_to_tickets_status_case_normalized():
+    """Followups: status comparison must be .lower()-aware."""
+    runs = [
+        {"agent": "x", "status": "FAILED", "ts": datetime.now(UTC),
+         "cost_usd": 0.0, "duration_ms": None, "turns": None, "notes": "shouty"},
+    ]
+    out = kanban._failures_to_tickets(runs)
+    assert len(out) == 1
+    assert out[0]["source"] == "eval"
+
+
+def test_failures_to_tickets_multiple_failures_same_agent_picks_latest():
+    """Followups: with no intervening success, the newest failure wins."""
+    base = datetime.now(UTC)
+    runs = [
+        {"agent": "x", "status": "failed", "ts": base - timedelta(hours=6),
+         "cost_usd": 0.0, "duration_ms": None, "turns": None, "notes": "old"},
+        {"agent": "x", "status": "failed", "ts": base - timedelta(hours=1),
+         "cost_usd": 0.0, "duration_ms": None, "turns": None, "notes": "new"},
+    ]
+    out = kanban._failures_to_tickets(runs)
+    assert len(out) == 1
+    # Newest failure survives — its notes show up in details
+    assert out[0]["details"] == "new"
+
+
+def test_compose_tickets_all_empty_inputs_returns_empty_list():
+    """Followups: cheap safety net for the all-empty-inputs path."""
+    assert kanban.compose_tickets({}, include_job_feed=False) == []
+
+
+def test_parse_research_title_returns_headline_and_details():
+    out = kanban._parse_research_title(
+        "Topic 5 — OpenRouter routing config. Some long prose continues here."
+    )
+    assert out["headline"] == "Topic 5 — OpenRouter routing config"
+    assert out["details"].startswith("Topic 5")
+    assert "Some long prose" in out["details"]
+    # No more `title` or `subheadline` keys from this function
+    assert "subheadline" not in out
+
+
+def test_parse_research_title_short_input_no_truncation():
+    out = kanban._parse_research_title("Short question that fits?")
+    assert out["headline"] == "Short question that fits?"
+    assert "…" not in out["headline"]
+
+
+def test_parse_research_title_strips_done_tail():
+    out = kanban._parse_research_title(
+        "Topic 12 — Foo bar. Details. — done 2026-05-16 02:46 → [[wikilink]]"
+    )
+    assert out["headline"] == "Topic 12 — Foo bar"
+    # Done-tail stripped from details too
+    assert "done 2026-05-16" not in out["details"]
+    assert "wikilink" not in out["details"]
+
+
+def test_parse_research_title_empty_input_guard():
+    """Followups: previously returned headline="" for empty/whitespace input."""
+    result = kanban._parse_research_title("   ")
+    assert result["headline"] == "(no title)"
+    assert result["details"] == "   "  # raw preserved
+
+
+def test_parse_research_title_done_tail_only_input():
+    """Input that becomes empty AFTER the done-tail strip hits the second guard."""
+    result = kanban._parse_research_title("— done 2026-05-01")
+    assert result["headline"] == "(no title)"
+    # The second guard preserves raw (not raw-or-empty), since raw is non-empty
+    assert result["details"] == "— done 2026-05-01"
+
+
+def test_research_ticket_uses_headline_and_empty_subheadline():
+    """Pending research items have no per-item date → empty subheadline."""
+    data = _data()
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    topic5 = next(t for t in tickets if t["source"] == "research"
+                  and t["headline"].startswith("Topic 5"))
+    assert topic5["headline"] == "Topic 5 — OpenRouter routing config"
+    assert topic5["subheadline"] == ""
+    assert topic5["title"] == topic5["headline"]  # back-compat
+    # Full prose retained for the click-to-modal payload
+    assert "Some long prose" in topic5["details"]
+
+
+def test_lint_ticket_headline_strips_tier_subheadline_has_report_date():
+    data = _data()
+    # _data() sets lint_reports["latest_date"] = "2026-05-12"
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    crit = next(t for t in tickets if t["source"] == "lint"
+                and "foo.md" in t["headline"])
+    assert crit["headline"] == "contradiction · foo.md"
+    assert "(T2)" not in crit["headline"]
+    assert crit["subheadline"] == "2026-05-12"
+    assert crit["_tier"] == "T2"  # still on the dict for meta line / future use
+    assert "contradicts bar" in crit["details"]
+
+
+def test_eval_failure_ticket_subheadline_is_failure_date():
+    runs = [_run("vault_synthesizer", "failed", minutes_ago=30, notes="cap-hit")]
+    data = {**_data(), "agent_runs": runs}
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    fail = next(t for t in tickets if t["source"] == "eval")
+    assert fail["headline"].startswith("vault_synthesizer failed")
+    # Subheadline is the failure timestamp date (YYYY-MM-DD)
+    today = datetime.now(UTC).strftime("%Y-%m-%d")
+    assert fail["subheadline"] == today
+    # Full notes preserved in details for the modal
+    assert "cap-hit" in (fail["details"] or "")
+
+
+def test_manual_ticket_has_empty_subheadline():
+    data = _data()
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    manual = next(t for t in tickets if t["source"] == "manual")
+    assert manual["headline"] == manual["title"]
+    assert manual["subheadline"] == ""  # tickets.md has no per-item date
+
+
+def test_feed_ticket_subheadline_is_first_seen_date_or_empty():
+    """Feed subheadline = first_seen_at date when present, else empty."""
+    data = _data()
+    # Augment one feed row with first_seen_at
+    data["job_feed"]["top_fit"][0]["first_seen_at"] = "2026-05-15T08:30:00Z"
+    tickets = kanban.compose_tickets(data, include_job_feed=True)
+    sierra = next(t for t in tickets if t["source"] == "feed"
+                  and t["headline"].startswith("Sierra"))
+    assert sierra["headline"] == "Sierra · Agent PM"
+    assert sierra["subheadline"] == "2026-05-15"
+    # The second feed row had no first_seen_at → empty subheadline
+    anthropic = next(t for t in tickets if t["source"] == "feed"
+                     and t["headline"].startswith("Anthropic"))
+    assert anthropic["subheadline"] == ""
+
+
+def test_eval_cases_become_tickets():
+    data = {
+        **_data(),
+        "eval_last_run": {
+            "passed": 7, "failed": 2, "skipped": 1, "total_cases": 10,
+            "cases": [
+                {"id": "case-1-broken-wikilink", "category": "lint", "status": "passed"},
+                {"id": "case-7-cycle-detect",    "category": "lint", "status": "failed"},
+                {"id": "case-9-concept-merge",   "category": "synth", "status": "failed"},
+                {"id": "case-10-stale-frontmatter", "category": "lint", "status": "skipped"},
+            ],
+            "run_id": "2026-05-18-run",
+        },
+    }
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    eval_tix = [t for t in tickets if t["source"] == "eval"]
+    headlines = {t["headline"] for t in eval_tix}
+    assert "eval failed: case-7-cycle-detect" in headlines
+    assert "eval failed: case-9-concept-merge" in headlines
+    # Passed + skipped cases must NOT become tickets
+    assert not any("case-1-broken" in h for h in headlines)
+    assert not any("case-10-stale" in h for h in headlines)
+
+
+def test_eval_case_subheadline_is_run_date_when_run_id_is_dated():
+    data = {
+        **_data(),
+        "eval_last_run": {
+            "passed": 9, "failed": 1, "skipped": 0, "total_cases": 10,
+            "cases": [{"id": "case-3", "category": "synth", "status": "failed"}],
+            "run_id": "2026-05-18-run",
+        },
+    }
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    case_tix = [t for t in tickets if t["source"] == "eval"
+                and t["_eval_case_id"] == "case-3"]
+    assert len(case_tix) == 1
+    # Subheadline = first 10 chars of run_id when it parses as a date
+    assert case_tix[0]["subheadline"] == "2026-05-18"
+
+
+def test_eval_case_subheadline_empty_when_run_id_not_date_shaped():
+    """If run_id doesn't start with YYYY-MM-DD, subheadline falls back to empty."""
+    data = {
+        **_data(),
+        "eval_last_run": {
+            "passed": 0, "failed": 1, "skipped": 0, "total_cases": 1,
+            "cases": [{"id": "case-3", "category": "synth", "status": "failed"}],
+            "run_id": "local-run-42",
+        },
+    }
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    case = next(t for t in tickets if t.get("_eval_case_id") == "case-3")
+    assert case["subheadline"] == ""
+
+
+def test_eval_case_status_uppercase_is_normalized():
+    """`.lower()` on case status — `FAILED` still becomes a ticket."""
+    data = {
+        **_data(),
+        "eval_last_run": {
+            "passed": 0, "failed": 1, "skipped": 0, "total_cases": 1,
+            "cases": [{"id": "case-shouty", "category": "lint", "status": "FAILED"}],
+            "run_id": "2026-05-18-run",
+        },
+    }
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    headlines = {t["headline"] for t in tickets if t["source"] == "eval"}
+    assert "eval failed: case-shouty" in headlines
+
+
+def test_eval_cases_and_agent_run_failures_coexist():
+    runs = [_run("deep_researcher", "failed", minutes_ago=10, notes="timeout 900s")]
+    data = {
+        **_data(),
+        "agent_runs": runs,
+        "eval_last_run": {
+            "passed": 9, "failed": 1, "skipped": 0, "total_cases": 10,
+            "cases": [{"id": "case-3", "category": "synth", "status": "failed"}],
+            "run_id": "2026-05-18-run",
+        },
+    }
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    headlines = {t["headline"] for t in tickets if t["source"] == "eval"}
+    assert any("deep_researcher failed" in h for h in headlines)
+    assert any("case-3" in h for h in headlines)

@@ -15,6 +15,8 @@ from collections import Counter
 from datetime import UTC, datetime, timedelta
 from datetime import date as _date
 
+from lib.statuses import ERR_STATUSES, OK_STATUSES
+
 
 def _is_local(model: str | None) -> bool:
     """Return True when the run used a local (zero-cost) model."""
@@ -47,9 +49,6 @@ def compute_fleet_status(runs: list[dict], agent_names: list[str]) -> list[dict]
         if key in by_agent and r["ts"] >= cutoff:
             by_agent[key].append(r)
 
-    _ok_statuses = {"ok", "success", "completed", "passed"}
-    _err_statuses = {"error", "failed", "capped", "timeout"}
-
     tiles: list[dict] = []
     for name in agent_names:
         key = _norm_agent(name)
@@ -65,8 +64,8 @@ def compute_fleet_status(runs: list[dict], agent_names: list[str]) -> list[dict]
             day_statuses = [r["status"].lower() for r in day_runs]
             if not day_runs:
                 cls = "idle"
-            elif any(s in _err_statuses for s in day_statuses):
-                cls = "down" if not any(s in _ok_statuses for s in day_statuses) else "degraded"
+            elif any(s in ERR_STATUSES for s in day_statuses):
+                cls = "down" if not any(s in OK_STATUSES for s in day_statuses) else "degraded"
             else:
                 cls = "healthy"
             spark.append({"count": len(day_runs), "cls": cls})
@@ -84,8 +83,8 @@ def compute_fleet_status(runs: list[dict], agent_names: list[str]) -> list[dict]
             })
             continue
         statuses = [r["status"].lower() for r in agent_runs]
-        has_error = any(s in _err_statuses for s in statuses)
-        has_ok = any(s in _ok_statuses for s in statuses)
+        has_error = any(s in ERR_STATUSES for s in statuses)
+        has_ok = any(s in OK_STATUSES for s in statuses)
         if has_error and has_ok:
             health = "degraded"
         elif has_error:
@@ -128,19 +127,17 @@ def compute_column_sparklines(runs: list[dict]) -> dict[str, list[int]]:
     todo = [0] * 7
     in_progress = [0] * 7
     done = [0] * 7
-    err = {"failed", "error", "capped", "timeout"}
-    ok = {"ok", "success", "completed", "passed"}
     for r in runs:
         delta_days = (now - r["ts"]).days
         if delta_days < 0 or delta_days >= 7:
             continue
         idx = 6 - delta_days  # oldest=0, today=6
         status = r["status"].lower()
-        if status in err:
+        if status in ERR_STATUSES:
             todo[idx] += 1
         elif status == "started":  # single status, not a set — no synonyms for in-progress
             in_progress[idx] += 1
-        elif status in ok:
+        elif status in OK_STATUSES:
             done[idx] += 1
     return {"todo": todo, "in_progress": in_progress, "done": done}
 

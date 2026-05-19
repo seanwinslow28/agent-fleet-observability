@@ -10,32 +10,43 @@ import re
 from datetime import UTC, datetime, timedelta
 from os.path import basename
 
+from lib.statuses import ERR_STATUSES, OK_STATUSES
+
 _TOPIC_PREFIX_RE = re.compile(r"^(Topic \d+[a-z]?\s+—\s+[^.]+)")
 _DONE_TAIL_RE = re.compile(r"\s*—\s*done\s+\d{4}-\d{2}-\d{2}.*$")
+_RUN_ID_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}")
 
 
 def _parse_research_title(raw: str) -> dict:
-    """Distill a research-queue prompt into a card-sized title.
+    """Distill a research-queue prompt into a card-sized headline + full details.
 
-    Order of rules:
-        1. Strip the `— done DATE → [[wikilink]]` tail if present.
-        2. If the body starts with `Topic N — Short Title.`, use everything
-           up to (and not including) the first period.
-        3. Else if the whole body is ≤ 80 chars, use it verbatim.
-        4. Else truncate to 80 chars + `…`.
+    Returns:
+        {
+          "headline": short distilled title (≤ 80 chars, no trailing prose),
+          "details": full cleaned prose, minus the "— done DATE → wikilink" tail.
+        }
 
-    Returns dict with `title` (display) and `details` (original prose,
-    minus the done-tail, for v2 expand-on-hover).
+    Rules:
+      1. Empty/whitespace input → headline="(no title)", details=raw or "".
+      2. Strip `— done DATE → [[wikilink]]` tail if present.
+      3. If body starts with `Topic N — Short Title.`, headline = that prefix
+         (everything up to and not including the first period).
+      4. Else if body is ≤ 80 chars, headline = body verbatim.
+      5. Else truncate to 80 chars + `…`.
     """
+    if not raw or not raw.strip():
+        return {"headline": "(no title)", "details": raw or ""}
     cleaned = _DONE_TAIL_RE.sub("", raw).strip()
+    if not cleaned:
+        return {"headline": "(no title)", "details": raw}
     m = _TOPIC_PREFIX_RE.match(cleaned)
     if m:
-        title = m.group(1).strip()
+        headline = m.group(1).strip()
     elif len(cleaned) <= 80:
-        title = cleaned
+        headline = cleaned
     else:
-        title = cleaned[:80].rstrip() + "…"
-    return {"title": title, "details": cleaned}
+        headline = cleaned[:80].rstrip() + "…"
+    return {"headline": headline, "details": cleaned}
 
 
 def _stable_id(source: str, title: str) -> str:
@@ -58,9 +69,12 @@ def compose_tickets(data: dict, *, include_job_feed: bool) -> list[dict]:
     for section_name, hint in [("pending", "pending"), ("in_flight", "in_flight")]:
         for item in rq.get(section_name, []):
             parsed = _parse_research_title(item["title"])
+            headline = parsed["headline"]
             out.append({
-                "id": _stable_id("research", parsed["title"]),
-                "title": parsed["title"],
+                "id": _stable_id("research", headline),
+                "title": headline,          # back-compat alias for data.json consumers
+                "headline": headline,
+                "subheadline": "",          # pending research has no per-item date
                 "source": "research",
                 "assigned_agent": item.get("assigned_agent"),
                 "_section_hint": hint,
@@ -70,6 +84,7 @@ def compose_tickets(data: dict, *, include_job_feed: bool) -> list[dict]:
 
     # --- lint (top 20, severity-drain) -----------------------------------
     lint = data.get("lint_reports", {})
+    lint_date = lint.get("latest_date") or ""
     severity_order = {"CRITICAL": 0, "HIGH": 1, "MEDIUM": 2, "LOW": 3}
     issues = lint.get("issues", []) or []
     ordered = sorted(
@@ -77,10 +92,12 @@ def compose_tickets(data: dict, *, include_job_feed: bool) -> list[dict]:
         key=lambda pair: (severity_order.get(pair[1].get("severity"), 99), pair[0]),
     )
     for _idx, iss in ordered[:20]:
-        title = f"{iss['rule']} ({iss['tier']}) · {basename(iss['path'])}"
+        headline = f"{iss['rule']} · {basename(iss['path'])}"
         out.append({
             "id": _stable_id("lint", f"{iss['severity']}|{iss['rule']}|{iss['path']}"),
-            "title": title,
+            "title": headline,
+            "headline": headline,
+            "subheadline": lint_date,
             "source": "lint",
             "assigned_agent": None,
             "_section_hint": "pending",
@@ -90,30 +107,39 @@ def compose_tickets(data: dict, *, include_job_feed: bool) -> list[dict]:
             "details": f"{iss['path']} — {iss['context']}",
         })
 
-    # --- eval (failures from agent_runs) ---------------------------------
-    # One ticket per agent × unresolved failure within the last 7 days.
+    # --- eval (agent_runs failures + failing eval cases) -----------------
     runs = data.get("agent_runs") or []
     out.extend(_failures_to_tickets(runs))
+    out.extend(_eval_cases_to_tickets(data.get("eval_last_run", {}) or {}))
 
     # --- manual ----------------------------------------------------------
     mt = data.get("manual_tickets", {})
     for section_name, hint in [("todo", "todo"), ("in_progress", "in_progress"), ("done", "done")]:
         for item in mt.get(section_name, []):
+            title = item["title"]
             out.append({
-                "id": _stable_id("manual", item["title"]),
-                "title": item["title"], "source": "manual",
+                "id": _stable_id("manual", title),
+                "title": title,
+                "headline": title,
+                "subheadline": "",
+                "source": "manual",
                 "assigned_agent": item.get("assigned_agent"),
                 "_section_hint": hint,
-                "created_at": now, "moved_at": now, "details": None,
+                "created_at": now, "moved_at": now,
+                "details": None,
             })
 
     # --- feed (private only) ---------------------------------------------
     if include_job_feed:
         for p in data.get("job_feed", {}).get("top_fit", []):
-            title = f"{p['company']} · {p['title']}"
+            headline = f"{p['company']} · {p['title']}"
+            first_seen = (p.get("first_seen_at") or "")[:10]  # YYYY-MM-DD prefix
             out.append({
-                "id": _stable_id("feed", title),
-                "title": title, "source": "feed",
+                "id": _stable_id("feed", headline),
+                "title": headline,
+                "headline": headline,
+                "subheadline": first_seen,
+                "source": "feed",
                 "assigned_agent": "Sean",
                 "_section_hint": p.get("status", "new"),
                 "created_at": now, "moved_at": now,
@@ -123,8 +149,6 @@ def compose_tickets(data: dict, *, include_job_feed: bool) -> list[dict]:
     return out
 
 
-_ERR_STATUSES = {"error", "failed", "capped", "timeout"}
-_OK_STATUSES = {"ok", "success", "completed", "passed"}
 _FAILURE_WINDOW = timedelta(days=7)
 
 
@@ -132,9 +156,13 @@ def _failures_to_tickets(runs: list[dict]) -> list[dict]:
     """Emit one ticket per (agent × most-recent unresolved failure within 7 days).
 
     "Unresolved" = there is no `ok`/`success`/`completed`/`passed` run for the
-    same agent at a timestamp AFTER the failure. Failures older than 7 days
-    age off; subsequent successes resolve. Title format:
-    "{agent} failed: {notes_or_status_word}" truncated to 60 chars + ….
+    same agent at a timestamp AFTER the failure. Failures older than 7 days age
+    off; subsequent successes resolve.
+
+    Ticket shape:
+        headline    = "{agent} failed: {status_word}"  (status lower-cased)
+        subheadline = "{YYYY-MM-DD}"                   (the failure date)
+        details     = the full notes string (or None when notes is empty)
     """
     now = datetime.now(UTC)
     cutoff = now - _FAILURE_WINDOW
@@ -154,9 +182,9 @@ def _failures_to_tickets(runs: list[dict]) -> list[dict]:
         latest_success_ts = None
         for r in agent_runs:
             status = r["status"].lower()
-            if status in _OK_STATUSES and latest_success_ts is None:
+            if status in OK_STATUSES and latest_success_ts is None:
                 latest_success_ts = r["ts"]
-            if status in _ERR_STATUSES:
+            if status in ERR_STATUSES:
                 latest_failure = r
                 break
         if not latest_failure:
@@ -166,19 +194,55 @@ def _failures_to_tickets(runs: list[dict]) -> list[dict]:
             continue
 
         notes = (latest_failure.get("notes") or "").strip()
-        tail = notes if notes else latest_failure["status"].lower()
-        if len(tail) > 60:
-            tail = tail[:60].rstrip() + "…"
-        title = f"{agent} failed: {tail}"
+        status_word = latest_failure["status"].lower()
+        headline = f"{agent} failed: {status_word}"
         out.append({
             "id": _stable_id("eval", f"{agent}|{latest_failure['ts'].isoformat()}"),
-            "title": title,
+            "title": headline,
+            "headline": headline,
+            "subheadline": latest_failure["ts"].strftime("%Y-%m-%d"),
             "source": "eval",
             "assigned_agent": agent,
             "_section_hint": "todo",
             "created_at": latest_failure["ts"].isoformat(),
             "moved_at": latest_failure["ts"].isoformat(),
             "details": notes or None,
+        })
+    return out
+
+
+def _eval_cases_to_tickets(eval_last_run: dict) -> list[dict]:
+    """Emit one ticket per failing eval case in evals/vault-synthesizer/last-run.md.
+
+    Design doc §3e: "Failing eval cases from evals/vault-synthesizer/last-run.md".
+    Only `status == "failed"` rows become tickets; passed/skipped/unknown are
+    silently dropped. Each ticket's headline is `eval failed: {case_id}`;
+    subheadline is the first 10 chars of run_id when it looks date-shaped
+    (YYYY-MM-DD…), else empty.
+    """
+    now = datetime.now(UTC).isoformat()
+    out: list[dict] = []
+    run_id = eval_last_run.get("run_id") or ""
+    subheadline = run_id[:10] if _RUN_ID_DATE_RE.match(run_id) else ""
+    for case in eval_last_run.get("cases", []) or []:
+        if (case.get("status") or "").lower() != "failed":
+            continue
+        case_id = case.get("id") or ""
+        if not case_id:
+            continue
+        category = case.get("category") or ""
+        headline = f"eval failed: {case_id}"
+        out.append({
+            "id": _stable_id("eval-case", f"{case_id}|{run_id or 'current'}"),
+            "title": headline,
+            "headline": headline,
+            "subheadline": subheadline,
+            "source": "eval",
+            "assigned_agent": None,
+            "_section_hint": "todo",
+            "_eval_case_id": case_id,
+            "created_at": now, "moved_at": now,
+            "details": f"{case_id} ({category}) failed in eval run {run_id or 'current'}",
         })
     return out
 

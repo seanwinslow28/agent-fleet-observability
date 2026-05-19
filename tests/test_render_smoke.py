@@ -91,3 +91,40 @@ def test_render_kanban_includes_agent_dot_and_column_spark(tmp_path):
     html = (tmp_path / "kanban.html").read_text()
     assert "agent-dot" in html
     assert "column-spark" in html
+
+
+def test_kanban_template_renders_headline_subheadline_and_modal_shell(tmp_path):
+    """Kanban board uses .ticket-headline + .ticket-subheadline and emits a modal shell."""
+    from lib import aggregations, kanban, render
+    data = {
+        "research_queue": {"pending": [
+            {"title": "Topic 99 — Demo prompt. With prose body that should land in details.",
+             "assigned_agent": None},
+        ], "in_flight": [], "done": []},
+        "lint_reports": {"latest_date": "2026-05-19", "issues_total": 0,
+                         "issues_by_severity": {}, "issues": []},
+        "manual_tickets": {"todo": [], "in_progress": [], "done": []},
+        "agent_runs": [], "eval_last_run": {"passed": 0, "failed": 0, "skipped": 0,
+                                             "total_cases": 0, "cases": []},
+        "job_feed": {"total_postings": 0, "by_status": {}, "top_fit": [], "active_count": 0},
+        "synth_manifests": [], "gemini_spend": {"total_usd": 0, "run_count": 0, "tiers": {}},
+        "council_spend": {"month_total_usd": 0, "day_count": 0, "days": []},
+        "job_feed_manifests": {"latest": None, "last_7": []},
+        "target_companies": {"tier_1": [], "tier_2": [], "tier_3": [], "by_status": {}, "total": 0},
+        "warm_intros": {"active": [], "prospecting": [], "second_degree": [], "total": 0},
+        "agent_names": ["vault_synthesizer"],
+    }
+    agg = aggregations.compute_all(data)
+    tickets = kanban.compute_columns(
+        kanban.compose_tickets(data, include_job_feed=False), data["agent_runs"]
+    )
+    out = tmp_path / "out"
+    render.render_public(agg, tickets, out)
+    html = (out / "kanban.html").read_text()
+    assert 'class="ticket-headline"' in html
+    # The Topic 99 ticket carries its full prose on data-details for the modal JS
+    assert "data-details=" in html
+    assert "With prose body" in html  # the details payload
+    # Modal shell rendered once at the bottom of the partial
+    assert html.count('id="ticket-modal"') == 1
+    assert "Topic 99 — Demo prompt" in html
