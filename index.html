@@ -28,7 +28,7 @@
     <div class="subtitle">fleet.seanwinslow.com</div>
   </div>
   <span class="status-pill mono">● 5/8 HEALTHY</span>
-  <span class="subtitle" style="margin-left: auto;">2026-05-19 10:00 UTC</span>
+  <span class="subtitle" style="margin-left: auto;">2026-05-19 16:03 UTC</span>
   <nav style="display: flex; gap: 4px;">
     <a class="nav-link active" href="./index.html">/fleet</a>
     <a class="nav-link " href="./kanban.html">/kanban</a>
@@ -73,12 +73,12 @@
   <div class="panel kpi-card">
     <div class="kpi-label">Fleet spend · 30 days</div>
     <div class="kpi-value">$49.26</div>
-    <div class="kpi-sub">92.1% local · 366 runs</div>
+    <div class="kpi-sub">92.4% local · 384 runs</div>
   </div>
   <div class="panel kpi-card">
     <div class="kpi-label">Local-only share</div>
     <div class="kpi-value green">
-92.1%
+92.4%
     </div>
     <div class="kpi-sub">
 Most agents · $0/run
@@ -190,7 +190,7 @@ Most agents · $0/run
           quiet · 7d
       </div>
     </div>
-    <div class="matchstick" title="daily_driver · 6 runs in 7 days · degraded">
+    <div class="matchstick" title="daily_driver · 7 runs in 7 days · degraded">
       <div class="matchstick-head">
         <span class="status-dot degraded"></span>
         <span class="matchstick-name">daily_driver</span>
@@ -208,11 +208,11 @@ Most agents · $0/run
                 style="height: 100.0%;"></span>
           <span class="matchstick-tick healthy"
                 style="height: 100.0%;"></span>
-          <span class="matchstick-tick "
-                style="height: 8%;"></span>
+          <span class="matchstick-tick down"
+                style="height: 100.0%;"></span>
       </div>
       <div class="matchstick-foot">
-          6 runs · 7d
+          7 runs · 7d
       </div>
     </div>
     <div class="matchstick" title="knowledge_lint · 1 runs in 7 days · healthy">
@@ -240,7 +240,7 @@ Most agents · $0/run
           1 runs · 7d
       </div>
     </div>
-    <div class="matchstick" title="flush · 39 runs in 7 days · healthy">
+    <div class="matchstick" title="flush · 47 runs in 7 days · healthy">
       <div class="matchstick-head">
         <span class="status-dot healthy"></span>
         <span class="matchstick-name">flush</span>
@@ -258,14 +258,14 @@ Most agents · $0/run
                 style="height: 8%;"></span>
           <span class="matchstick-tick healthy"
                 style="height: 100.0%;"></span>
-          <span class="matchstick-tick "
-                style="height: 8%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 71.0%;"></span>
       </div>
       <div class="matchstick-foot">
-          39 runs · 7d
+          47 runs · 7d
       </div>
     </div>
-    <div class="matchstick" title="job_feed · 44 runs in 7 days · healthy">
+    <div class="matchstick" title="job_feed · 49 runs in 7 days · healthy">
       <div class="matchstick-head">
         <span class="status-dot healthy"></span>
         <span class="matchstick-name">job_feed</span>
@@ -283,39 +283,36 @@ Most agents · $0/run
                 style="height: 100.0%;"></span>
           <span class="matchstick-tick healthy"
                 style="height: 100.0%;"></span>
-          <span class="matchstick-tick "
-                style="height: 8%;"></span>
+          <span class="matchstick-tick healthy"
+                style="height: 100.0%;"></span>
       </div>
       <div class="matchstick-foot">
-          44 runs · 7d
+          49 runs · 7d
       </div>
     </div>
 </section>
 <section class="panel timeline-wrap" aria-label="24-hour fleet activity">
   <div class="eyebrow">
     24-hour activity · 8 agents ·
-    17 runs
+    21 runs
   </div>
   <div class="timeline-grid">
       <div class="timeline-label">vault_indexer</div>
       <div class="timeline-lane">
           <span class="timeline-dot success"
-                style="left: 66.71%;"
+                style="left: 41.44%;"
                 title="vault_indexer · 02:00 · success · 33.5s"></span>
       </div>
       <div class="timeline-label">vault_synthesizer</div>
       <div class="timeline-lane">
           <span class="timeline-dot success"
-                style="left: 73.61%;"
+                style="left: 48.34%;"
                 title="vault_synthesizer · 03:40 · success · 54.4m"></span>
       </div>
       <div class="timeline-label">deep_researcher</div>
       <div class="timeline-lane">
-          <span class="timeline-dot success"
-                style="left: 24.65%;"
-                title="deep_researcher · 15:54 · success · 4.6m"></span>
           <span class="timeline-dot other"
-                style="left: 69.79%;"
+                style="left: 44.52%;"
                 title="deep_researcher · 02:45 · empty-queue"></span>
       </div>
       <div class="timeline-label">meta_agent</div>
@@ -323,6 +320,9 @@ Most agents · $0/run
       </div>
       <div class="timeline-label">daily_driver</div>
       <div class="timeline-lane">
+          <span class="timeline-dot error"
+                style="left: 69.66%;"
+                title="daily_driver · 08:47 · error"></span>
       </div>
       <div class="timeline-label">knowledge_lint</div>
       <div class="timeline-lane">
@@ -330,54 +330,66 @@ Most agents · $0/run
       <div class="timeline-label">flush</div>
       <div class="timeline-lane">
           <span class="timeline-dot guarded"
-                style="left: 1.99%;"
-                title="flush · 10:28 · recursion-guard"></span>
+                style="left: 69.66%;"
+                title="flush · 08:47 · recursion-guard"></span>
           <span class="timeline-dot guarded"
-                style="left: 3.35%;"
-                title="flush · 10:48 · recursion-guard"></span>
+                style="left: 72.74%;"
+                title="flush · 09:31 · recursion-guard"></span>
           <span class="timeline-dot guarded"
-                style="left: 3.39%;"
-                title="flush · 10:48 · recursion-guard"></span>
+                style="left: 72.74%;"
+                title="flush · 09:31 · recursion-guard"></span>
           <span class="timeline-dot guarded"
-                style="left: 3.39%;"
-                title="flush · 10:48 · recursion-guard"></span>
+                style="left: 72.78%;"
+                title="flush · 09:31 · recursion-guard"></span>
           <span class="timeline-dot guarded"
-                style="left: 3.39%;"
-                title="flush · 10:48 · recursion-guard"></span>
+                style="left: 72.79%;"
+                title="flush · 09:32 · recursion-guard"></span>
           <span class="timeline-dot guarded"
-                style="left: 3.39%;"
-                title="flush · 10:48 · recursion-guard"></span>
+                style="left: 72.84%;"
+                title="flush · 09:32 · recursion-guard"></span>
           <span class="timeline-dot guarded"
-                style="left: 3.39%;"
-                title="flush · 10:48 · recursion-guard · 0.0s"></span>
+                style="left: 72.86%;"
+                title="flush · 09:33 · recursion-guard"></span>
           <span class="timeline-dot guarded"
-                style="left: 3.39%;"
-                title="flush · 10:48 · recursion-guard"></span>
+                style="left: 72.88%;"
+                title="flush · 09:33 · recursion-guard"></span>
           <span class="timeline-dot guarded"
-                style="left: 3.39%;"
-                title="flush · 10:48 · recursion-guard"></span>
+                style="left: 72.89%;"
+                title="flush · 09:33 · recursion-guard"></span>
           <span class="timeline-dot guarded"
-                style="left: 3.39%;"
-                title="flush · 10:48 · recursion-guard"></span>
-          <span class="timeline-dot guarded"
-                style="left: 3.39%;"
-                title="flush · 10:48 · recursion-guard"></span>
+                style="left: 75.57%;"
+                title="flush · 10:12 · recursion-guard"></span>
       </div>
       <div class="timeline-label">job_feed</div>
       <div class="timeline-lane">
           <span class="timeline-dot success"
-                style="left: 2.08%;"
+                style="left: 66.44%;"
+                title="job_feed · 08:00 · success · 36.1s"></span>
+          <span class="timeline-dot success"
+                style="left: 68.51%;"
+                title="job_feed · 08:30 · success · 24.9s"></span>
+          <span class="timeline-dot success"
+                style="left: 70.56%;"
+                title="job_feed · 09:00 · success · 0.0s"></span>
+          <span class="timeline-dot success"
+                style="left: 72.65%;"
+                title="job_feed · 09:30 · success · 0.0s"></span>
+          <span class="timeline-dot success"
+                style="left: 74.73%;"
+                title="job_feed · 10:00 · success · 0.0s"></span>
+          <span class="timeline-dot success"
+                style="left: 76.82%;"
                 title="job_feed · 10:30 · success · 0.0s"></span>
           <span class="timeline-dot success"
-                style="left: 4.17%;"
+                style="left: 78.9%;"
                 title="job_feed · 11:00 · success · 0.0s"></span>
       </div>
     <div class="timeline-axis">
-        <span>10:00</span>
-        <span>16:00</span>
-        <span>22:00</span>
-        <span>04:00</span>
-        <span>10:00</span>
+        <span>16:03</span>
+        <span>22:03</span>
+        <span>04:03</span>
+        <span>10:03</span>
+        <span>16:03</span>
     </div>
   </div>
 </section>
@@ -389,20 +401,20 @@ Most agents · $0/run
 <section class="panel mix-panel">
   <div class="eyebrow">Model mix · last 30 days</div>
   <div class="mix-row">
-    <div class="mix-donut"><svg viewBox="0 0 160 160" width="160" height="160" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0; display: block;" font-family="Sora, system-ui, sans-serif"><circle cx="80.0" cy="80.0" r="71.00" fill="none" stroke="#C084FC" stroke-opacity="0.10" stroke-width="18"/><path d="M 80.00 9.00 A 71.00 71.00 0 1 1 46.09 17.62" fill="none" stroke="#F0B429" stroke-width="18" stroke-linecap="round"/><path d="M 46.09 17.62 A 71.00 71.00 0 0 1 80.00 9.00" fill="none" stroke="#FF5C46" stroke-width="18" stroke-linecap="round"/><text x="80.0" y="78.0" text-anchor="middle" font-size="20" font-weight="700" fill="#F4EFE6" font-variant-numeric="tabular-nums" letter-spacing="-0.02em">92.1%</text><text x="80.0" y="94.0" text-anchor="middle" font-size="9" fill="#6B6478" letter-spacing="0.08em" font-family="JetBrains Mono, monospace">LOCAL</text></svg></div>
+    <div class="mix-donut"><svg viewBox="0 0 160 160" width="160" height="160" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0; display: block;" font-family="Sora, system-ui, sans-serif"><circle cx="80.0" cy="80.0" r="71.00" fill="none" stroke="#C084FC" stroke-opacity="0.10" stroke-width="18"/><path d="M 80.00 9.00 A 71.00 71.00 0 1 1 47.56 16.84" fill="none" stroke="#F0B429" stroke-width="18" stroke-linecap="round"/><path d="M 47.56 16.84 A 71.00 71.00 0 0 1 80.00 9.00" fill="none" stroke="#FF5C46" stroke-width="18" stroke-linecap="round"/><text x="80.0" y="78.0" text-anchor="middle" font-size="20" font-weight="700" fill="#F4EFE6" font-variant-numeric="tabular-nums" letter-spacing="-0.02em">92.4%</text><text x="80.0" y="94.0" text-anchor="middle" font-size="9" fill="#6B6478" letter-spacing="0.08em" font-family="JetBrains Mono, monospace">LOCAL</text></svg></div>
     <ul class="mix-legend">
         <li class="mix-legend-row">
           <span class="mix-swatch" style="background: #F0B429;
                                           box-shadow: 0 0 8px #F0B42955;"></span>
           <span class="mix-label">local</span>
-          <span class="mix-pct">92.1%</span>
-          <span class="mix-count">337 runs</span>
+          <span class="mix-pct">92.4%</span>
+          <span class="mix-count">355 runs</span>
         </li>
         <li class="mix-legend-row">
           <span class="mix-swatch" style="background: #FF5C46;
                                           box-shadow: 0 0 8px #FF5C4655;"></span>
           <span class="mix-label">cloud</span>
-          <span class="mix-pct">7.9%</span>
+          <span class="mix-pct">7.6%</span>
           <span class="mix-count">29 runs</span>
         </li>
     </ul>
@@ -515,7 +527,7 @@ Most agents · $0/run
   <strong>Built by Sean Winslow.</strong>
   Multi-agent fleet on macOS launchd, 99% local-first inference.
   <a href="https://github.com/seanwinslow28/agent-fleet-observability">View source</a>
-  · last build 2026-05-19 10:00 UTC
+  · last build 2026-05-19 16:03 UTC
 </footer>  <script src="assets/motion.js" defer></script>
 </body>
 </html>
