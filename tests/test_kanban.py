@@ -373,3 +373,91 @@ def test_feed_ticket_subheadline_is_first_seen_date_or_empty():
     anthropic = next(t for t in tickets if t["source"] == "feed"
                      and t["headline"].startswith("Anthropic"))
     assert anthropic["subheadline"] == ""
+
+
+def test_eval_cases_become_tickets():
+    data = {
+        **_data(),
+        "eval_last_run": {
+            "passed": 7, "failed": 2, "skipped": 1, "total_cases": 10,
+            "cases": [
+                {"id": "case-1-broken-wikilink", "category": "lint", "status": "passed"},
+                {"id": "case-7-cycle-detect",    "category": "lint", "status": "failed"},
+                {"id": "case-9-concept-merge",   "category": "synth", "status": "failed"},
+                {"id": "case-10-stale-frontmatter", "category": "lint", "status": "skipped"},
+            ],
+            "run_id": "2026-05-18-run",
+        },
+    }
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    eval_tix = [t for t in tickets if t["source"] == "eval"]
+    headlines = {t["headline"] for t in eval_tix}
+    assert "eval failed: case-7-cycle-detect" in headlines
+    assert "eval failed: case-9-concept-merge" in headlines
+    # Passed + skipped cases must NOT become tickets
+    assert not any("case-1-broken" in h for h in headlines)
+    assert not any("case-10-stale" in h for h in headlines)
+
+
+def test_eval_case_subheadline_is_run_date_when_run_id_is_dated():
+    data = {
+        **_data(),
+        "eval_last_run": {
+            "passed": 9, "failed": 1, "skipped": 0, "total_cases": 10,
+            "cases": [{"id": "case-3", "category": "synth", "status": "failed"}],
+            "run_id": "2026-05-18-run",
+        },
+    }
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    case_tix = [t for t in tickets if t["source"] == "eval"
+                and t["_eval_case_id"] == "case-3"]
+    assert len(case_tix) == 1
+    # Subheadline = first 10 chars of run_id when it parses as a date
+    assert case_tix[0]["subheadline"] == "2026-05-18"
+
+
+def test_eval_case_subheadline_empty_when_run_id_not_date_shaped():
+    """If run_id doesn't start with YYYY-MM-DD, subheadline falls back to empty."""
+    data = {
+        **_data(),
+        "eval_last_run": {
+            "passed": 0, "failed": 1, "skipped": 0, "total_cases": 1,
+            "cases": [{"id": "case-3", "category": "synth", "status": "failed"}],
+            "run_id": "local-run-42",
+        },
+    }
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    case = next(t for t in tickets if t.get("_eval_case_id") == "case-3")
+    assert case["subheadline"] == ""
+
+
+def test_eval_case_status_uppercase_is_normalized():
+    """`.lower()` on case status — `FAILED` still becomes a ticket."""
+    data = {
+        **_data(),
+        "eval_last_run": {
+            "passed": 0, "failed": 1, "skipped": 0, "total_cases": 1,
+            "cases": [{"id": "case-shouty", "category": "lint", "status": "FAILED"}],
+            "run_id": "2026-05-18-run",
+        },
+    }
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    headlines = {t["headline"] for t in tickets if t["source"] == "eval"}
+    assert "eval failed: case-shouty" in headlines
+
+
+def test_eval_cases_and_agent_run_failures_coexist():
+    runs = [_run("deep_researcher", "failed", minutes_ago=10, notes="timeout 900s")]
+    data = {
+        **_data(),
+        "agent_runs": runs,
+        "eval_last_run": {
+            "passed": 9, "failed": 1, "skipped": 0, "total_cases": 10,
+            "cases": [{"id": "case-3", "category": "synth", "status": "failed"}],
+            "run_id": "2026-05-18-run",
+        },
+    }
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    headlines = {t["headline"] for t in tickets if t["source"] == "eval"}
+    assert any("deep_researcher failed" in h for h in headlines)
+    assert any("case-3" in h for h in headlines)

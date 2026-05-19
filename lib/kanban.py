@@ -14,6 +14,7 @@ from lib.statuses import ERR_STATUSES, OK_STATUSES
 
 _TOPIC_PREFIX_RE = re.compile(r"^(Topic \d+[a-z]?\s+—\s+[^.]+)")
 _DONE_TAIL_RE = re.compile(r"\s*—\s*done\s+\d{4}-\d{2}-\d{2}.*$")
+_RUN_ID_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}")
 
 
 def _parse_research_title(raw: str) -> dict:
@@ -106,10 +107,10 @@ def compose_tickets(data: dict, *, include_job_feed: bool) -> list[dict]:
             "details": f"{iss['path']} — {iss['context']}",
         })
 
-    # --- eval (failures from agent_runs) ---------------------------------
-    # One ticket per agent × unresolved failure within the last 7 days.
+    # --- eval (agent_runs failures + failing eval cases) -----------------
     runs = data.get("agent_runs") or []
     out.extend(_failures_to_tickets(runs))
+    out.extend(_eval_cases_to_tickets(data.get("eval_last_run", {}) or {}))
 
     # --- manual ----------------------------------------------------------
     mt = data.get("manual_tickets", {})
@@ -206,6 +207,42 @@ def _failures_to_tickets(runs: list[dict]) -> list[dict]:
             "created_at": latest_failure["ts"].isoformat(),
             "moved_at": latest_failure["ts"].isoformat(),
             "details": notes or None,
+        })
+    return out
+
+
+def _eval_cases_to_tickets(eval_last_run: dict) -> list[dict]:
+    """Emit one ticket per failing eval case in evals/vault-synthesizer/last-run.md.
+
+    Design doc §3e: "Failing eval cases from evals/vault-synthesizer/last-run.md".
+    Only `status == "failed"` rows become tickets; passed/skipped/unknown are
+    silently dropped. Each ticket's headline is `eval failed: {case_id}`;
+    subheadline is the first 10 chars of run_id when it looks date-shaped
+    (YYYY-MM-DD…), else empty.
+    """
+    now = datetime.now(UTC).isoformat()
+    out: list[dict] = []
+    run_id = eval_last_run.get("run_id") or ""
+    subheadline = run_id[:10] if _RUN_ID_DATE_RE.match(run_id) else ""
+    for case in eval_last_run.get("cases", []) or []:
+        if (case.get("status") or "").lower() != "failed":
+            continue
+        case_id = case.get("id") or ""
+        if not case_id:
+            continue
+        category = case.get("category") or ""
+        headline = f"eval failed: {case_id}"
+        out.append({
+            "id": _stable_id("eval-case", f"{case_id}|{run_id or 'current'}"),
+            "title": headline,
+            "headline": headline,
+            "subheadline": subheadline,
+            "source": "eval",
+            "assigned_agent": None,
+            "_section_hint": "todo",
+            "_eval_case_id": case_id,
+            "created_at": now, "moved_at": now,
+            "details": f"{case_id} ({category}) failed in eval run {run_id or 'current'}",
         })
     return out
 
