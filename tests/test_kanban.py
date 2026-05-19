@@ -270,6 +270,42 @@ def test_failures_to_tickets_section_hint_is_todo():
     assert out[0]["_section_hint"] == "todo"
 
 
+def test_failures_to_tickets_empty_runs_returns_empty():
+    """Followups: explicit contract — empty input → empty output."""
+    assert kanban._failures_to_tickets([]) == []
+
+
+def test_failures_to_tickets_status_case_normalized():
+    """Followups: status comparison must be .lower()-aware."""
+    runs = [
+        {"agent": "x", "status": "FAILED", "ts": datetime.now(UTC),
+         "cost_usd": 0.0, "duration_ms": None, "turns": None, "notes": "shouty"},
+    ]
+    out = kanban._failures_to_tickets(runs)
+    assert len(out) == 1
+    assert out[0]["source"] == "eval"
+
+
+def test_failures_to_tickets_multiple_failures_same_agent_picks_latest():
+    """Followups: with no intervening success, the newest failure wins."""
+    base = datetime.now(UTC)
+    runs = [
+        {"agent": "x", "status": "failed", "ts": base - timedelta(hours=6),
+         "cost_usd": 0.0, "duration_ms": None, "turns": None, "notes": "old"},
+        {"agent": "x", "status": "failed", "ts": base - timedelta(hours=1),
+         "cost_usd": 0.0, "duration_ms": None, "turns": None, "notes": "new"},
+    ]
+    out = kanban._failures_to_tickets(runs)
+    assert len(out) == 1
+    # Newest failure survives — its notes show up in details
+    assert out[0]["details"] == "new"
+
+
+def test_compose_tickets_all_empty_inputs_returns_empty_list():
+    """Followups: cheap safety net for the all-empty-inputs path."""
+    assert kanban.compose_tickets({}, include_job_feed=False) == []
+
+
 def test_parse_research_title_returns_headline_and_details():
     out = kanban._parse_research_title(
         "Topic 5 — OpenRouter routing config. Some long prose continues here."
