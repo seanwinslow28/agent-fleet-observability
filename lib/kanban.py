@@ -10,6 +10,8 @@ import re
 from datetime import UTC, datetime, timedelta
 from os.path import basename
 
+from lib.statuses import ERR_STATUSES, OK_STATUSES
+
 _TOPIC_PREFIX_RE = re.compile(r"^(Topic \d+[a-z]?\s+—\s+[^.]+)")
 _DONE_TAIL_RE = re.compile(r"\s*—\s*done\s+\d{4}-\d{2}-\d{2}.*$")
 
@@ -123,8 +125,6 @@ def compose_tickets(data: dict, *, include_job_feed: bool) -> list[dict]:
     return out
 
 
-_ERR_STATUSES = {"error", "failed", "capped", "timeout"}
-_OK_STATUSES = {"ok", "success", "completed", "passed"}
 _FAILURE_WINDOW = timedelta(days=7)
 
 
@@ -154,9 +154,9 @@ def _failures_to_tickets(runs: list[dict]) -> list[dict]:
         latest_success_ts = None
         for r in agent_runs:
             status = r["status"].lower()
-            if status in _OK_STATUSES and latest_success_ts is None:
+            if status in OK_STATUSES and latest_success_ts is None:
                 latest_success_ts = r["ts"]
-            if status in _ERR_STATUSES:
+            if status in ERR_STATUSES:
                 latest_failure = r
                 break
         if not latest_failure:
