@@ -242,24 +242,26 @@ def test_failures_to_tickets_ages_off_after_7_days():
 
 
 def test_failures_to_tickets_title_uses_notes_then_status():
+    # New schema: title/headline = "{agent} failed: {status_word}"; notes go to details.
     runs = [
         _run("agent_a", "failed", 30, notes="ConnectTimeout to backend"),
         _run("agent_b", "failed", 60),  # no notes
     ]
     out = sorted(kanban._failures_to_tickets(runs), key=lambda t: t["assigned_agent"])
-    assert "ConnectTimeout" in out[0]["title"]
+    assert out[0]["title"] == "agent_a failed: failed"
     assert out[0]["title"].startswith("agent_a failed:")
+    assert "ConnectTimeout" in (out[0]["details"] or "")  # notes preserved in details
     assert "failed" in out[1]["title"]
 
 
-def test_failures_to_tickets_title_truncates_at_60_chars():
+def test_failures_to_tickets_title_is_status_word_notes_in_details():
+    # New schema: title is always "{agent} failed: {status_word}" — no truncation needed.
+    # Full notes are preserved verbatim in details instead.
     long_notes = "x" * 200
     runs = [_run("agent_a", "failed", 30, notes=long_notes)]
     out = kanban._failures_to_tickets(runs)
-    # "agent_a failed: " is 16 chars; the tail must be 60 chars + "…"
-    tail = out[0]["title"].split("failed: ", 1)[1]
-    assert len(tail) <= 61
-    assert tail.endswith("…")
+    assert out[0]["title"] == "agent_a failed: failed"
+    assert out[0]["details"] == long_notes
 
 
 def test_failures_to_tickets_section_hint_is_todo():
@@ -321,3 +323,53 @@ def test_research_ticket_uses_headline_and_empty_subheadline():
     assert topic5["title"] == topic5["headline"]  # back-compat
     # Full prose retained for the click-to-modal payload
     assert "Some long prose" in topic5["details"]
+
+
+def test_lint_ticket_headline_strips_tier_subheadline_has_report_date():
+    data = _data()
+    # _data() sets lint_reports["latest_date"] = "2026-05-12"
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    crit = next(t for t in tickets if t["source"] == "lint"
+                and "foo.md" in t["headline"])
+    assert crit["headline"] == "contradiction · foo.md"
+    assert "(T2)" not in crit["headline"]
+    assert crit["subheadline"] == "2026-05-12"
+    assert crit["_tier"] == "T2"  # still on the dict for meta line / future use
+    assert "contradicts bar" in crit["details"]
+
+
+def test_eval_failure_ticket_subheadline_is_failure_date():
+    runs = [_run("vault_synthesizer", "failed", minutes_ago=30, notes="cap-hit")]
+    data = {**_data(), "agent_runs": runs}
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    fail = next(t for t in tickets if t["source"] == "eval")
+    assert fail["headline"].startswith("vault_synthesizer failed")
+    # Subheadline is the failure timestamp date (YYYY-MM-DD)
+    today = datetime.now(UTC).strftime("%Y-%m-%d")
+    assert fail["subheadline"] == today
+    # Full notes preserved in details for the modal
+    assert "cap-hit" in (fail["details"] or "")
+
+
+def test_manual_ticket_has_empty_subheadline():
+    data = _data()
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    manual = next(t for t in tickets if t["source"] == "manual")
+    assert manual["headline"] == manual["title"]
+    assert manual["subheadline"] == ""  # tickets.md has no per-item date
+
+
+def test_feed_ticket_subheadline_is_first_seen_date_or_empty():
+    """Feed subheadline = first_seen_at date when present, else empty."""
+    data = _data()
+    # Augment one feed row with first_seen_at
+    data["job_feed"]["top_fit"][0]["first_seen_at"] = "2026-05-15T08:30:00Z"
+    tickets = kanban.compose_tickets(data, include_job_feed=True)
+    sierra = next(t for t in tickets if t["source"] == "feed"
+                  and t["headline"].startswith("Sierra"))
+    assert sierra["headline"] == "Sierra · Agent PM"
+    assert sierra["subheadline"] == "2026-05-15"
+    # The second feed row had no first_seen_at → empty subheadline
+    anthropic = next(t for t in tickets if t["source"] == "feed"
+                     and t["headline"].startswith("Anthropic"))
+    assert anthropic["subheadline"] == ""

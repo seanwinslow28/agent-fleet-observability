@@ -83,6 +83,7 @@ def compose_tickets(data: dict, *, include_job_feed: bool) -> list[dict]:
 
     # --- lint (top 20, severity-drain) -----------------------------------
     lint = data.get("lint_reports", {})
+    lint_date = lint.get("latest_date") or ""
     severity_order = {"CRITICAL": 0, "HIGH": 1, "MEDIUM": 2, "LOW": 3}
     issues = lint.get("issues", []) or []
     ordered = sorted(
@@ -90,10 +91,12 @@ def compose_tickets(data: dict, *, include_job_feed: bool) -> list[dict]:
         key=lambda pair: (severity_order.get(pair[1].get("severity"), 99), pair[0]),
     )
     for _idx, iss in ordered[:20]:
-        title = f"{iss['rule']} ({iss['tier']}) · {basename(iss['path'])}"
+        headline = f"{iss['rule']} · {basename(iss['path'])}"
         out.append({
             "id": _stable_id("lint", f"{iss['severity']}|{iss['rule']}|{iss['path']}"),
-            "title": title,
+            "title": headline,
+            "headline": headline,
+            "subheadline": lint_date,
             "source": "lint",
             "assigned_agent": None,
             "_section_hint": "pending",
@@ -112,21 +115,30 @@ def compose_tickets(data: dict, *, include_job_feed: bool) -> list[dict]:
     mt = data.get("manual_tickets", {})
     for section_name, hint in [("todo", "todo"), ("in_progress", "in_progress"), ("done", "done")]:
         for item in mt.get(section_name, []):
+            title = item["title"]
             out.append({
-                "id": _stable_id("manual", item["title"]),
-                "title": item["title"], "source": "manual",
+                "id": _stable_id("manual", title),
+                "title": title,
+                "headline": title,
+                "subheadline": "",
+                "source": "manual",
                 "assigned_agent": item.get("assigned_agent"),
                 "_section_hint": hint,
-                "created_at": now, "moved_at": now, "details": None,
+                "created_at": now, "moved_at": now,
+                "details": None,
             })
 
     # --- feed (private only) ---------------------------------------------
     if include_job_feed:
         for p in data.get("job_feed", {}).get("top_fit", []):
-            title = f"{p['company']} · {p['title']}"
+            headline = f"{p['company']} · {p['title']}"
+            first_seen = (p.get("first_seen_at") or "")[:10]  # YYYY-MM-DD prefix
             out.append({
-                "id": _stable_id("feed", title),
-                "title": title, "source": "feed",
+                "id": _stable_id("feed", headline),
+                "title": headline,
+                "headline": headline,
+                "subheadline": first_seen,
+                "source": "feed",
                 "assigned_agent": "Sean",
                 "_section_hint": p.get("status", "new"),
                 "created_at": now, "moved_at": now,
@@ -143,9 +155,13 @@ def _failures_to_tickets(runs: list[dict]) -> list[dict]:
     """Emit one ticket per (agent × most-recent unresolved failure within 7 days).
 
     "Unresolved" = there is no `ok`/`success`/`completed`/`passed` run for the
-    same agent at a timestamp AFTER the failure. Failures older than 7 days
-    age off; subsequent successes resolve. Title format:
-    "{agent} failed: {notes_or_status_word}" truncated to 60 chars + ….
+    same agent at a timestamp AFTER the failure. Failures older than 7 days age
+    off; subsequent successes resolve.
+
+    Ticket shape:
+        headline    = "{agent} failed: {status_word}"  (status lower-cased)
+        subheadline = "{YYYY-MM-DD}"                   (the failure date)
+        details     = the full notes string (or None when notes is empty)
     """
     now = datetime.now(UTC)
     cutoff = now - _FAILURE_WINDOW
@@ -177,13 +193,13 @@ def _failures_to_tickets(runs: list[dict]) -> list[dict]:
             continue
 
         notes = (latest_failure.get("notes") or "").strip()
-        tail = notes if notes else latest_failure["status"].lower()
-        if len(tail) > 60:
-            tail = tail[:60].rstrip() + "…"
-        title = f"{agent} failed: {tail}"
+        status_word = latest_failure["status"].lower()
+        headline = f"{agent} failed: {status_word}"
         out.append({
             "id": _stable_id("eval", f"{agent}|{latest_failure['ts'].isoformat()}"),
-            "title": title,
+            "title": headline,
+            "headline": headline,
+            "subheadline": latest_failure["ts"].strftime("%Y-%m-%d"),
             "source": "eval",
             "assigned_agent": agent,
             "_section_hint": "todo",
