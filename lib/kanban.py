@@ -17,27 +17,35 @@ _DONE_TAIL_RE = re.compile(r"\s*—\s*done\s+\d{4}-\d{2}-\d{2}.*$")
 
 
 def _parse_research_title(raw: str) -> dict:
-    """Distill a research-queue prompt into a card-sized title.
+    """Distill a research-queue prompt into a card-sized headline + full details.
 
-    Order of rules:
-        1. Strip the `— done DATE → [[wikilink]]` tail if present.
-        2. If the body starts with `Topic N — Short Title.`, use everything
-           up to (and not including) the first period.
-        3. Else if the whole body is ≤ 80 chars, use it verbatim.
-        4. Else truncate to 80 chars + `…`.
+    Returns:
+        {
+          "headline": short distilled title (≤ 80 chars, no trailing prose),
+          "details": full cleaned prose, minus the "— done DATE → wikilink" tail.
+        }
 
-    Returns dict with `title` (display) and `details` (original prose,
-    minus the done-tail, for v2 expand-on-hover).
+    Rules:
+      1. Empty/whitespace input → headline="(no title)", details=raw or "".
+      2. Strip `— done DATE → [[wikilink]]` tail if present.
+      3. If body starts with `Topic N — Short Title.`, headline = that prefix
+         (everything up to and not including the first period).
+      4. Else if body is ≤ 80 chars, headline = body verbatim.
+      5. Else truncate to 80 chars + `…`.
     """
+    if not raw or not raw.strip():
+        return {"headline": "(no title)", "details": raw or ""}
     cleaned = _DONE_TAIL_RE.sub("", raw).strip()
+    if not cleaned:
+        return {"headline": "(no title)", "details": raw}
     m = _TOPIC_PREFIX_RE.match(cleaned)
     if m:
-        title = m.group(1).strip()
+        headline = m.group(1).strip()
     elif len(cleaned) <= 80:
-        title = cleaned
+        headline = cleaned
     else:
-        title = cleaned[:80].rstrip() + "…"
-    return {"title": title, "details": cleaned}
+        headline = cleaned[:80].rstrip() + "…"
+    return {"headline": headline, "details": cleaned}
 
 
 def _stable_id(source: str, title: str) -> str:
@@ -60,9 +68,12 @@ def compose_tickets(data: dict, *, include_job_feed: bool) -> list[dict]:
     for section_name, hint in [("pending", "pending"), ("in_flight", "in_flight")]:
         for item in rq.get(section_name, []):
             parsed = _parse_research_title(item["title"])
+            headline = parsed["headline"]
             out.append({
-                "id": _stable_id("research", parsed["title"]),
-                "title": parsed["title"],
+                "id": _stable_id("research", headline),
+                "title": headline,          # back-compat alias for data.json consumers
+                "headline": headline,
+                "subheadline": "",          # pending research has no per-item date
                 "source": "research",
                 "assigned_agent": item.get("assigned_agent"),
                 "_section_hint": hint,

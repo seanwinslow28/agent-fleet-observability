@@ -136,14 +136,14 @@ def test_parse_research_title_topic_prefix():
     )
     out = kanban._parse_research_title(raw)
     expected_title = "Topic 8 — OpenRouter Python integration patterns for the agents-sdk fleet"
-    assert out["title"] == expected_title
+    assert out["headline"] == expected_title
     assert "Cover: (1) auth header pattern" in out["details"]
 
 
 def test_parse_research_title_short_question_passes_through():
     raw = "What are the practical differences between MLX and GGUF for 14B models?"
     out = kanban._parse_research_title(raw)
-    assert out["title"] == raw
+    assert out["headline"] == raw
     assert out["details"] == raw
 
 
@@ -153,16 +153,16 @@ def test_parse_research_title_long_falls_back_to_truncation():
         "and therefore has no Topic prefix and no internal sentence break for the parser to use"
     )
     out = kanban._parse_research_title(raw)
-    assert len(out["title"]) <= 81  # 80 + "…"
-    assert out["title"].endswith("…")
+    assert len(out["headline"]) <= 81  # 80 + "…"
+    assert out["headline"].endswith("…")
     assert out["details"] == raw
 
 
 def test_parse_research_title_strips_done_link_tail():
     raw = "Quick topic. — done 2026-05-01 02:00 → [[20_projects/research/old-topic]]"
     out = kanban._parse_research_title(raw)
-    assert "[[" not in out["title"]
-    assert "done 2026-05" not in out["title"]
+    assert "[[" not in out["headline"]
+    assert "done 2026-05" not in out["headline"]
 
 
 def test_compose_tickets_lint_drains_severity_in_order():
@@ -266,3 +266,58 @@ def test_failures_to_tickets_section_hint_is_todo():
     runs = [_run("agent_a", "failed", 30)]
     out = kanban._failures_to_tickets(runs)
     assert out[0]["_section_hint"] == "todo"
+
+
+def test_parse_research_title_returns_headline_and_details():
+    out = kanban._parse_research_title(
+        "Topic 5 — OpenRouter routing config. Some long prose continues here."
+    )
+    assert out["headline"] == "Topic 5 — OpenRouter routing config"
+    assert out["details"].startswith("Topic 5")
+    assert "Some long prose" in out["details"]
+    # No more `title` or `subheadline` keys from this function
+    assert "subheadline" not in out
+
+
+def test_parse_research_title_short_input_no_truncation():
+    out = kanban._parse_research_title("Short question that fits?")
+    assert out["headline"] == "Short question that fits?"
+    assert "…" not in out["headline"]
+
+
+def test_parse_research_title_strips_done_tail():
+    out = kanban._parse_research_title(
+        "Topic 12 — Foo bar. Details. — done 2026-05-16 02:46 → [[wikilink]]"
+    )
+    assert out["headline"] == "Topic 12 — Foo bar"
+    # Done-tail stripped from details too
+    assert "done 2026-05-16" not in out["details"]
+    assert "wikilink" not in out["details"]
+
+
+def test_parse_research_title_empty_input_guard():
+    """Followups: previously returned headline="" for empty/whitespace input."""
+    result = kanban._parse_research_title("   ")
+    assert result["headline"] == "(no title)"
+    assert result["details"] == "   "  # raw preserved
+
+
+def test_parse_research_title_done_tail_only_input():
+    """Input that becomes empty AFTER the done-tail strip hits the second guard."""
+    result = kanban._parse_research_title("— done 2026-05-01")
+    assert result["headline"] == "(no title)"
+    # The second guard preserves raw (not raw-or-empty), since raw is non-empty
+    assert result["details"] == "— done 2026-05-01"
+
+
+def test_research_ticket_uses_headline_and_empty_subheadline():
+    """Pending research items have no per-item date → empty subheadline."""
+    data = _data()
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    topic5 = next(t for t in tickets if t["source"] == "research"
+                  and t["headline"].startswith("Topic 5"))
+    assert topic5["headline"] == "Topic 5 — OpenRouter routing config"
+    assert topic5["subheadline"] == ""
+    assert topic5["title"] == topic5["headline"]  # back-compat
+    # Full prose retained for the click-to-modal payload
+    assert "Some long prose" in topic5["details"]
