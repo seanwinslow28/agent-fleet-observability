@@ -37,25 +37,45 @@
         {% endif %}
       </div>
       {% for t in col_tickets %}
-        <div class="ticket" data-source="{{ t.source }}" data-id="{{ t.id }}">
-          <div class="ticket-title">
+        <button type="button" class="ticket" data-source="{{ t.source }}"
+                data-id="{{ t.id }}"
+                data-details="{{ (t.details or '') }}"
+                data-headline="{{ t.headline or t.title }}"
+                data-subheadline="{{ t.subheadline or '' }}"
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
             {% if t.is_running %}<span class="pulse-dot"></span>{% endif %}
-            {{ t.title }}
+            {{ t.headline or t.title }}
           </div>
+          {% if t.subheadline %}
+            <div class="ticket-subheadline">{{ t.subheadline }}</div>
+          {% endif %}
           <div class="ticket-meta">
             {{ t.source }}
             {% if t.assigned_agent %}
-              {% set state = agent_state.get(t.assigned_agent|lower|replace('-', '_'), 'unknown') %}
+              {% set state = (agent_state or {}).get(t.assigned_agent|lower|replace('-', '_'), 'unknown') %}
               · <span class="agent-dot agent-dot--{{ state }}"></span>@{{ t.assigned_agent }}
             {% endif %}
             {% if t._tier %} · {{ t._tier }}{% endif %}
-            {% if t.details and t.source == 'feed' %} · {{ t.details }}{% endif %}
           </div>
-        </div>
+        </button>
       {% endfor %}
       {% if col_tickets|length == 0 %}
         <div class="kanban-empty">Nothing in {{ col_label }} right now.</div>
       {% endif %}
     </div>
   {% endfor %}
+</div>
+
+<div id="ticket-modal" class="ticket-modal" hidden aria-hidden="true" role="dialog"
+     aria-modal="true" aria-labelledby="ticket-modal-headline">
+  <div class="ticket-modal__backdrop" data-modal-close></div>
+  <div class="ticket-modal__dialog" role="document">
+    <button type="button" class="ticket-modal__close" data-modal-close
+            aria-label="Close ticket details">×</button>
+    <div class="ticket-modal__source" id="ticket-modal-source"></div>
+    <h2 class="ticket-modal__headline" id="ticket-modal-headline"></h2>
+    <div class="ticket-modal__subheadline" id="ticket-modal-subheadline"></div>
+    <div class="ticket-modal__details" id="ticket-modal-details"></div>
+  </div>
 </div>
