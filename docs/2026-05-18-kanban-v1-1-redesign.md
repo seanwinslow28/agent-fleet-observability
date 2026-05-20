@@ -147,7 +147,7 @@ In REPO 1 (`agent-fleet-observability`):
 | `tests/fixtures/` | Add real-shape fixtures for the new lint report format and a `research-queue.md` with mixed `[ ]` / `[x]` items. |
 
 In REPO 2 (the vault):
-- `touch /Users/seanwinslow/Code-Brain/claude-code-superuser-pack/vault/00_inbox/tickets.md` — one-line user step; falls into the plan as a manual prerequisite.
+- `touch /Users/seanwinslow/Code-Brain/code-brain/vault/00_inbox/tickets.md` — one-line user step; falls into the plan as a manual prerequisite.
 
 No schema changes anywhere. No new dependencies.
 

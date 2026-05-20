@@ -43,7 +43,7 @@ created: 2026-05-19
 | `tests/test_kanban.py` | New tests: headline split, subheadline-as-date, eval-case emitter, empty-runs, status case-norm, multi-failure-same-agent | **MODIFY** |
 | `tests/test_render_smoke.py` | Assert the rendered HTML contains the new headline/subheadline classes and a modal shell with `data-details` attributes on tickets | **MODIFY** |
 | `docs/manual-tickets-schema.md` | Schema doc for the manual-tickets vault file | **CREATE** |
-| `~/Code-Brain/claude-code-superuser-pack/vault/00_inbox/tickets.md` | Vault file — seed with empty section skeleton | **MODIFY (vault)** |
+| `~/Code-Brain/code-brain/vault/00_inbox/tickets.md` | Vault file — seed with empty section skeleton | **MODIFY (vault)** |
 | `docs/2026-05-18-kanban-v1-1-followups.md` | Mark items closed by this plan | **MODIFY** |
 
 Each file has one responsibility. The vault file is the only edit outside this repo — Sean explicitly approved seeding it (decision #3).
@@ -1066,7 +1066,7 @@ git commit -m "test(kanban): close v1.1 followup test gaps (empty-runs, case-nor
 
 **Files:**
 - Create: `docs/manual-tickets-schema.md`
-- Modify (vault): `~/Code-Brain/claude-code-superuser-pack/vault/00_inbox/tickets.md`
+- Modify (vault): `~/Code-Brain/code-brain/vault/00_inbox/tickets.md`
 
 - [ ] **Step 1: Create the schema doc**
 
@@ -1110,7 +1110,7 @@ for an on-demand render.
 
 - [ ] **Step 2: Seed the vault file with the section skeleton**
 
-Show the user the exact file you're about to write **before** writing it, and pause for confirmation (this is a vault edit, outside the repo). If approved, write `~/Code-Brain/claude-code-superuser-pack/vault/00_inbox/tickets.md`:
+Show the user the exact file you're about to write **before** writing it, and pause for confirmation (this is a vault edit, outside the repo). If approved, write `~/Code-Brain/code-brain/vault/00_inbox/tickets.md`:
 
 ```markdown
 ---

@@ -25,21 +25,18 @@ from lib import aggregations, anonymize, kanban, readers, render  # noqa: F401 โ
 logger = logging.getLogger("build")
 
 REPO = Path(__file__).resolve().parent
-VAULT = Path.home() / "Code-Brain/claude-code-superuser-pack/vault"
+VAULT = Path.home() / "Code-Brain/code-brain/vault"
 PRIVATE_OUT = Path.home() / "Sites/agent-fleet-private"
-EVAL_LAST_RUN = (
-    Path.home() / "Code-Brain/claude-code-superuser-pack/evals/vault-synthesizer/last-run.md"
-)
+EVAL_LAST_RUN = Path.home() / "Code-Brain/code-brain/evals/vault-synthesizer/last-run.md"
 
 # Job-hunt-2026 markdown trackers for ยง4d live-wire panels
 TARGET_COMPANIES_PATH = (
     Path.home()
-    / "Code-Brain/claude-code-superuser-pack/vault"
+    / "Code-Brain/code-brain/vault"
     / "20_projects/prj-job-hunt-2026/target-companies.md"
 )
 WARM_INTROS_PATH = (
-    Path.home()
-    / "Code-Brain/claude-code-superuser-pack/vault/20_projects/prj-job-hunt-2026/warm-intros.md"
+    Path.home() / "Code-Brain/code-brain/vault/20_projects/prj-job-hunt-2026/warm-intros.md"
 )
 
 AGENT_NAMES = [

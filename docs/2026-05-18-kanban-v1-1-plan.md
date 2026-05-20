@@ -31,20 +31,20 @@ Modify:
 - `tests/test_aggregations.py` — add tests for `compute_agent_state` and `compute_column_sparklines`
 
 Vault (REPO 2, one-line manual step in Task 0):
-- `touch /Users/seanwinslow/Code-Brain/claude-code-superuser-pack/vault/00_inbox/tickets.md`
+- `touch /Users/seanwinslow/Code-Brain/code-brain/vault/00_inbox/tickets.md`
 
 ---
 
 ## Task 0: Baseline + vault prerequisite
 
 **Files:**
-- Create (vault): `/Users/seanwinslow/Code-Brain/claude-code-superuser-pack/vault/00_inbox/tickets.md`
+- Create (vault): `/Users/seanwinslow/Code-Brain/code-brain/vault/00_inbox/tickets.md`
 
 - [ ] **Step 1: Create the empty manual-tickets file in the vault**
 
 ```bash
-touch /Users/seanwinslow/Code-Brain/claude-code-superuser-pack/vault/00_inbox/tickets.md
-ls -la /Users/seanwinslow/Code-Brain/claude-code-superuser-pack/vault/00_inbox/tickets.md
+touch /Users/seanwinslow/Code-Brain/code-brain/vault/00_inbox/tickets.md
+ls -la /Users/seanwinslow/Code-Brain/code-brain/vault/00_inbox/tickets.md
 ```
 Expected: file exists, 0 bytes.
 
