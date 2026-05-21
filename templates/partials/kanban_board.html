@@ -12,7 +12,7 @@
 <div class="kanban-filters">
   {% for src, label in chips %}
     {% set count = tickets|selectattr('source','equalto', src)|list|length %}
-    <button class="filter-chip {{ src }}" data-source="{{ src }}" data-active="true">
+    <button class="filter-chip {{ src }}" data-source="{{ src }}" data-active="true" aria-pressed="true">
       ● {{ label }} {{ count }}{% if src == 'feed' %} [private]{% endif %}
     </button>
   {% endfor %}

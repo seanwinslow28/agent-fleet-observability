@@ -392,6 +392,28 @@ a:hover { color: var(--accent-purple); }
   color: var(--text-tertiary);
   letter-spacing: 0.04em;
 }
+/* Brand block — URL is the primary identifier, wordmark is the descriptor.
+   Inverted from the original (wordmark big, URL small) per Task 7.4. */
+.brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+.brand-url {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: 0;
+}
+.brand-wordmark {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+}
 .status-pill {
   font-family: var(--font-mono);
   font-size: 10px;
@@ -402,6 +424,12 @@ a:hover { color: var(--accent-purple); }
   border: 1px solid var(--hairline);
   letter-spacing: 0.04em;
 }
+/* Bullet inside the fleet-health status pill mirrors the mascot's data-state
+   so the pill carries the same glanceable signal as the Asterisk Spark core. */
+.status-pill-dot { color: var(--text-primary); }
+.status-pill-dot[data-state="healthy"]  { color: var(--accent-ok); }
+.status-pill-dot[data-state="degraded"] { color: var(--accent-amber); }
+.status-pill-dot[data-state="down"]     { color: var(--accent-alert); }
 .nav-link {
   font-family: var(--font-mono);
   font-size: 11px;
@@ -1079,7 +1107,28 @@ button:active, .button:active { transform: scale(0.97); }
   .agent-grid   { grid-template-columns: 1fr; }
   .wordmark     { font-size: 13px; }
   .subtitle     { font-size: 9px; }
+  .brand-url      { font-size: 13px; }
+  .brand-wordmark { font-size: 10px; }
   table         { font-size: 10px; }
+}
+
+/* Touch-device tap-target floor (WCAG 44×44pt). Desktop visuals stay tight. */
+@media (pointer: coarse) {
+  .filter-chip {
+    min-height: 44px;
+    min-width: 44px;
+    padding: var(--space-2) var(--space-3);
+  }
+  .ticket-modal__close {
+    width: 44px;
+    height: 44px;
+  }
+  .nav-link {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-2) var(--space-3);
+  }
 }
 
 /* ───── Ticket Modal ───── */
