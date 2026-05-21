@@ -28,7 +28,7 @@
     <div class="subtitle">fleet.seanwinslow.com</div>
   </div>
   <span class="status-pill mono">● 5/8 HEALTHY</span>
-  <span class="subtitle" style="margin-left: auto;">2026-05-21 14:04 UTC</span>
+  <span class="subtitle" style="margin-left: auto;">2026-05-21 14:13 UTC</span>
   <nav style="display: flex; gap: 4px;">
     <a class="nav-link active" href="./index.html">/fleet</a>
     <a class="nav-link " href="./kanban.html">/kanban</a>
@@ -89,7 +89,12 @@ Most agents · $0/run
     <div class="kpi-value amber">$50 / mo</div>
     <div class="kpi-sub">$7 task · $20 daily breaker</div>
   </div>
-</div><section class="fleet-ribbon" aria-label="Fleet state, 8 agents, last 7 days" data-stagger>
+</div><div class="ribbon-legend" aria-label="Matchstick legend">
+  <span><span class="legend-dot legend-dot--healthy"></span>healthy run</span>
+  <span><span class="legend-dot legend-dot--alert"></span>failed run</span>
+  <span><span class="legend-dot legend-dot--quiet"></span>quiet day</span>
+</div>
+<section class="fleet-ribbon" aria-label="Fleet state, 8 agents, last 7 days" data-stagger>
     <div class="matchstick" title="vault_indexer · 7 runs in 7 days · healthy">
       <div class="matchstick-head">
         <span class="status-dot healthy"></span>
@@ -290,6 +295,16 @@ Most agents · $0/run
           47 runs · 7d
       </div>
     </div>
+  <dl class="fleet-glossary" aria-label="Agent glossary">
+    <div><dt>vault_synthesizer</dt><dd>writes nightly concept summaries from the vault.</dd></div>
+    <div><dt>vault_indexer</dt><dd>maintains the embedding index for semantic search.</dd></div>
+    <div><dt>deep_researcher</dt><dd>answers ad-hoc research questions via cloud LLMs.</dd></div>
+    <div><dt>meta_agent</dt><dd>schedules and coordinates the other agents.</dd></div>
+    <div><dt>daily_driver</dt><dd>runs the morning briefing pipeline.</dd></div>
+    <div><dt>knowledge_lint</dt><dd>checks the vault for broken links and conflicts.</dd></div>
+    <div><dt>flush</dt><dd>clears agent caches and stale work queues.</dd></div>
+    <div><dt>job_feed</dt><dd>surfaces job leads from the watchlist (private surface only).</dd></div>
+  </dl>
 </section>
 <section class="panel timeline-wrap" aria-label="24-hour fleet activity">
   <div class="eyebrow">
@@ -300,19 +315,19 @@ Most agents · $0/run
       <div class="timeline-label">vault_indexer</div>
       <div class="timeline-lane">
           <span class="timeline-dot success"
-                style="left: 50.02%;"
+                style="left: 49.44%;"
                 title="vault_indexer · 02:04 · success · 2.1m"></span>
       </div>
       <div class="timeline-label">vault_synthesizer</div>
       <div class="timeline-lane">
           <span class="timeline-dot success"
-                style="left: 55.2%;"
+                style="left: 54.61%;"
                 title="vault_synthesizer · 03:19 · success · 49.5m"></span>
       </div>
       <div class="timeline-label">deep_researcher</div>
       <div class="timeline-lane">
           <span class="timeline-dot success"
-                style="left: 52.88%;"
+                style="left: 52.29%;"
                 title="deep_researcher · 02:46 · success · 1.1m"></span>
       </div>
       <div class="timeline-label">meta_agent</div>
@@ -321,7 +336,7 @@ Most agents · $0/run
       <div class="timeline-label">daily_driver</div>
       <div class="timeline-lane">
           <span class="timeline-dot success"
-                style="left: 76.84%;"
+                style="left: 76.25%;"
                 title="daily_driver · 08:31 · success · 55.0s · $0.5335"></span>
       </div>
       <div class="timeline-label">knowledge_lint</div>
@@ -330,33 +345,33 @@ Most agents · $0/run
       <div class="timeline-label">flush</div>
       <div class="timeline-lane">
           <span class="timeline-dot guarded"
-                style="left: 76.84%;"
-                title="flush · 08:31 · recursion-guard"></span>
+                style="left: 76.25%;"
+                title="flush · 08:31 · recursion-guard (Safety mechanism: stops an agent from triggering itself in a loop.)"></span>
       </div>
       <div class="timeline-label">job_feed</div>
       <div class="timeline-lane">
           <span class="timeline-dot success"
-                style="left: 74.71%;"
+                style="left: 74.12%;"
                 title="job_feed · 08:00 · success · 25.1s"></span>
           <span class="timeline-dot success"
-                style="left: 76.78%;"
+                style="left: 76.19%;"
                 title="job_feed · 08:30 · success · 13.4s"></span>
           <span class="timeline-dot success"
-                style="left: 78.84%;"
+                style="left: 78.26%;"
                 title="job_feed · 09:00 · success · 0.0s"></span>
           <span class="timeline-dot success"
-                style="left: 80.93%;"
+                style="left: 80.34%;"
                 title="job_feed · 09:30 · success · 0.0s"></span>
           <span class="timeline-dot success"
-                style="left: 83.01%;"
+                style="left: 82.43%;"
                 title="job_feed · 10:00 · success · 0.0s"></span>
       </div>
     <div class="timeline-axis">
-        <span>14:04</span>
-        <span>20:04</span>
-        <span>02:04</span>
-        <span>08:04</span>
-        <span>14:04</span>
+        <span>14:13</span>
+        <span>20:13</span>
+        <span>02:13</span>
+        <span>08:13</span>
+        <span>14:13</span>
     </div>
   </div>
 </section>
@@ -414,7 +429,8 @@ Most agents · $0/run
 ○
           </span>
           <span class="eval-id">vs-014</span>
-          <span class="eval-category">output-completeness</span>
+          <span class="eval-category"
+>output-completeness</span>
           <span class="eval-status-pill">skipped</span>
         </li>
         <li class="eval-case eval-case--passed">
@@ -423,7 +439,8 @@ Most agents · $0/run
 ●
           </span>
           <span class="eval-id">vs-015</span>
-          <span class="eval-category">output-completeness</span>
+          <span class="eval-category"
+>output-completeness</span>
           <span class="eval-status-pill">passed</span>
         </li>
         <li class="eval-case eval-case--passed">
@@ -432,7 +449,8 @@ Most agents · $0/run
 ●
           </span>
           <span class="eval-id">vs-016</span>
-          <span class="eval-category">status-misreport</span>
+          <span class="eval-category"
+>status-misreport</span>
           <span class="eval-status-pill">passed</span>
         </li>
         <li class="eval-case eval-case--passed">
@@ -441,7 +459,8 @@ Most agents · $0/run
 ●
           </span>
           <span class="eval-id">vs-017</span>
-          <span class="eval-category">status-misreport</span>
+          <span class="eval-category"
+>status-misreport</span>
           <span class="eval-status-pill">passed</span>
         </li>
         <li class="eval-case eval-case--passed">
@@ -450,7 +469,8 @@ Most agents · $0/run
 ●
           </span>
           <span class="eval-id">vs-018</span>
-          <span class="eval-category">schema-integrity</span>
+          <span class="eval-category"
+title="Verification that data shape matches the declared schema.">schema-integrity</span>
           <span class="eval-status-pill">passed</span>
         </li>
         <li class="eval-case eval-case--passed">
@@ -459,7 +479,8 @@ Most agents · $0/run
 ●
           </span>
           <span class="eval-id">vs-019</span>
-          <span class="eval-category">config-fail-loud</span>
+          <span class="eval-category"
+>config-fail-loud</span>
           <span class="eval-status-pill">passed</span>
         </li>
         <li class="eval-case eval-case--passed">
@@ -468,7 +489,8 @@ Most agents · $0/run
 ●
           </span>
           <span class="eval-id">vs-020</span>
-          <span class="eval-category">index-integrity</span>
+          <span class="eval-category"
+>index-integrity</span>
           <span class="eval-status-pill">passed</span>
         </li>
         <li class="eval-case eval-case--passed">
@@ -477,7 +499,8 @@ Most agents · $0/run
 ●
           </span>
           <span class="eval-id">vs-021</span>
-          <span class="eval-category">downstream-consumer</span>
+          <span class="eval-category"
+>downstream-consumer</span>
           <span class="eval-status-pill">passed</span>
         </li>
         <li class="eval-case eval-case--skipped">
@@ -486,7 +509,8 @@ Most agents · $0/run
 ○
           </span>
           <span class="eval-id">vs-012</span>
-          <span class="eval-category">source-attribution</span>
+          <span class="eval-category"
+>source-attribution</span>
           <span class="eval-status-pill">skipped</span>
         </li>
         <li class="eval-case eval-case--skipped">
@@ -495,7 +519,8 @@ Most agents · $0/run
 ○
           </span>
           <span class="eval-id">vs-013</span>
-          <span class="eval-category">stale-overweighting</span>
+          <span class="eval-category"
+>stale-overweighting</span>
           <span class="eval-status-pill">skipped</span>
         </li>
     </ul>
@@ -504,7 +529,7 @@ Most agents · $0/run
   <strong>Built by Sean Winslow.</strong>
   Multi-agent fleet on macOS launchd, 99% local-first inference.
   <a href="https://github.com/seanwinslow28/agent-fleet-observability">View source</a>
-  · last build 2026-05-21 14:04 UTC
+  · last build 2026-05-21 14:13 UTC
 </footer>  <script src="assets/motion.js" defer></script>
 </body>
 </html>
