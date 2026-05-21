@@ -153,22 +153,17 @@ def _build_kpi_primitives(agg: dict) -> dict:
     local_pct = float(agg["kpis"].get("local_only_share_pct", 0) or 0)
     share_donut_svg = svg_charts.kpi_donut(local_pct, size=28, stroke=4)
 
-    # Fill bar for governor card — gemini spend vs $50 monthly cap.
+    # Fill bar for governor card — gemini spend vs $50 monthly cap. The
+    # private headroom card reuses this same SVG; the framing difference is
+    # in the adjacent label/value text, not in the primitive.
     gemini_total = float(agg.get("gemini", {}).get("total_usd", 0.0) or 0.0)
     cap_bar_svg = svg_charts.kpi_fill_bar(gemini_total, 50.0, color=svg_charts.AMBER)
-
-    # Fill bar for the private headroom card — same data axis, different
-    # framing (used %, not headroom). Template selects via is_private.
-    headroom_bar_svg = svg_charts.kpi_fill_bar(
-        gemini_total, 50.0, color=svg_charts.AMBER
-    )
 
     return {
         "eval_dots": eval_dots_svg,
         "spend_sparkline": spend_sparkline_svg,
         "share_donut": share_donut_svg,
         "cap_bar": cap_bar_svg,
-        "headroom_bar": headroom_bar_svg,
     }
 
 

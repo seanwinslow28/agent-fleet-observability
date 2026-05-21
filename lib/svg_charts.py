@@ -198,19 +198,26 @@ def sparkline(values: list[float | int], width: int = 80, height: int = 16,
 
 
 def donut(segments: list[dict], size: int = 140, stroke: int = 16,
-          center_label: str | None = None, center_sub: str | None = None) -> str:
+          center_label: str | None = None, center_sub: str | None = None,
+          css_class: str | None = None, aria_hidden: bool = False) -> str:
     """`segments`: list of {'value': float, 'color': str}. Values normalize to 360°.
 
     Renders with explicit width/height so the SVG stays at its intrinsic size
     (without these, browsers stretch the viewBox to fill any flex/grid cell).
     Optional center_label/center_sub render inside the ring — typically the
     dominant share, e.g. "92.2%" over "LOCAL".
+
+    `css_class` and `aria_hidden` let callers stamp the root <svg> with a class
+    + decorative-a11y marker at the source (used by the small KPI-row donut).
     """
     total = sum(s["value"] for s in segments) or 1.0
     radius = (size - stroke) / 2
     cx = cy = size / 2
+    class_attr = f' class="{css_class}"' if css_class else ''
+    aria_attr = ' aria-hidden="true"' if aria_hidden else ''
     parts = [
-        f'<svg viewBox="0 0 {size} {size}" width="{size}" height="{size}" '
+        f'<svg{class_attr}{aria_attr} '
+        f'viewBox="0 0 {size} {size}" width="{size}" height="{size}" '
         f'xmlns="http://www.w3.org/2000/svg" '
         f'style="flex-shrink: 0; display: block;" '
         f'font-family="Sora, system-ui, sans-serif">'
@@ -368,6 +375,9 @@ def kpi_eval_dots(passed: int, failed: int, skipped: int, total: int) -> str:
     """Row of `total` small circles — passed (amber fill), failed (alert fill),
     skipped (hollow amber). Matches the `7 / 10` eval-pass card. If `total`
     is zero, returns 10 muted hollow dots (placeholder for no-eval state).
+
+    If passed+failed+skipped exceeds `total`, the row grows to fit all cases
+    rather than silently dropping the trailing ones.
     """
     if total <= 0:
         # Empty placeholder — 10 hollow tertiary dots
@@ -375,6 +385,8 @@ def kpi_eval_dots(passed: int, failed: int, skipped: int, total: int) -> str:
         total = 10
         empty = True
     else:
+        # Grow total to fit overflow rather than dropping trailing statuses
+        total = max(total, passed + failed + skipped)
         empty = False
     r = 3.0
     gap = 4.0
@@ -506,17 +518,19 @@ def kpi_donut(local_pct: float, size: int = 28, stroke: int = 4) -> str:
     """Tiny inline donut for the local-only share card. Amber arc for local
     share, purple-soft arc for cloud share. No center text — kpi-value text
     sits BESIDE the donut, not inside.
+
+    `local_pct` is clamped to [0, 100] — a negative input would invert the
+    donut and a >100 input only renders correctly by accident.
     """
-    cloud_pct = max(0.0, 100.0 - local_pct)
-    segments = [
-        {"value": local_pct, "color": AMBER},
-        {"value": cloud_pct, "color": PURPLE_SOFT},
-    ]
-    # Reuse existing donut helper at small size, no center text.
-    svg = donut(segments, size=size, stroke=stroke)
-    # Inject class + aria-hidden into the existing <svg ...> opener for the
-    # KPI-row primitive contract. (Existing donut helper does not accept these
-    # — minimal-touch approach is to splice them in.)
-    return svg.replace(
-        "<svg ", '<svg class="kpi-donut" aria-hidden="true" ', 1
+    local_pct = max(0.0, min(100.0, float(local_pct)))
+    cloud_pct = 100.0 - local_pct
+    return donut(
+        segments=[
+            {"value": local_pct, "color": AMBER},
+            {"value": cloud_pct, "color": PURPLE_SOFT},
+        ],
+        size=size,
+        stroke=stroke,
+        css_class="kpi-donut",
+        aria_hidden=True,
     )

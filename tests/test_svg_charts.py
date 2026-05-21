@@ -137,3 +137,49 @@ def test_kpi_donut_carries_class_and_aria_hidden():
     assert 'aria-hidden="true"' in svg
     # Underlying donut renders two arcs (local + cloud) plus background ring
     assert svg.count("<path") == 2
+
+
+def test_kpi_donut_clamps_out_of_range_local_pct():
+    """Negative and >100 inputs must not invert or distort the donut.
+
+    Boundaries 0/100 render as a full ring of the appropriate color.
+    """
+    # Negative clamps to 0 — should look identical to local_pct=0 (full purple)
+    neg = svg_charts.kpi_donut(local_pct=-5)
+    zero = svg_charts.kpi_donut(local_pct=0)
+    assert neg == zero
+    # >100 clamps to 100 — should look identical to local_pct=100 (full amber)
+    over = svg_charts.kpi_donut(local_pct=105)
+    full = svg_charts.kpi_donut(local_pct=100)
+    assert over == full
+    # 0 boundary: no amber arc, single full purple ring (cloud=100%)
+    assert f'stroke="{svg_charts.PURPLE_SOFT}"' in zero
+    # 100 boundary: full amber ring (local=100%), no purple arc
+    assert f'stroke="{svg_charts.AMBER}"' in full
+
+
+def test_donut_accepts_css_class_and_aria_hidden_kwargs():
+    """donut() stamps the root <svg> with caller-supplied class + a11y attrs."""
+    segments = [{"value": 70, "color": "#F0B429"}, {"value": 30, "color": "#C084FC"}]
+    svg = svg_charts.donut(segments, size=40, stroke=6, css_class="my-cls", aria_hidden=True)
+    assert 'class="my-cls"' in svg
+    assert 'aria-hidden="true"' in svg
+    # Default: neither attr present
+    plain = svg_charts.donut(segments, size=40, stroke=6)
+    assert "class=" not in plain.split(">", 1)[0]  # no class on root <svg>
+    assert "aria-hidden" not in plain
+
+
+def test_kpi_eval_dots_overflow_grows_row_not_drops_cases():
+    """If passed+failed+skipped > total, the row expands to hold all cases.
+
+    Was previously a silent-drop: trailing statuses fell through the fence-post
+    and emitted no circles.
+    """
+    # passed+failed+skipped = 12 but total=10 → grow to 12 circles
+    svg = svg_charts.kpi_eval_dots(passed=7, failed=3, skipped=2, total=10)
+    assert svg.count("<circle") == 12
+    # 7 OK + 3 alert + 2 hollow amber — every case accounted for
+    assert svg.count(f'fill="{svg_charts.OK}"') == 7
+    assert svg.count(f'fill="{svg_charts.ALERT}"') == 3
+    assert svg.count(f'stroke="{svg_charts.AMBER}"') == 2
