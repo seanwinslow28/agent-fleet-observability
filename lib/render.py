@@ -93,6 +93,8 @@ def _build_charts(agg: dict) -> dict:
             col_spark.get("done", []), width=48, height=12, color=svg_charts.OK),
     }
 
+    kpi_primitive_svgs = _build_kpi_primitives(agg)
+
     return {
         "hero_svg": hero_svg,
         "eval_sparkline_svg": eval_spark_svg,
@@ -101,6 +103,72 @@ def _build_charts(agg: dict) -> dict:
         "model_mix_segments": mix_segments,
         "synth_60d_svg": synth_60d_svg,
         "column_sparkline_svgs": column_sparkline_svgs,
+        "kpi_primitive_svgs": kpi_primitive_svgs,
+    }
+
+
+def _build_kpi_primitives(agg: dict) -> dict:
+    """Build the 4 inline-SVG primitives for the .kpi-row cards.
+
+    Each card gets a visually distinct primitive matched to its data shape:
+    - eval_dots  → 10 dots colored by passed/failed/skipped (eval-pass card)
+    - spend_spark → 30-day spend sparkline (fleet-spend card)
+    - share_donut → small donut, local share vs cloud (local-only-share card)
+    - cap_bar    → fill bar, gemini spend vs $50 cap (governor card)
+
+    All are aria-hidden — they're decorative. The kpi-label + kpi-value text
+    remain the semantic content.
+    """
+    eval_run = agg["eval"]
+    passed = int(eval_run.get("passed", 0) or 0)
+    failed = int(eval_run.get("failed", 0) or 0)
+    skipped = int(eval_run.get("skipped", 0) or 0)
+    total = int(eval_run.get("total_cases", 0) or 0)
+    eval_dots_svg = svg_charts.kpi_eval_dots(passed, failed, skipped, total)
+
+    # 30-day daily spend series — sum cost_usd per day for the trailing 30d.
+    end = agg.get("end_date") or datetime.now(UTC).date()
+    daily_totals: list[float] = [0.0] * 30
+    for r in agg.get("recent_runs", []):
+        d = r["ts"].date() if hasattr(r["ts"], "date") else r["ts"]
+        delta = (end - d).days
+        if 0 <= delta < 30:
+            idx = 29 - delta
+            daily_totals[idx] += float(r.get("cost_usd", 0.0) or 0.0)
+    # recent_runs is capped to 50 — fall back to scanning a wider window via
+    # the cost_trend_30d aggregate if everything came back zero (handles the
+    # case where the 50 most-recent runs are all zero-cost local runs).
+    if all(v == 0 for v in daily_totals):
+        cost = agg.get("cost_trend_30d", {})
+        series = cost.get("series", {})
+        if series:
+            n_days = len(next(iter(series.values())))
+            daily_totals = [
+                sum(s[i] for s in series.values()) for i in range(n_days)
+            ]
+    spend_sparkline_svg = svg_charts.kpi_spend_sparkline(daily_totals)
+
+    # Donut for local share (always rendered, but template only uses on the
+    # public local-only-share card).
+    local_pct = float(agg["kpis"].get("local_only_share_pct", 0) or 0)
+    share_donut_svg = svg_charts.kpi_donut(local_pct, size=28, stroke=4)
+
+    # Fill bar for governor card — gemini spend vs $50 monthly cap.
+    gemini_total = float(agg.get("gemini", {}).get("total_usd", 0.0) or 0.0)
+    cap_bar_svg = svg_charts.kpi_fill_bar(gemini_total, 50.0, color=svg_charts.AMBER)
+
+    # Fill bar for the private headroom card — same data axis, different
+    # framing (used %, not headroom). Template selects via is_private.
+    headroom_bar_svg = svg_charts.kpi_fill_bar(
+        gemini_total, 50.0, color=svg_charts.AMBER
+    )
+
+    return {
+        "eval_dots": eval_dots_svg,
+        "spend_sparkline": spend_sparkline_svg,
+        "share_donut": share_donut_svg,
+        "cap_bar": cap_bar_svg,
+        "headroom_bar": headroom_bar_svg,
     }
 
 
