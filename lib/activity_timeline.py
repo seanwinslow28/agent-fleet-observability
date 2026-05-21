@@ -32,13 +32,17 @@ TERM_DEFINITIONS: dict[str, str] = {
 }
 
 
-def term_tooltip(term: str | None) -> str | None:
+def term_definition(term: str | None) -> str | None:
     """Return the long-form definition for ``term`` or ``None`` when unknown.
 
     Callers that compose `title=` strings can append `" ({definition})"` when
     a definition is present. Returning ``None`` (not an empty string) makes
     "unknown term" trivially distinguishable from "known term with empty
     definition" in templates and tests.
+
+    The function returns the raw definition string — callers are responsible
+    for wrapping it into a `title=` attribute or any other presentation. The
+    name reflects what it returns, not how a single caller happens to use it.
     """
     if not term:
         return None
@@ -171,7 +175,7 @@ def compose_timeline(
             # `recursion-guard`) or status class (e.g. `guarded`) is a known
             # insider term. Status takes precedence so the more-specific term
             # surfaces when both match.
-            definition = term_tooltip(first["status"]) or term_tooltip(status_class)
+            definition = term_definition(first["status"]) or term_definition(status_class)
             if definition:
                 title = f"{title} ({definition})"
             dots.append({

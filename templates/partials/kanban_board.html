@@ -57,7 +57,7 @@
               {% set state = (agent_state or {}).get(t.assigned_agent|lower|replace('-', '_'), 'unknown') %}
               · <span class="agent-dot agent-dot--{{ state }}"></span>@{{ t.assigned_agent }}
             {% endif %}
-            {% if t._tier %} · <span title="{{ term_definitions.get(t._tier, '') }}">{{ t._tier }}</span>{% endif %}
+            {% if t._tier %} · <span{% if term_definitions.get(t._tier) %} title="{{ term_definitions[t._tier] }}"{% endif %}>{{ t._tier }}</span>{% endif %}
           </div>
         </button>
       {% endfor %}
