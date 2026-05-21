@@ -51,6 +51,7 @@
             <div class="ticket-subheadline">{{ t.subheadline }}</div>
           {% endif %}
           <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="{{ t.source }}" aria-hidden="true"></span>
             {{ t.source }}
             {% if t.assigned_agent %}
               {% set state = (agent_state or {}).get(t.assigned_agent|lower|replace('-', '_'), 'unknown') %}
