@@ -1,9 +1,9 @@
-/* Agent Fleet Observability — Spark Console
+/* Agent Fleet Observability - Spark Console
  * Tokens locked in DESIGN.md (repo root). When a value changes there, change it here.
  * If a color isn't in the Spark mascot, it doesn't belong on this page. */
 
 :root {
-  /* Surface ladder — warm OLED with purple undertone */
+  /* Surface ladder - warm OLED with purple undertone */
   --bg-base:        #0E0B14;
   --bg-raised:      #171320;
   --bg-recessed:    #0A0810;
@@ -12,12 +12,12 @@
   --glow-amber:     rgba(240,180,41,0.04);
   --glow-purple:    rgba(192,132,252,0.06);
 
-  /* Text — warm off-white, purple-tinted neutrals */
+  /* Text - warm off-white, purple-tinted neutrals */
   --text-primary:   #F4EFE6;
   --text-secondary: #A89FB0;
   --text-tertiary:  #6B6478;
 
-  /* Accents — only what's in the mascot */
+  /* Accents - only what's in the mascot */
   --accent-amber:       #F0B429;
   --accent-amber-soft:  rgba(240,180,41,0.35);
   --accent-purple:      #C084FC;
@@ -35,7 +35,7 @@
   --accent-red:    var(--accent-alert);
   --accent-blue:   var(--accent-purple);
 
-  /* Gradients — used sparingly, always trace back to the mascot */
+  /* Gradients - used sparingly, always trace back to the mascot */
   --gradient-spark:      linear-gradient(180deg, #F0B429 0%, #C084FC 100%);
   --gradient-spark-hero: linear-gradient(135deg, #F0B429 0%, #FFD66B 35%, #C084FC 100%);
   --amber-glow:          radial-gradient(ellipse 800px 400px at 20% 0%, rgba(240,180,41,0.10), transparent 60%),
@@ -46,7 +46,7 @@
   --font-body:    'Sora', 'SF Pro', system-ui, sans-serif;
   --font-mono:    'JetBrains Mono', 'SF Mono', Monaco, monospace;
 
-  /* Spacing — power-of-2 */
+  /* Spacing - power-of-2 */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -63,7 +63,7 @@
   --radius-hero: 20px;
   --radius-pill: 999px;
 
-  /* Elevation — three-layer recipe (highlight + ring + drop) */
+  /* Elevation - three-layer recipe (highlight + ring + drop) */
   --shadow-panel: 0 1px 0 rgba(244,239,230,0.04) inset,
                   0 0 0 1px rgba(192,132,252,0.08),
                   0 8px 24px -12px rgba(0,0,0,0.6);
@@ -111,7 +111,7 @@ a:hover { color: var(--accent-purple); }
   padding: var(--space-5) var(--space-4) var(--space-7);
 }
 
-/* ───── panel — the workhorse surface ───── */
+/* ───── panel - the workhorse surface ───── */
 .panel {
   background: var(--bg-raised);
   border-radius: var(--radius-lg);
@@ -122,7 +122,7 @@ a:hover { color: var(--accent-purple); }
 }
 .panel-recessed { background: var(--bg-recessed); }
 
-/* Eyebrow — small uppercase mono label inside every panel */
+/* Eyebrow - small uppercase mono label inside every panel */
 .eyebrow {
   font-family: var(--font-mono);
   font-size: 10px;
@@ -239,7 +239,7 @@ a:hover { color: var(--accent-purple); }
   font-variant-numeric: tabular-nums;
 }
 
-/* Legacy support — keep agent-grid class working during transition */
+/* Legacy support - keep agent-grid class working during transition */
 .agent-grid {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
@@ -267,7 +267,7 @@ a:hover { color: var(--accent-purple); }
 .status-dot.down     { background: var(--accent-alert); box-shadow: 0 0 6px var(--accent-alert); }
 .status-dot.unknown  { background: var(--text-tertiary); }
 
-/* ───── Topbar — sticky with backdrop-blur ───── */
+/* ───── Topbar - sticky with backdrop-blur ───── */
 .topbar {
   display: flex; align-items: center; gap: var(--space-3);
   padding: var(--space-3) var(--space-4);
@@ -340,7 +340,7 @@ a:hover { color: var(--accent-purple); }
 .footer a { color: var(--text-secondary); }
 .footer a:hover { color: var(--accent-amber); }
 
-/* ───── HERO — the editorial moment ───── */
+/* ───── HERO - the editorial moment ───── */
 .hero-plate {
   position: relative;
   padding: var(--space-7) var(--space-6) var(--space-6);
@@ -408,7 +408,7 @@ a:hover { color: var(--accent-purple); }
 }
 .hero-chart-wrap svg { width: 100%; height: auto; display: block; }
 
-/* Legacy class for backwards-compat with the existing hero partial — kept identical shape */
+/* Legacy class for backwards-compat with the existing hero partial - kept identical shape */
 .hero-headline {
   font-family: var(--font-display);
   font-size: 18px;
@@ -417,7 +417,7 @@ a:hover { color: var(--accent-purple); }
 }
 .hero-headline .accent { color: var(--accent-amber); }
 
-/* ───── /kanban hero-plate — sub-editorial anchor ───── */
+/* ───── /kanban hero-plate - sub-editorial anchor ───── */
 /* Mirrors the /fleet hero plate at a smaller scale so a second editorial peak
  * doesn't compete with the topbar above. Same gradient numeral treatment per
  * DESIGN.md §typography (background-clip:text authorized for hero numerals). */
@@ -548,7 +548,7 @@ a:hover { color: var(--accent-purple); }
   letter-spacing: 0.04em;
 }
 
-/* ───── Asterisk Spark mascot — colors locked, animations preserved ───── */
+/* ───── Asterisk Spark mascot - colors locked, animations preserved ───── */
 @keyframes m-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes m-blink {
   0%, 88%, 100% { transform: scaleY(1); }
@@ -647,7 +647,6 @@ a:hover { color: var(--accent-purple); }
 .ticket {
   background: var(--bg-raised);
   border: 1px solid var(--hairline-strong);
-  border-left-width: 2px;
   border-radius: var(--radius-md);
   padding: var(--space-3);
   margin-bottom: var(--space-2);
@@ -670,11 +669,21 @@ a:hover { color: var(--accent-purple); }
 @media (hover: hover) and (pointer: fine) {
   .ticket:hover { transform: translateY(-1px); border-color: var(--hairline-strong); }
 }
-.ticket[data-source="research"] { border-left-color: var(--accent-purple); }
-.ticket[data-source="lint"]     { border-left-color: var(--accent-amber); }
-.ticket[data-source="eval"]     { border-left-color: var(--accent-alert); }
-.ticket[data-source="manual"]   { border-left-color: var(--text-secondary); }
-.ticket[data-source="feed"]     { border-left-color: var(--accent-purple); }
+/* Per-source dot indicator in ticket meta row - replaces the prior border-left stripe. */
+.ticket-source-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-tertiary);
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+.ticket-source-dot[data-source="research"] { background: var(--accent-purple); box-shadow: 0 0 6px var(--accent-purple); }
+.ticket-source-dot[data-source="lint"]     { background: var(--accent-amber);  box-shadow: 0 0 6px var(--accent-amber); }
+.ticket-source-dot[data-source="eval"]     { background: var(--accent-alert);  box-shadow: 0 0 6px var(--accent-alert); }
+.ticket-source-dot[data-source="manual"]   { background: var(--text-secondary); }
+.ticket-source-dot[data-source="feed"]     { background: var(--accent-purple); box-shadow: 0 0 6px var(--accent-purple); }
 .ticket-headline {
   font-family: var(--font-body);
   font-size: 13px;
@@ -800,7 +809,7 @@ button:active, .button:active { transform: scale(0.97); }
 }
 .hero-band-wipe[data-wiped] { clip-path: inset(0 0 0 0); }
 
-/* ───── Hero SVG fluid (line/area charts only — donut/sparkline opt out via inline style) ───── */
+/* ───── Hero SVG fluid (line/area charts only - donut/sparkline opt out via inline style) ───── */
 .panel > svg,
 .hero-plate svg,
 .hero-chart-wrap svg { max-width: 100%; height: auto; }
@@ -847,7 +856,7 @@ button:active, .button:active { transform: scale(0.97); }
 .mix-pct      { color: var(--text-primary); font-weight: 600; text-align: right; }
 .mix-count    { color: var(--text-tertiary); font-size: 11px; }
 
-/* ───── Eval grid — list, not 14-column matrix (data we actually have) ───── */
+/* ───── Eval grid - list, not 14-column matrix (data we actually have) ───── */
 .eval-grid {
   list-style: none;
   padding: 0;
@@ -858,20 +867,28 @@ button:active, .button:active { transform: scale(0.97); }
 }
 .eval-case {
   display: grid;
-  grid-template-columns: 18px 80px 1fr auto;
+  grid-template-columns: 10px 18px 80px 1fr auto;
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-3) var(--space-3);
   border-radius: var(--radius-md);
   background: var(--bg-recessed);
   border: 1px solid var(--hairline);
-  border-left: 3px solid var(--text-tertiary);
   font-family: var(--font-mono);
   font-size: 11px;
 }
-.eval-case--passed  { border-left-color: var(--accent-ok); }
-.eval-case--failed  { border-left-color: var(--accent-alert); }
-.eval-case--skipped { border-left-color: var(--accent-amber); }
+/* Per-status dot indicator - replaces the prior border-left stripe. */
+.eval-case-status-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-tertiary);
+  flex-shrink: 0;
+}
+.eval-case--passed  .eval-case-status-dot { background: var(--accent-ok);    box-shadow: 0 0 6px var(--accent-ok); }
+.eval-case--failed  .eval-case-status-dot { background: var(--accent-alert); box-shadow: 0 0 6px var(--accent-alert); }
+.eval-case--skipped .eval-case-status-dot { background: var(--accent-amber); box-shadow: 0 0 6px var(--accent-amber); }
 .eval-marker {
   display: inline-flex; align-items: center; justify-content: center;
   width: 18px; height: 18px;
@@ -897,7 +914,7 @@ button:active, .button:active { transform: scale(0.97); }
 .eval-case--failed  .eval-status-pill { color: var(--accent-alert); border-color: rgba(255,92,70,0.3); }
 .eval-case--skipped .eval-status-pill { color: var(--accent-amber); border-color: rgba(240,180,41,0.3); }
 
-/* Empty state — Sean voice */
+/* Empty state - Sean voice */
 .empty-state {
   font-family: var(--font-mono);
   font-size: 12px;
@@ -933,7 +950,7 @@ button:active, .button:active { transform: scale(0.97); }
   .hero-band-wipe { clip-path: inset(0 0 0 0); }
 }
 
-/* ───── Mobile + responsive — 375px floor ───── */
+/* ───── Mobile + responsive - 375px floor ───── */
 @media (max-width: 1023px) {
   .kpi-row      { grid-template-columns: repeat(2, 1fr); }
   .fleet-ribbon { grid-template-columns: repeat(4, 1fr); }

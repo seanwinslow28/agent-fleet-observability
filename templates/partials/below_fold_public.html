@@ -45,10 +45,11 @@
     <ul class="eval-grid">
       {% for case in eval_cases %}
         <li class="eval-case eval-case--{{ case.status }}">
+          <span class="eval-case-status-dot" aria-hidden="true"></span>
           <span class="eval-marker" aria-hidden="true">
             {% if case.status == 'passed' %}●
             {% elif case.status == 'failed' %}✕
-            {% elif case.status == 'skipped' %}—
+            {% elif case.status == 'skipped' %}○
             {% else %}?{% endif %}
           </span>
           <span class="eval-id">{{ case.id }}</span>
