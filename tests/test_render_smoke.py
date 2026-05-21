@@ -301,3 +301,68 @@ def test_kanban_template_renders_headline_subheadline_and_modal_shell(tmp_path):
     # Modal shell rendered once at the bottom of the partial
     assert html.count('id="ticket-modal"') == 1
     assert "Topic 99 — Demo prompt" in html
+
+
+def test_topbar_brand_url_is_primary_identifier(tmp_path):
+    """Task 7.4: the topbar promotes the URL above the wordmark — the URL is
+    now the primary identifier, the wordmark is the descriptor beneath it."""
+    data = _data()
+    agg = aggregations.compute_all(data, end=date(2026, 5, 14))
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    tickets = kanban.compute_columns(tickets, data["agent_runs"])
+    render.render_public(agg, tickets, tmp_path)
+    fleet = (tmp_path / "index.html").read_text()
+    # Both brand elements present, and the URL appears before the wordmark
+    assert 'class="brand-url mono"' in fleet
+    assert 'class="brand-wordmark"' in fleet
+    assert fleet.index("brand-url") < fleet.index("brand-wordmark")
+    # The old single-line .wordmark/.subtitle pair is gone from the topbar
+    topbar = fleet[fleet.index("topbar") : fleet.index("topbar") + 1200]
+    assert 'class="wordmark"' not in topbar
+    assert 'class="subtitle">fleet.seanwinslow.com' not in topbar
+
+
+def test_status_pill_bullet_carries_fleet_state(tmp_path):
+    """Task 7.1: the bullet inside the fleet-health pill mirrors the mascot's
+    data-state so the pill carries the same glanceable signal."""
+    data = _data()
+    agg = aggregations.compute_all(data, end=date(2026, 5, 14))
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    tickets = kanban.compute_columns(tickets, data["agent_runs"])
+    render.render_public(agg, tickets, tmp_path)
+    fleet = (tmp_path / "index.html").read_text()
+    # The bullet is now wrapped in its own span keyed on data-state
+    assert 'class="status-pill-dot"' in fleet
+    # data-state attribute is one of the three known values
+    assert (
+        'class="status-pill-dot" data-state="healthy"' in fleet
+        or 'class="status-pill-dot" data-state="degraded"' in fleet
+        or 'class="status-pill-dot" data-state="down"' in fleet
+    )
+
+
+def test_footer_strong_does_not_swallow_period(tmp_path):
+    """Task 7.2: the period after 'Sean Winslow' belongs outside the strong tag."""
+    data = _data()
+    agg = aggregations.compute_all(data, end=date(2026, 5, 14))
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    tickets = kanban.compute_columns(tickets, data["agent_runs"])
+    render.render_public(agg, tickets, tmp_path)
+    fleet = (tmp_path / "index.html").read_text()
+    assert "<strong>Built by Sean Winslow</strong>." in fleet
+    assert "<strong>Built by Sean Winslow.</strong>" not in fleet
+
+
+def test_filter_chips_seed_aria_pressed_at_first_paint(tmp_path):
+    """Task 7.5: filter chips emit aria-pressed at first paint, not just
+    after motion.js init. Number of aria-pressed=true should match the
+    number of data-active=true chips in the kanban template."""
+    data = _data()
+    agg = aggregations.compute_all(data, end=date(2026, 5, 14))
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    tickets = kanban.compute_columns(tickets, data["agent_runs"])
+    render.render_public(agg, tickets, tmp_path)
+    kb = (tmp_path / "kanban.html").read_text()
+    # Public pass = 4 chips (research, lint, eval, manual), all seeded active
+    assert kb.count('aria-pressed="true"') == 4
+    assert kb.count('data-active="true"') >= 4

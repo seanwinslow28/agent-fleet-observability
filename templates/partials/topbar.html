@@ -1,12 +1,13 @@
-{# Vars: is_private (bool), active_route, snapshot_ts, fleet_health_label, extra_pills (list) #}
+{# Vars: is_private (bool), active_route, snapshot_ts, fleet_health_label,
+   mascot_state (healthy|degraded|down), extra_pills (list) #}
 <div class="topbar">
   {% include "partials/mascot.html" %}
-  <div>
-    <div class="wordmark">Agent Fleet Observability</div>
-    <div class="subtitle">fleet.seanwinslow.com</div>
+  <div class="brand">
+    <span class="brand-url mono">fleet.seanwinslow.com</span>
+    <span class="brand-wordmark">Agent Fleet Observability</span>
   </div>
   {% if is_private %}<span class="private-badge">PRIVATE</span>{% endif %}
-  <span class="status-pill mono">● {{ fleet_health_label }}</span>
+  <span class="status-pill mono"><span class="status-pill-dot" data-state="{{ mascot_state }}" aria-hidden="true">●</span> {{ fleet_health_label }}</span>
   {% for pill in extra_pills %}
     <span class="status-pill mono">{{ pill }}</span>
   {% endfor %}
