@@ -140,6 +140,15 @@ def test_parse_research_title_topic_prefix():
     assert "Cover: (1) auth header pattern" in out["details"]
 
 
+def test_parse_research_title_keeps_periods_inside_abbreviations():
+    raw = (
+        "Topic 13 — Pi (pi.dev) platform overview in 2026. "
+        "What the developer platform at https://pi.dev is."
+    )
+    out = kanban._parse_research_title(raw)
+    assert out["headline"] == "Topic 13 — Pi (pi.dev) platform overview in 2026"
+
+
 def test_parse_research_title_short_question_passes_through():
     raw = "What are the practical differences between MLX and GGUF for 14B models?"
     out = kanban._parse_research_title(raw)
