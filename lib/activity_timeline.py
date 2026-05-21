@@ -17,6 +17,33 @@ _SUCCESS_STATUSES = {"success", "ok", "completed", "passed"}
 _FAILURE_STATUSES = {"error", "failed", "capped", "timeout"}
 _GUARDED_STATUSES = {"recursion-guard", "skipped"}
 
+# Plain-English definitions for insider terms that surface on the public
+# dashboard. Keys are matched exactly against event statuses, eval categories,
+# and severity tiers; values are appended to native browser `title=` tooltips
+# so a non-developer reader can decode the jargon without leaving the page.
+# IMPORTANT: keep this list em-dash-free; the project copy guide bars `—` from
+# rendered text and we grep for it on every build.
+TERM_DEFINITIONS: dict[str, str] = {
+    "recursion-guard": "Safety mechanism: stops an agent from triggering itself in a loop.",
+    "schema-integrity": "Verification that data shape matches the declared schema.",
+    "T1": "Tier 1: highest priority, direct customer or deadline work.",
+    "T2": "Tier 2: in-flight projects, no immediate deadline.",
+    "guarded": "Run hit a safety guard (cost cap, rate limit, recursion check).",
+}
+
+
+def term_tooltip(term: str | None) -> str | None:
+    """Return the long-form definition for ``term`` or ``None`` when unknown.
+
+    Callers that compose `title=` strings can append `" ({definition})"` when
+    a definition is present. Returning ``None`` (not an empty string) makes
+    "unknown term" trivially distinguishable from "known term with empty
+    definition" in templates and tests.
+    """
+    if not term:
+        return None
+    return TERM_DEFINITIONS.get(term)
+
 
 def _classify(status: str) -> str:
     s = (status or "").lower()
@@ -140,6 +167,13 @@ def compose_timeline(
             title = " · ".join(title_bits)
             if count > 1:
                 title = f"{title} ×{count}"
+            # Append plain-English definition when the run's status (e.g.
+            # `recursion-guard`) or status class (e.g. `guarded`) is a known
+            # insider term. Status takes precedence so the more-specific term
+            # surfaces when both match.
+            definition = term_tooltip(first["status"]) or term_tooltip(status_class)
+            if definition:
+                title = f"{title} ({definition})"
             dots.append({
                 "left_pct": round(left_pct, 2),
                 "status_class": status_class,

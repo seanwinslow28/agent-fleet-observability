@@ -110,6 +110,89 @@ def test_kanban_template_renders_hero_plate(tmp_path):
     assert "—" not in hero_block
 
 
+def test_fleet_ribbon_renders_glossary_and_legend(tmp_path):
+    """Task 4.1 + 4.2: the public /fleet ribbon panel ships an 8-entry agent
+    glossary and a 3-item color legend so a non-developer reader can decode
+    the matchstick row without prior context."""
+    data = _data()
+    agg = aggregations.compute_all(data, end=date(2026, 5, 14))
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    tickets = kanban.compute_columns(tickets, data["agent_runs"])
+    render.render_public(agg, tickets, tmp_path)
+    fleet = (tmp_path / "index.html").read_text()
+    # Glossary block + every one of the 8 agent names + the legend
+    assert 'class="fleet-glossary"' in fleet
+    for agent in (
+        "vault_synthesizer", "vault_indexer", "deep_researcher", "meta_agent",
+        "daily_driver", "knowledge_lint", "flush", "job_feed",
+    ):
+        assert f"<dt>{agent}</dt>" in fleet, f"glossary missing {agent}"
+    assert "(private surface only)" in fleet  # job_feed glossary tag
+    assert 'class="ribbon-legend"' in fleet
+    assert "healthy run" in fleet and "failed run" in fleet and "quiet day" in fleet
+    # Legend appears before the matchstick row (eyebrow → legend → ribbon)
+    assert fleet.index("ribbon-legend") < fleet.index("fleet-ribbon")
+    # No em dashes introduced by the new blocks
+    ribbon_close = fleet.index("</section>", fleet.index("fleet-ribbon"))
+    glossary_block = fleet[fleet.index("ribbon-legend"):ribbon_close]
+    assert "—" not in glossary_block
+
+
+def test_timeline_titles_include_term_definitions(tmp_path):
+    """Task 4.3: 24h timeline dots whose status is a known insider term carry
+    a plain-English definition appended to the native browser tooltip."""
+    data = _data()
+    agg = aggregations.compute_all(data, end=date(2026, 5, 14))
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    tickets = kanban.compute_columns(tickets, data["agent_runs"])
+    render.render_public(agg, tickets, tmp_path)
+    fleet = (tmp_path / "index.html").read_text()
+    # Every recursion-guard event title gets the long-form definition appended.
+    if "recursion-guard" in fleet:
+        assert "Safety mechanism: stops an agent from triggering itself in a loop." in fleet
+    # No em dashes leaked into the rendered page from our new strings.
+    assert "—" not in fleet
+
+
+def test_kanban_quiet_week_prose_is_inflow_scoped(tmp_path):
+    """Task 4.4: when the 7-day inflow is zero, the hero prose talks about
+    inflow only — not backlog state, which compose_kanban_hero_stats does
+    not observe.
+    """
+    # Drive the renderer with zero tickets so the quiet-week branch fires.
+    data = {
+        "research_queue": {"pending": [], "in_flight": [], "done": []},
+        "lint_reports": {"latest_date": "2026-05-19", "issues_total": 0,
+                         "issues_by_severity": {}, "issues": []},
+        "manual_tickets": {"todo": [], "in_progress": [], "done": []},
+        "agent_runs": [],
+        "eval_last_run": {"passed": 0, "failed": 0, "skipped": 0,
+                          "total_cases": 0, "cases": []},
+        "job_feed": {"total_postings": 0, "by_status": {}, "top_fit": [], "active_count": 0},
+        "synth_manifests": [],
+        "gemini_spend": {"total_usd": 0, "run_count": 0, "tiers": {}},
+        "council_spend": {"month_total_usd": 0, "day_count": 0, "days": []},
+        "job_feed_manifests": {"latest": None, "last_7": []},
+        "target_companies": {"tier_1": [], "tier_2": [], "tier_3": [],
+                             "by_status": {}, "total": 0},
+        "warm_intros": {"active": [], "prospecting": [], "second_degree": [], "total": 0},
+        "agent_names": ["vault_synthesizer"],
+    }
+    agg = aggregations.compute_all(data, end=date(2026, 5, 14))
+    tickets = kanban.compute_columns(
+        kanban.compose_tickets(data, include_job_feed=False), data["agent_runs"]
+    )
+    render.render_public(agg, tickets, tmp_path)
+    kb = (tmp_path / "kanban.html").read_text()
+    assert "Quiet week." in kb
+    assert "No new tickets surfaced this week." in kb
+    # Old, misleading copy must be gone — it implied we know backlog state.
+    assert "Backlog is caught up" not in kb
+    # New prose is em-dash-free per project copy guide.
+    hero = kb[kb.index("kanban-hero"):kb.index("kanban-filters")]
+    assert "—" not in hero
+
+
 def test_kanban_template_renders_headline_subheadline_and_modal_shell(tmp_path):
     """Kanban board uses .ticket-headline + .ticket-subheadline and emits a modal shell."""
     from lib import aggregations, kanban, render

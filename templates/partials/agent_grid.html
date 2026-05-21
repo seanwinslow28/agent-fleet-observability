@@ -2,6 +2,11 @@
    One column per agent, mini-sparkline showing the last 7 days of activity.
    Color encodes health, height encodes run-count.
    Vars: fleet_status (list of dicts with sparkline_7d), is_private #}
+<div class="ribbon-legend" aria-label="Matchstick legend">
+  <span><span class="legend-dot legend-dot--healthy"></span>healthy run</span>
+  <span><span class="legend-dot legend-dot--alert"></span>failed run</span>
+  <span><span class="legend-dot legend-dot--quiet"></span>quiet day</span>
+</div>
 <section class="fleet-ribbon" aria-label="Fleet state, 8 agents, last 7 days" data-stagger>
   {% for tile in fleet_status %}
     {% set max_count = (tile.sparkline_7d | map(attribute='count') | max) or 1 %}
@@ -26,4 +31,14 @@
       </div>
     </div>
   {% endfor %}
+  <dl class="fleet-glossary" aria-label="Agent glossary">
+    <div><dt>vault_synthesizer</dt><dd>writes nightly concept summaries from the vault.</dd></div>
+    <div><dt>vault_indexer</dt><dd>maintains the embedding index for semantic search.</dd></div>
+    <div><dt>deep_researcher</dt><dd>answers ad-hoc research questions via cloud LLMs.</dd></div>
+    <div><dt>meta_agent</dt><dd>schedules and coordinates the other agents.</dd></div>
+    <div><dt>daily_driver</dt><dd>runs the morning briefing pipeline.</dd></div>
+    <div><dt>knowledge_lint</dt><dd>checks the vault for broken links and conflicts.</dd></div>
+    <div><dt>flush</dt><dd>clears agent caches and stale work queues.</dd></div>
+    <div><dt>job_feed</dt><dd>surfaces job leads from the watchlist (private surface only).</dd></div>
+  </dl>
 </section>

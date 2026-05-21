@@ -13,7 +13,7 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from lib import anonymize, kanban, svg_charts
+from lib import activity_timeline, anonymize, kanban, svg_charts
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR = REPO_ROOT / "templates"
@@ -156,6 +156,10 @@ def _common_context(agg: dict, *, is_private: bool, snapshot_ts: str | None = No
             {"lanes": [], "axis_labels": [], "total_runs": 0, "window_hours": 24},
         ),
         "eval_cases": agg["eval"].get("cases", []),
+        # Plain-English definitions for insider terms (T1, schema-integrity,
+        # etc.) used to attach `title=` tooltips in templates. Centralized in
+        # lib/activity_timeline.py — see Task 4.3.
+        "term_definitions": activity_timeline.TERM_DEFINITIONS,
         "gemini": agg["gemini"],
         "council": agg["council"],
         "job_feed": agg["job_feed"],
