@@ -157,6 +157,10 @@ def compose_tickets(data: dict, *, include_job_feed: bool) -> list[dict]:
         edge_detail = f"{iss['path']} — {iss['context']}"
         if ticket_id in lint_by_id:
             ticket = lint_by_id[ticket_id]
+            # Asymmetric on purpose: details dedupe (we don't want to show the
+            # same context twice in the modal), count does not (the badge
+            # reflects raw edge cardinality, e.g. "8 edges" even when several
+            # share an identical context string).
             if edge_detail not in ticket["_edge_details"]:
                 ticket["_edge_details"].append(edge_detail)
             ticket["count"] += 1
@@ -193,10 +197,10 @@ def compose_tickets(data: dict, *, include_job_feed: bool) -> list[dict]:
             headline = base_headline
         ticket["headline"] = headline
         ticket["title"] = headline
-        # Preserve the raw filename alongside the per-edge context so the
-        # modal still shows it after we humanized the displayed headline.
-        details_lines = [f"file: {ticket['_slug']}"] + ticket["_edge_details"]
-        ticket["details"] = "\n".join(details_lines)
+        # The headline is humanized; the raw filename is preserved inside each
+        # edge detail row ("{path} — {context}"), so the modal still surfaces
+        # the filename without a redundant prefix line.
+        ticket["details"] = "\n".join(ticket["_edge_details"])
         # Drop transient bookkeeping that consumers don't need.
         del ticket["_edge_details"]
         out.append(ticket)
@@ -326,10 +330,13 @@ def _eval_cases_to_tickets(eval_last_run: dict) -> list[dict]:
         case_id = case.get("id") or ""
         if not case_id:
             continue
+        # Filter cases whose own details payload is an eval-runner meta-error
+        # placeholder. The synthesized `case_details` string below can never
+        # contain a meta-error pattern, so we only inspect the upstream field.
+        if _is_meta_error_details(case.get("details")):
+            continue
         category = case.get("category") or ""
         case_details = f"{case_id} ({category}) failed in eval run {run_id or 'current'}"
-        if _is_meta_error_details(case.get("details")) or _is_meta_error_details(case_details):
-            continue
         headline = f"eval failed: {case_id}"
         out.append({
             "id": _stable_id("eval-case", f"{case_id}|{run_id or 'current'}"),

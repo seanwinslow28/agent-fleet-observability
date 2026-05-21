@@ -58,7 +58,7 @@ def compose_timeline(
             {
               "agent": "vault_indexer",
               "display_name": "vault_indexer",
-              "dot_count": 4,
+              "run_count": 4,    # raw event cardinality (collapses contribute >1)
               "dots": [
                 {"left_pct": 12.5, "status_class": "success",
                  "title": "vault_indexer · 03:00 · success · 11.4s"},
@@ -149,7 +149,10 @@ def compose_timeline(
         lanes.append({
             "agent": key,
             "display_name": agent,
-            "dot_count": sum(d["count"] for d in dots),
+            # run_count is raw event cardinality across all collapses on this
+            # lane — what the eyebrow and credibility surface need. The dot
+            # list length is the visual count, which can be smaller.
+            "run_count": sum(d["count"] for d in dots),
             "dots": dots,
         })
 
@@ -157,5 +160,7 @@ def compose_timeline(
         "window_hours": window_hours,
         "axis_labels": axis_labels,
         "lanes": lanes,
-        "total_runs": sum(len(lane["dots"]) for lane in lanes),
+        # Total runs is the raw event count — must sum lane run_count, not
+        # dot count, otherwise collapses under-report the fleet's noise.
+        "total_runs": sum(lane["run_count"] for lane in lanes),
     }
