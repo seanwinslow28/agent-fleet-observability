@@ -1,7 +1,7 @@
 """Tests for the 24-hour activity timeline composer."""
 from datetime import UTC, datetime, timedelta
 
-from lib.activity_timeline import TERM_DEFINITIONS, compose_timeline, term_tooltip
+from lib.activity_timeline import TERM_DEFINITIONS, compose_timeline, term_definition
 
 
 def _run(agent: str, hours_ago: float, status: str = "success",
@@ -97,7 +97,7 @@ def test_colocated_events_collapse_to_one_dot_with_count():
     dot = lane["dots"][0]
     assert dot["count"] == 6
     # Title carries the ×6 count; a trailing definition parenthetical may
-    # follow (see term_tooltip), so assert presence, not the literal tail.
+    # follow (see term_definition), so assert presence, not the literal tail.
     assert "×6" in dot["title"]
     # The lane's reported run_count reflects raw event cardinality, not dots.
     assert lane["run_count"] == 6
@@ -131,18 +131,50 @@ def test_single_event_has_no_count_suffix():
     assert "×" not in dot["title"]
 
 
-def test_term_tooltip_returns_definition_for_known_term():
-    assert term_tooltip("recursion-guard") == TERM_DEFINITIONS["recursion-guard"]
-    assert term_tooltip("schema-integrity") == TERM_DEFINITIONS["schema-integrity"]
-    assert term_tooltip("T1") == TERM_DEFINITIONS["T1"]
-    assert term_tooltip("T2") == TERM_DEFINITIONS["T2"]
-    assert term_tooltip("guarded") == TERM_DEFINITIONS["guarded"]
+def test_term_definition_t1_spec_text():
+    """Locks the user-visible T1 wording to the spec text. A future copy edit
+    that drifts from the recruiter-facing intent will fail this loudly instead
+    of silently shipping a worse string."""
+    d = term_definition("T1")
+    assert d is not None
+    assert d.startswith("Tier 1: highest priority")
+    assert "deadline" in d
 
 
-def test_term_tooltip_returns_none_for_unknown_term():
-    assert term_tooltip("success") is None
-    assert term_tooltip(None) is None
-    assert term_tooltip("") is None
+def test_term_definition_t2_spec_text():
+    d = term_definition("T2")
+    assert d is not None
+    assert d.startswith("Tier 2: in-flight projects")
+    assert "no immediate deadline" in d
+
+
+def test_term_definition_recursion_guard_spec_text():
+    d = term_definition("recursion-guard")
+    assert d is not None
+    assert d.startswith("Safety mechanism")
+    assert "triggering itself in a loop" in d
+
+
+def test_term_definition_guarded_spec_text():
+    d = term_definition("guarded")
+    assert d is not None
+    assert d.startswith("Run hit a safety guard")
+    assert "cost cap" in d
+    assert "rate limit" in d
+    assert "recursion check" in d
+
+
+def test_term_definition_schema_integrity_spec_text():
+    d = term_definition("schema-integrity")
+    assert d is not None
+    assert "data shape" in d
+    assert "declared schema" in d
+
+
+def test_term_definition_returns_none_for_unknown_term():
+    assert term_definition("success") is None
+    assert term_definition(None) is None
+    assert term_definition("") is None
 
 
 def test_term_definitions_are_em_dash_free():
@@ -183,7 +215,7 @@ def test_unknown_status_title_has_no_definition_suffix():
     runs = [_run("vault_indexer", hours_ago=2, status="success")]
     out = compose_timeline(runs, ["vault_indexer"], now=_NOW)
     title = out["lanes"][0]["dots"][0]["title"]
-    # No trailing parenthetical from term_tooltip — the only `(`/`)` we'd see
+    # No trailing parenthetical from term_definition; the only `(`/`)` we'd see
     # would be from a definition append.
     assert "(" not in title
     assert ")" not in title
