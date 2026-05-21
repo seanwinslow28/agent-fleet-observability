@@ -12,7 +12,7 @@ from os.path import basename
 
 from lib.statuses import ERR_STATUSES, OK_STATUSES
 
-_TOPIC_PREFIX_RE = re.compile(r"^(Topic \d+[a-z]?\s+—\s+[^.]+)")
+_TOPIC_PREFIX_RE = re.compile(r"^(Topic \d+[a-z]?\s+—\s+.+?)(?=\.\s|\.$)")
 _DONE_TAIL_RE = re.compile(r"\s*—\s*done\s+\d{4}-\d{2}-\d{2}.*$")
 _RUN_ID_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}")
 

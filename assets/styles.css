@@ -571,8 +571,8 @@ a:hover { color: var(--accent-purple); }
   letter-spacing: 0.08em;
 }
 .ticket {
-  background: var(--bg-base);
-  border: 1px solid var(--hairline);
+  background: var(--bg-raised);
+  border: 1px solid var(--hairline-strong);
   border-left-width: 2px;
   border-radius: var(--radius-md);
   padding: var(--space-3);
@@ -625,7 +625,7 @@ a:hover { color: var(--accent-purple); }
 .ticket-meta {
   font-family: var(--font-mono);
   font-size: 10px;
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
   margin-top: var(--space-1);
   font-variant-numeric: tabular-nums;
   display: flex;
