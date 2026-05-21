@@ -53,7 +53,8 @@
             {% else %}?{% endif %}
           </span>
           <span class="eval-id">{{ case.id }}</span>
-          <span class="eval-category">{{ case.category }}</span>
+          <span class="eval-category"
+                {% if term_definitions.get(case.category) %}title="{{ term_definitions[case.category] }}"{% endif %}>{{ case.category }}</span>
           <span class="eval-status-pill">{{ case.status }}</span>
         </li>
       {% endfor %}

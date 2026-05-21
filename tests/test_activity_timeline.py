@@ -1,7 +1,7 @@
 """Tests for the 24-hour activity timeline composer."""
 from datetime import UTC, datetime, timedelta
 
-from lib.activity_timeline import compose_timeline
+from lib.activity_timeline import TERM_DEFINITIONS, compose_timeline, term_tooltip
 
 
 def _run(agent: str, hours_ago: float, status: str = "success",
@@ -96,7 +96,9 @@ def test_colocated_events_collapse_to_one_dot_with_count():
     assert len(lane["dots"]) == 1
     dot = lane["dots"][0]
     assert dot["count"] == 6
-    assert dot["title"].endswith("×6")
+    # Title carries the ×6 count; a trailing definition parenthetical may
+    # follow (see term_tooltip), so assert presence, not the literal tail.
+    assert "×6" in dot["title"]
     # The lane's reported run_count reflects raw event cardinality, not dots.
     assert lane["run_count"] == 6
 
@@ -127,6 +129,64 @@ def test_single_event_has_no_count_suffix():
     dot = out["lanes"][0]["dots"][0]
     assert dot["count"] == 1
     assert "×" not in dot["title"]
+
+
+def test_term_tooltip_returns_definition_for_known_term():
+    assert term_tooltip("recursion-guard") == TERM_DEFINITIONS["recursion-guard"]
+    assert term_tooltip("schema-integrity") == TERM_DEFINITIONS["schema-integrity"]
+    assert term_tooltip("T1") == TERM_DEFINITIONS["T1"]
+    assert term_tooltip("T2") == TERM_DEFINITIONS["T2"]
+    assert term_tooltip("guarded") == TERM_DEFINITIONS["guarded"]
+
+
+def test_term_tooltip_returns_none_for_unknown_term():
+    assert term_tooltip("success") is None
+    assert term_tooltip(None) is None
+    assert term_tooltip("") is None
+
+
+def test_term_definitions_are_em_dash_free():
+    """Project copy guide bars `—` from rendered text. The render pass leaks
+    these strings into title= attributes, so they must stay clean too."""
+    for term, definition in TERM_DEFINITIONS.items():
+        assert "—" not in definition, f"{term} definition contains em-dash: {definition!r}"
+
+
+def test_recursion_guard_event_title_includes_definition():
+    """The 24h timeline composer must append the long-form definition to the
+    dot's title when the event's status is a known insider term."""
+    runs = [_run("flush", hours_ago=2, status="recursion-guard")]
+    out = compose_timeline(runs, ["flush"], now=_NOW)
+    title = out["lanes"][0]["dots"][0]["title"]
+    assert "recursion-guard" in title
+    assert TERM_DEFINITIONS["recursion-guard"] in title
+
+
+def test_collapsed_recursion_guard_dot_keeps_definition_after_count():
+    """When multiple recursion-guards collapse into one dot (×N suffix), the
+    definition still appears so the tooltip stays self-explanatory."""
+    base = _NOW - timedelta(hours=5)
+    runs = [
+        {"ts": base + timedelta(seconds=i), "agent": "flush",
+         "status": "recursion-guard", "duration_ms": None,
+         "cost_usd": 0.0, "notes": ""}
+        for i in range(3)
+    ]
+    out = compose_timeline(runs, ["flush"], now=_NOW)
+    dot = out["lanes"][0]["dots"][0]
+    assert "×3" in dot["title"]
+    assert TERM_DEFINITIONS["recursion-guard"] in dot["title"]
+
+
+def test_unknown_status_title_has_no_definition_suffix():
+    """A plain `success` run carries no parenthetical definition tail."""
+    runs = [_run("vault_indexer", hours_ago=2, status="success")]
+    out = compose_timeline(runs, ["vault_indexer"], now=_NOW)
+    title = out["lanes"][0]["dots"][0]["title"]
+    # No trailing parenthetical from term_tooltip — the only `(`/`)` we'd see
+    # would be from a definition append.
+    assert "(" not in title
+    assert ")" not in title
 
 
 def test_different_statuses_at_same_minute_do_not_collapse():
