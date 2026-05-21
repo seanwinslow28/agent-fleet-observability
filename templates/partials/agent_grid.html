@@ -2,7 +2,7 @@
    One column per agent, mini-sparkline showing the last 7 days of activity.
    Color encodes health, height encodes run-count.
    Vars: fleet_status (list of dicts with sparkline_7d), is_private #}
-<section class="fleet-ribbon" aria-label="Fleet state · 8 agents, last 7 days" data-stagger>
+<section class="fleet-ribbon" aria-label="Fleet state, 8 agents, last 7 days" data-stagger>
   {% for tile in fleet_status %}
     {% set max_count = (tile.sparkline_7d | map(attribute='count') | max) or 1 %}
     <div class="matchstick" title="{{ tile.agent }} · {{ tile.run_count_7d }} runs in 7 days · {{ tile.health }}">
