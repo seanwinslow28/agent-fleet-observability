@@ -23,12 +23,12 @@
     <div class="eye eye-l"></div>
     <div class="eye eye-r"></div>
   </div>
-</div>  <div>
-    <div class="wordmark">Agent Fleet Observability</div>
-    <div class="subtitle">fleet.seanwinslow.com</div>
+</div>  <div class="brand">
+    <span class="brand-url mono">fleet.seanwinslow.com</span>
+    <span class="brand-wordmark">Agent Fleet Observability</span>
   </div>
-  <span class="status-pill mono">● 5/8 HEALTHY</span>
-  <span class="subtitle" style="margin-left: auto;">2026-05-21 14:57 UTC</span>
+  <span class="status-pill mono"><span class="status-pill-dot" data-state="degraded" aria-hidden="true">●</span> 5/8 HEALTHY</span>
+  <span class="subtitle" style="margin-left: auto;">2026-05-21 15:07 UTC</span>
   <nav style="display: flex; gap: 4px;">
     <a class="nav-link active" href="./index.html">/fleet</a>
     <a class="nav-link " href="./kanban.html">/kanban</a>
@@ -77,7 +77,7 @@
       <svg viewBox="0 0 120 22" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" class="kpi-sparkline" aria-hidden="true"><polygon fill="#F0B429" fill-opacity="0.18" points="1,21.0 1.0,20.0 5.1,20.0 9.1,20.0 13.2,20.0 17.3,20.0 21.3,20.0 25.4,20.0 29.5,20.0 33.6,20.0 37.6,20.0 41.7,20.0 45.8,20.0 49.8,20.0 53.9,20.0 58.0,20.0 62.0,20.0 66.1,20.0 70.2,20.0 74.2,20.0 78.3,20.0 82.4,20.0 86.4,20.0 90.5,20.0 94.6,20.0 98.7,20.0 102.7,20.0 106.8,20.0 110.9,20.0 114.9,2.0 119.0,3.4 119.0,21.0"/><polyline fill="none" stroke="#F0B429" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,20.0 5.1,20.0 9.1,20.0 13.2,20.0 17.3,20.0 21.3,20.0 25.4,20.0 29.5,20.0 33.6,20.0 37.6,20.0 41.7,20.0 45.8,20.0 49.8,20.0 53.9,20.0 58.0,20.0 62.0,20.0 66.1,20.0 70.2,20.0 74.2,20.0 78.3,20.0 82.4,20.0 86.4,20.0 90.5,20.0 94.6,20.0 98.7,20.0 102.7,20.0 106.8,20.0 110.9,20.0 114.9,2.0 119.0,3.4"/></svg>
     </div>
     <div class="kpi-value">$50.37</div>
-    <div class="kpi-sub">92.7% local · 422 runs</div>
+    <div class="kpi-sub">92.7% local · 423 runs</div>
   </div>
   <div class="panel kpi-card">
     <div class="kpi-label">Local-only share</div>
@@ -276,7 +276,7 @@
           52 runs · 7d
       </div>
     </div>
-    <div class="matchstick" title="job_feed · 48 runs in 7 days · healthy">
+    <div class="matchstick" title="job_feed · 49 runs in 7 days · healthy">
       <div class="matchstick-head">
         <span class="status-dot healthy"></span>
         <span class="matchstick-name">job_feed</span>
@@ -295,10 +295,10 @@
           <span class="matchstick-tick healthy"
                 style="height: 100.0%;"></span>
           <span class="matchstick-tick healthy"
-                style="height: 85.0%;"></span>
+                style="height: 100.0%;"></span>
       </div>
       <div class="matchstick-foot">
-          48 runs · 7d
+          49 runs · 7d
       </div>
     </div>
   <dl class="fleet-glossary" aria-label="Agent glossary">
@@ -315,25 +315,25 @@
 <section class="panel timeline-wrap" aria-label="24-hour fleet activity">
   <div class="eyebrow">
     24-hour activity · 8 agents ·
-    11 runs
+    12 runs
   </div>
   <div class="timeline-grid">
       <div class="timeline-label">vault_indexer</div>
       <div class="timeline-lane">
           <span class="timeline-dot success"
-                style="left: 46.34%;"
+                style="left: 45.67%;"
                 title="vault_indexer · 02:04 · success · 2.1m"></span>
       </div>
       <div class="timeline-label">vault_synthesizer</div>
       <div class="timeline-lane">
           <span class="timeline-dot success"
-                style="left: 51.52%;"
+                style="left: 50.85%;"
                 title="vault_synthesizer · 03:19 · success · 49.5m"></span>
       </div>
       <div class="timeline-label">deep_researcher</div>
       <div class="timeline-lane">
           <span class="timeline-dot success"
-                style="left: 49.19%;"
+                style="left: 48.53%;"
                 title="deep_researcher · 02:46 · success · 1.1m"></span>
       </div>
       <div class="timeline-label">meta_agent</div>
@@ -342,7 +342,7 @@
       <div class="timeline-label">daily_driver</div>
       <div class="timeline-lane">
           <span class="timeline-dot success"
-                style="left: 73.15%;"
+                style="left: 72.48%;"
                 title="daily_driver · 08:31 · success · 55.0s · $0.5335"></span>
       </div>
       <div class="timeline-label">knowledge_lint</div>
@@ -351,36 +351,39 @@
       <div class="timeline-label">flush</div>
       <div class="timeline-lane">
           <span class="timeline-dot guarded"
-                style="left: 73.15%;"
+                style="left: 72.48%;"
                 title="flush · 08:31 · recursion-guard (Safety mechanism: stops an agent from triggering itself in a loop.)"></span>
       </div>
       <div class="timeline-label">job_feed</div>
       <div class="timeline-lane">
           <span class="timeline-dot success"
-                style="left: 71.03%;"
+                style="left: 70.36%;"
                 title="job_feed · 08:00 · success · 25.1s"></span>
           <span class="timeline-dot success"
-                style="left: 73.1%;"
+                style="left: 72.43%;"
                 title="job_feed · 08:30 · success · 13.4s"></span>
           <span class="timeline-dot success"
-                style="left: 75.16%;"
+                style="left: 74.49%;"
                 title="job_feed · 09:00 · success · 0.0s"></span>
           <span class="timeline-dot success"
-                style="left: 77.25%;"
+                style="left: 76.58%;"
                 title="job_feed · 09:30 · success · 0.0s"></span>
           <span class="timeline-dot success"
-                style="left: 79.33%;"
+                style="left: 78.66%;"
                 title="job_feed · 10:00 · success · 0.0s"></span>
           <span class="timeline-dot success"
-                style="left: 81.41%;"
+                style="left: 80.74%;"
                 title="job_feed · 10:30 · success · 0.0s"></span>
+          <span class="timeline-dot success"
+                style="left: 82.83%;"
+                title="job_feed · 11:00 · success · 0.0s"></span>
       </div>
     <div class="timeline-axis">
-        <span>14:57</span>
-        <span>20:57</span>
-        <span>02:57</span>
-        <span>08:57</span>
-        <span>14:57</span>
+        <span>15:07</span>
+        <span>21:07</span>
+        <span>03:07</span>
+        <span>09:07</span>
+        <span>15:07</span>
     </div>
   </div>
 </section>
@@ -392,14 +395,14 @@
 <section class="panel mix-panel">
   <div class="eyebrow">Model mix · last 30 days</div>
   <div class="mix-row">
-    <div class="mix-donut"><svg viewBox="0 0 160 160" width="160" height="160" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0; display: block;" font-family="Sora, system-ui, sans-serif"><circle cx="80.0" cy="80.0" r="71.00" fill="none" stroke="#C084FC" stroke-opacity="0.10" stroke-width="18"/><path d="M 80.00 9.00 A 71.00 71.00 0 1 1 48.38 16.43" fill="none" stroke="#F0B429" stroke-width="18" stroke-linecap="round"/><path d="M 48.38 16.43 A 71.00 71.00 0 0 1 80.00 9.00" fill="none" stroke="#FF5C46" stroke-width="18" stroke-linecap="round"/><text x="80.0" y="78.0" text-anchor="middle" font-size="20" font-weight="700" fill="#F4EFE6" font-variant-numeric="tabular-nums" letter-spacing="-0.02em">92.7%</text><text x="80.0" y="94.0" text-anchor="middle" font-size="9" fill="#6B6478" letter-spacing="0.08em" font-family="JetBrains Mono, monospace">LOCAL</text></svg></div>
+    <div class="mix-donut"><svg viewBox="0 0 160 160" width="160" height="160" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0; display: block;" font-family="Sora, system-ui, sans-serif"><circle cx="80.0" cy="80.0" r="71.00" fill="none" stroke="#C084FC" stroke-opacity="0.10" stroke-width="18"/><path d="M 80.00 9.00 A 71.00 71.00 0 1 1 48.45 16.40" fill="none" stroke="#F0B429" stroke-width="18" stroke-linecap="round"/><path d="M 48.45 16.40 A 71.00 71.00 0 0 1 80.00 9.00" fill="none" stroke="#FF5C46" stroke-width="18" stroke-linecap="round"/><text x="80.0" y="78.0" text-anchor="middle" font-size="20" font-weight="700" fill="#F4EFE6" font-variant-numeric="tabular-nums" letter-spacing="-0.02em">92.7%</text><text x="80.0" y="94.0" text-anchor="middle" font-size="9" fill="#6B6478" letter-spacing="0.08em" font-family="JetBrains Mono, monospace">LOCAL</text></svg></div>
     <ul class="mix-legend">
         <li class="mix-legend-row">
           <span class="mix-swatch" style="background: #F0B429;
                                           box-shadow: 0 0 8px #F0B42955;"></span>
           <span class="mix-label">local</span>
           <span class="mix-pct">92.7%</span>
-          <span class="mix-count">391 runs</span>
+          <span class="mix-count">392 runs</span>
         </li>
         <li class="mix-legend-row">
           <span class="mix-swatch" style="background: #FF5C46;
@@ -535,10 +538,10 @@ title="Verification that data shape matches the declared schema.">schema-integri
     </ul>
 </section>  </main>
 <footer class="footer">
-  <strong>Built by Sean Winslow.</strong>
+  <strong>Built by Sean Winslow</strong>.
   Multi-agent fleet on macOS launchd, 99% local-first inference.
   <a href="https://github.com/seanwinslow28/agent-fleet-observability">View source</a>
-  · last build 2026-05-21 14:57 UTC
+  · last build 2026-05-21 15:07 UTC
 </footer>  <script src="assets/motion.js" defer></script>
 </body>
 </html>
