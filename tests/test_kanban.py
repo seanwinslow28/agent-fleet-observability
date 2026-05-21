@@ -1,4 +1,4 @@
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, date, datetime, timedelta
 
 from lib import kanban
 
@@ -704,3 +704,119 @@ def test_lint_same_path_different_rule_does_not_collapse():
     # Each ticket is a single-edge ticket — no "· N edges" suffix.
     assert all(t["count"] == 1 for t in lint)
     assert all("edges" not in t["headline"] for t in lint)
+
+
+# ---------------------------------------------------------------------------
+# Task 2: /kanban hero-plate stats
+# ---------------------------------------------------------------------------
+
+
+def _ticket(source, created_offset_days, today):
+    """Build a minimal ticket with created_at = today - offset_days."""
+    ts = (today - timedelta(days=created_offset_days)).isoformat()
+    return {
+        "id": f"{source}-{created_offset_days}",
+        "source": source,
+        "created_at": ts,
+    }
+
+
+def test_compose_kanban_hero_stats_counts_last_7_days():
+    today = datetime(2026, 5, 21, tzinfo=UTC)
+    tickets = [
+        _ticket("research", 0, today),    # today
+        _ticket("research", 3, today),    # 3 days ago — in window
+        _ticket("research", 6, today),    # 6 days ago — in window
+        _ticket("lint",     7, today),    # 7 days ago — boundary, in window
+        _ticket("lint",     8, today),    # 8 days ago — out of window
+        _ticket("manual",  30, today),    # way out
+    ]
+    stats = kanban.compose_kanban_hero_stats(tickets, today=today)
+    assert stats["total_7d"] == 4
+    assert stats["is_quiet_week"] is False
+
+
+def test_compose_kanban_hero_stats_buckets_by_source():
+    today = datetime(2026, 5, 21, tzinfo=UTC)
+    tickets = [
+        _ticket("research", 1, today),
+        _ticket("research", 2, today),
+        _ticket("research", 3, today),
+        _ticket("lint",     1, today),
+        _ticket("lint",     2, today),
+        _ticket("eval",     1, today),
+        _ticket("manual",   4, today),
+        _ticket("manual",   5, today),
+    ]
+    stats = kanban.compose_kanban_hero_stats(tickets, today=today)
+    assert stats["by_source"] == {
+        "research": 3,
+        "lint": 2,
+        "eval": 1,
+        "manual": 2,
+        "feed": 0,
+    }
+
+
+def test_compose_kanban_hero_stats_quiet_week_flag():
+    today = datetime(2026, 5, 21, tzinfo=UTC)
+    stats = kanban.compose_kanban_hero_stats([], today=today)
+    assert stats["total_7d"] == 0
+    assert stats["is_quiet_week"] is True
+    assert stats["by_source"] == {
+        "research": 0, "lint": 0, "eval": 0, "manual": 0, "feed": 0,
+    }
+
+
+def test_compose_kanban_hero_stats_uses_now_when_created_at_missing():
+    """Tickets without created_at count as 'now' — they don't get dropped."""
+    today = datetime(2026, 5, 21, tzinfo=UTC)
+    tickets = [
+        {"id": "r1", "source": "research"},  # no created_at
+        {"id": "m1", "source": "manual", "created_at": None},  # explicit None
+        _ticket("lint", 30, today),  # old, excluded
+    ]
+    stats = kanban.compose_kanban_hero_stats(tickets, today=today)
+    assert stats["total_7d"] == 2
+    assert stats["by_source"]["research"] == 1
+    assert stats["by_source"]["manual"] == 1
+    assert stats["by_source"]["lint"] == 0
+
+
+def test_compose_kanban_hero_stats_feed_tickets_counted_in_private_pass():
+    """When a private caller passes feed tickets, they bucket into by_source.feed."""
+    today = datetime(2026, 5, 21, tzinfo=UTC)
+    tickets = [
+        _ticket("feed", 0, today),
+        _ticket("feed", 2, today),
+        _ticket("research", 1, today),
+    ]
+    stats = kanban.compose_kanban_hero_stats(tickets, today=today)
+    assert stats["by_source"]["feed"] == 2
+    assert stats["total_7d"] == 3
+
+
+def test_compose_kanban_hero_stats_default_today_uses_wall_clock():
+    """When today is omitted, the function uses the current UTC moment.
+
+    Smoke check: a ticket created 'now' counts; one created 30d ago does not.
+    """
+    now = datetime.now(UTC)
+    tickets = [
+        {"id": "fresh", "source": "research", "created_at": now.isoformat()},
+        {"id": "old",   "source": "lint",
+         "created_at": (now - timedelta(days=30)).isoformat()},
+    ]
+    stats = kanban.compose_kanban_hero_stats(tickets)
+    assert stats["total_7d"] == 1
+    assert stats["by_source"]["research"] == 1
+    assert stats["by_source"]["lint"] == 0
+
+
+def test_compose_kanban_hero_stats_accepts_date_object_for_today():
+    """`today` may be passed as a date as well as a datetime — same window."""
+    today_d = date(2026, 5, 21)
+    today_dt = datetime(2026, 5, 21, tzinfo=UTC)
+    tickets = [_ticket("research", 1, today_dt), _ticket("lint", 8, today_dt)]
+    stats = kanban.compose_kanban_hero_stats(tickets, today=today_d)
+    assert stats["total_7d"] == 1

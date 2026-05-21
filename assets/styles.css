@@ -417,6 +417,80 @@ a:hover { color: var(--accent-purple); }
 }
 .hero-headline .accent { color: var(--accent-amber); }
 
+/* ───── /kanban hero-plate — sub-editorial anchor ───── */
+/* Mirrors the /fleet hero plate at a smaller scale so a second editorial peak
+ * doesn't compete with the topbar above. Same gradient numeral treatment per
+ * DESIGN.md §typography (background-clip:text authorized for hero numerals). */
+.kanban-hero {
+  position: relative;
+  padding: var(--space-6) var(--space-6) var(--space-5);
+  background: var(--bg-recessed);
+  border-radius: var(--radius-hero);
+  box-shadow: var(--shadow-hero);
+  margin-bottom: var(--space-5);
+  overflow: hidden;
+}
+.kanban-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 500px 250px at 15% 0%, rgba(240,180,41,0.10), transparent 60%),
+    radial-gradient(ellipse 400px 320px at 90% 100%, rgba(192,132,252,0.08), transparent 60%);
+  pointer-events: none;
+  opacity: 0.9;
+}
+.kanban-hero > * { position: relative; z-index: 1; }
+
+.kanban-hero-display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(40px, 6vw, 72px);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  margin: 0 0 var(--space-2);
+}
+.kanban-hero-display .num {
+  background: var(--gradient-spark-hero);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  display: inline-block;
+  filter: drop-shadow(0 0 18px rgba(240,180,41,0.30));
+  font-variant-numeric: tabular-nums;
+}
+.kanban-hero-display .label {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.32em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-left: var(--space-3);
+  vertical-align: 0.45em;
+}
+/* Quiet-week swap: phrase replaces the numeral at a smaller fixed scale. */
+.kanban-hero-display--quiet { font-size: 56px; }
+.kanban-hero-display--quiet .num { filter: none; }
+
+.kanban-hero-prose {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  max-width: 56ch;
+  margin: 0 0 var(--space-4);
+}
+
+.kanban-hero-breakdown {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
 /* ───── 24-Hour Activity Timeline ───── */
 .timeline-wrap { padding: var(--space-5) var(--space-5) var(--space-4); }
 .timeline-grid {
@@ -871,6 +945,7 @@ button:active, .button:active { transform: scale(0.97); }
 @media (max-width: 767px) {
   .priv-wrap   { padding: var(--space-3); }
   .hero-plate  { padding: var(--space-5) var(--space-4); }
+  .kanban-hero { padding: var(--space-5) var(--space-4); }
   .kpi-value   { font-size: 24px; }
   .topbar      { gap: var(--space-2); padding: var(--space-2) var(--space-3); }
   .nav-link    { font-size: 10px; padding: 3px 8px; }

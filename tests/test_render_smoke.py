@@ -93,6 +93,23 @@ def test_render_kanban_includes_agent_dot_and_column_spark(tmp_path):
     assert "column-spark" in html
 
 
+def test_kanban_template_renders_hero_plate(tmp_path):
+    """The /kanban hero-plate lands above the filter chips on both passes."""
+    data = _data()
+    agg = aggregations.compute_all(data, end=date(2026, 5, 14))
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    tickets = kanban.compute_columns(tickets, data["agent_runs"])
+    render.render_public(agg, tickets, tmp_path)
+    html = (tmp_path / "kanban.html").read_text()
+    assert 'class="kanban-hero"' in html
+    assert "TICKET FLOW · LAST 7 DAYS" in html
+    # Hero-plate appears before the filter-chip row in source order.
+    assert html.index("kanban-hero") < html.index("kanban-filters")
+    # No em dashes in our new prose strings (project copy guide).
+    hero_block = html[html.index("kanban-hero"):html.index("kanban-filters")]
+    assert "—" not in hero_block
+
+
 def test_kanban_template_renders_headline_subheadline_and_modal_shell(tmp_path):
     """Kanban board uses .ticket-headline + .ticket-subheadline and emits a modal shell."""
     from lib import aggregations, kanban, render
