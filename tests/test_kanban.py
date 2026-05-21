@@ -202,9 +202,11 @@ def test_compose_tickets_lint_drains_severity_in_order():
 def test_compose_tickets_lint_title_uses_basename():
     tickets = kanban.compose_tickets(_data(), include_job_feed=False)
     lint = [t for t in tickets if t["source"] == "lint"][0]
-    # basename only in the displayed title
+    # basename only in the displayed title — no path separators
     assert "/" not in lint["title"]
-    # full path preserved in details
+    # Raw extension stripped from the headline (humanized) but full path
+    # preserved in details.
+    assert ".md" not in lint["headline"]
     assert "knowledge/concepts/foo.md" in lint["details"]
 
 
@@ -374,13 +376,15 @@ def test_lint_ticket_headline_strips_tier_subheadline_has_report_date():
     data = _data()
     # _data() sets lint_reports["latest_date"] = "2026-05-12"
     tickets = kanban.compose_tickets(data, include_job_feed=False)
+    # foo.md → "Foo" after humanizing; the raw filename moves to details.
     crit = next(t for t in tickets if t["source"] == "lint"
-                and "foo.md" in t["headline"])
-    assert crit["headline"] == "contradiction · foo.md"
+                and "foo.md" in (t["details"] or ""))
+    assert crit["headline"] == "contradiction · Foo"
     assert "(T2)" not in crit["headline"]
     assert crit["subheadline"] == "2026-05-12"
     assert crit["_tier"] == "T2"  # still on the dict for meta line / future use
     assert "contradicts bar" in crit["details"]
+    assert "foo.md" in crit["details"]
 
 
 def test_eval_failure_ticket_subheadline_is_failure_date():
@@ -506,3 +510,140 @@ def test_eval_cases_and_agent_run_failures_coexist():
     headlines = {t["headline"] for t in tickets if t["source"] == "eval"}
     assert any("deep_researcher failed" in h for h in headlines)
     assert any("case-3" in h for h in headlines)
+
+
+# ---------------------------------------------------------------------------
+# Task 1: credibility-cluster fixes
+# ---------------------------------------------------------------------------
+
+
+def test_lint_duplicate_ids_collapse_to_one_ticket_with_edge_count():
+    """8 broken-wikilink edges in one source file → one ticket with count=8.
+
+    Reproduces the 2026-05-21 critique: the lint composer was emitting one
+    ticket per broken-wikilink edge even when many edges shared the same
+    source file (and therefore the same _stable_id), producing 8 visually
+    identical rows. They must collapse.
+    """
+    same_path = "knowledge/connections/mcp-server-and-knowledge-graph-synergy.md"
+    edges = [
+        {"severity": "HIGH", "rule": "broken-wikilink", "tier": "T1",
+         "path": same_path, "context": f"edge_target_{i}"}
+        for i in range(8)
+    ]
+    data = {
+        "lint_reports": {
+            "latest_date": "2026-05-17",
+            "issues_total": 8,
+            "issues_by_severity": {"HIGH": 8},
+            "issues": edges,
+        },
+    }
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    lint = [t for t in tickets if t["source"] == "lint"]
+    assert len(lint) == 1
+    ticket = lint[0]
+    assert ticket["count"] == 8
+    assert ticket["headline"].endswith("· 8 edges")
+    # Each edge target preserved in details (deduplicated, newline-separated).
+    for i in range(8):
+        assert f"edge_target_{i}" in ticket["details"]
+
+
+def test_lint_single_edge_has_no_count_suffix_and_count_field_is_one():
+    """Edge case: a single-occurrence lint ticket must NOT show "· 1 edges"."""
+    data = {
+        "lint_reports": {
+            "latest_date": "2026-05-17",
+            "issues_total": 1,
+            "issues_by_severity": {"HIGH": 1},
+            "issues": [
+                {"severity": "HIGH", "rule": "broken-wikilink", "tier": "T1",
+                 "path": "knowledge/lone.md", "context": "lonely_target"},
+            ],
+        },
+    }
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    lint = [t for t in tickets if t["source"] == "lint"]
+    assert len(lint) == 1
+    assert lint[0]["count"] == 1
+    assert "edges" not in lint[0]["headline"]
+
+
+def test_humanize_slug_basic_and_acronyms():
+    """File-slug humanization rules."""
+    assert kanban._humanize_slug(
+        "mcp-server-and-knowledge-graph-synergy.md"
+    ) == "MCP server and knowledge graph synergy"
+    # Title-case only the first word.
+    assert kanban._humanize_slug("hello-world.md") == "Hello world"
+    # Underscores also become spaces.
+    assert kanban._humanize_slug("foo_bar_baz.md") == "Foo bar baz"
+    # No extension is fine.
+    assert kanban._humanize_slug("plain-name") == "Plain name"
+    # No hyphens, no extension → single word title-cased.
+    assert kanban._humanize_slug("foo") == "Foo"
+    # Multiple acronyms.
+    assert kanban._humanize_slug("api-cli-ui-tour.md") == "API CLI UI tour"
+    # Acronym at the front stays uppercase, not Title-cased.
+    assert kanban._humanize_slug("llm.md") == "LLM"
+    # Empty input → returned verbatim (defensive).
+    assert kanban._humanize_slug("") == ""
+
+
+def test_lint_headline_humanizes_slug_and_keeps_filename_in_details():
+    """Lint headlines no longer show raw file slugs; raw name moves to details."""
+    data = {
+        "lint_reports": {
+            "latest_date": "2026-05-17",
+            "issues_total": 1,
+            "issues_by_severity": {"HIGH": 1},
+            "issues": [
+                {"severity": "HIGH", "rule": "broken-wikilink", "tier": "T1",
+                 "path": "knowledge/connections/mcp-server-and-knowledge-graph-synergy.md",
+                 "context": "concept_edges"},
+            ],
+        },
+    }
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    lint = [t for t in tickets if t["source"] == "lint"][0]
+    assert (
+        lint["headline"]
+        == "broken-wikilink · MCP server and knowledge graph synergy"
+    )
+    # Raw filename moves to data-details so the modal still shows it.
+    assert "mcp-server-and-knowledge-graph-synergy.md" in lint["details"]
+
+
+def test_eval_meta_error_failures_are_filtered():
+    """Agent-run failures whose notes are eval-runner placeholders are dropped."""
+    runs = [
+        _run("daily-driver", "failed", minutes_ago=10,
+             notes="Check stderr output for details"),
+        _run("vault_synthesizer", "failed", minutes_ago=20,
+             notes="Command failed with exit code 1"),
+        _run("flush", "failed", minutes_ago=30,
+             notes="ConnectTimeout to backend"),  # real failure — keep
+    ]
+    out = kanban._failures_to_tickets(runs)
+    agents = {t["assigned_agent"] for t in out}
+    assert agents == {"flush"}
+
+
+def test_meta_error_pattern_match_is_case_insensitive():
+    """Patterns must match regardless of input case."""
+    runs = [
+        _run("a", "failed", minutes_ago=10, notes="CHECK STDERR OUTPUT FOR DETAILS"),
+        _run("b", "failed", minutes_ago=20, notes="command FAILED with EXIT code 1"),
+    ]
+    assert kanban._failures_to_tickets(runs) == []
+
+
+def test_eval_meta_error_substantive_details_are_kept():
+    """Substantive failure notes are not collateral damage of the filter."""
+    runs = [
+        _run("agent_x", "failed", minutes_ago=5, notes="ConnectTimeout in 12s"),
+    ]
+    out = kanban._failures_to_tickets(runs)
+    assert len(out) == 1
+    assert "ConnectTimeout" in out[0]["details"]

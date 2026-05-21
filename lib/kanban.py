@@ -8,13 +8,68 @@ from __future__ import annotations
 import hashlib
 import re
 from datetime import UTC, datetime, timedelta
-from os.path import basename
+from os.path import basename, splitext
 
 from lib.statuses import ERR_STATUSES, OK_STATUSES
 
 _TOPIC_PREFIX_RE = re.compile(r"^(Topic \d+[a-z]?\s+—\s+.+?)(?=\.\s|\.$)")
 _DONE_TAIL_RE = re.compile(r"\s*—\s*done\s+\d{4}-\d{2}-\d{2}.*$")
 _RUN_ID_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}")
+
+# Meta-error details substrings — eval tickets whose details match any of these
+# (case-insensitive substring) are dropped as un-actionable noise. The
+# eval-runner's "stderr was redirected, we lost the real failure" placeholders
+# go here. Extend by appending; keep entries lowercase.
+_META_ERROR_PATTERNS: tuple[str, ...] = (
+    "check stderr output for details",
+    "command failed with exit code",
+)
+
+# Acronyms that should stay uppercase when humanizing file slugs.
+_ACRONYMS: frozenset[str] = frozenset({
+    "mcp", "llm", "api", "cli", "ui", "ux", "mbp", "pi", "ai", "pm", "os",
+})
+
+
+def _humanize_slug(slug: str) -> str:
+    """Turn a file slug like ``mcp-server-and-knowledge-graph-synergy.md``
+    into ``MCP server and knowledge graph synergy``.
+
+    Rules:
+        - Strip any file extension.
+        - Replace hyphens and underscores with spaces.
+        - Title-case ONLY the first word; remaining words stay lowercase.
+        - Known acronyms (see ``_ACRONYMS``) stay uppercase.
+
+    Empty / whitespace input falls back to the input verbatim.
+    """
+    if not slug or not slug.strip():
+        return slug
+    stem, _ext = splitext(slug)
+    stem = stem or slug  # filename with no extension
+    cleaned = stem.replace("_", " ").replace("-", " ").strip()
+    if not cleaned:
+        return slug
+    words = cleaned.split()
+    out_words: list[str] = []
+    for i, word in enumerate(words):
+        lower = word.lower()
+        if lower in _ACRONYMS:
+            out_words.append(lower.upper())
+        elif i == 0:
+            out_words.append(word[:1].upper() + word[1:].lower())
+        else:
+            out_words.append(lower)
+    return " ".join(out_words)
+
+
+def _is_meta_error_details(details: str | None) -> bool:
+    """Return True when ``details`` is one of the known eval-runner meta-error
+    placeholders and therefore should not surface as a kanban ticket."""
+    if not details:
+        return False
+    haystack = details.lower()
+    return any(pat in haystack for pat in _META_ERROR_PATTERNS)
 
 
 def _parse_research_title(raw: str) -> dict:
@@ -82,7 +137,7 @@ def compose_tickets(data: dict, *, include_job_feed: bool) -> list[dict]:
                 "details": parsed["details"],
             })
 
-    # --- lint (top 20, severity-drain) -----------------------------------
+    # --- lint (top 20, severity-drain; duplicate ids collapsed) ----------
     lint = data.get("lint_reports", {})
     lint_date = lint.get("latest_date") or ""
     severity_order = {"CRITICAL": 0, "HIGH": 1, "MEDIUM": 2, "LOW": 3}
@@ -91,21 +146,60 @@ def compose_tickets(data: dict, *, include_job_feed: bool) -> list[dict]:
         enumerate(issues),
         key=lambda pair: (severity_order.get(pair[1].get("severity"), 99), pair[0]),
     )
-    for _idx, iss in ordered[:20]:
-        headline = f"{iss['rule']} · {basename(iss['path'])}"
-        out.append({
-            "id": _stable_id("lint", f"{iss['severity']}|{iss['rule']}|{iss['path']}"),
-            "title": headline,
-            "headline": headline,
+    # Compose distinct lint tickets up to a cap of 20. Multiple edges that
+    # share the same (severity|rule|path) id collapse into one ticket whose
+    # headline gets a ``· N edges`` suffix and whose details concatenates each
+    # constituent edge's context, deduplicated and newline-separated.
+    lint_by_id: dict[str, dict] = {}
+    lint_order: list[str] = []
+    for _idx, iss in ordered:
+        ticket_id = _stable_id("lint", f"{iss['severity']}|{iss['rule']}|{iss['path']}")
+        edge_detail = f"{iss['path']} — {iss['context']}"
+        if ticket_id in lint_by_id:
+            ticket = lint_by_id[ticket_id]
+            if edge_detail not in ticket["_edge_details"]:
+                ticket["_edge_details"].append(edge_detail)
+            ticket["count"] += 1
+            continue
+        if len(lint_by_id) >= 20:
+            continue
+        slug = basename(iss["path"])
+        humanized = _humanize_slug(slug)
+        ticket = {
+            "id": ticket_id,
+            "title": "",  # filled in after collapsing
+            "headline": "",
             "subheadline": lint_date,
             "source": "lint",
             "assigned_agent": None,
             "_section_hint": "pending",
             "_severity": iss["severity"],
             "_tier": iss["tier"],
+            "_rule": iss["rule"],
+            "_slug": slug,
+            "_humanized": humanized,
+            "_edge_details": [edge_detail],
+            "count": 1,
             "created_at": now, "moved_at": now,
-            "details": f"{iss['path']} — {iss['context']}",
-        })
+        }
+        lint_by_id[ticket_id] = ticket
+        lint_order.append(ticket_id)
+    for ticket_id in lint_order:
+        ticket = lint_by_id[ticket_id]
+        base_headline = f"{ticket['_rule']} · {ticket['_humanized']}"
+        if ticket["count"] > 1:
+            headline = f"{base_headline} · {ticket['count']} edges"
+        else:
+            headline = base_headline
+        ticket["headline"] = headline
+        ticket["title"] = headline
+        # Preserve the raw filename alongside the per-edge context so the
+        # modal still shows it after we humanized the displayed headline.
+        details_lines = [f"file: {ticket['_slug']}"] + ticket["_edge_details"]
+        ticket["details"] = "\n".join(details_lines)
+        # Drop transient bookkeeping that consumers don't need.
+        del ticket["_edge_details"]
+        out.append(ticket)
 
     # --- eval (agent_runs failures + failing eval cases) -----------------
     runs = data.get("agent_runs") or []
@@ -194,6 +288,8 @@ def _failures_to_tickets(runs: list[dict]) -> list[dict]:
             continue
 
         notes = (latest_failure.get("notes") or "").strip()
+        if _is_meta_error_details(notes):
+            continue  # eval-runner placeholder, not a real failure description
         status_word = latest_failure["status"].lower()
         headline = f"{agent} failed: {status_word}"
         out.append({
@@ -231,6 +327,9 @@ def _eval_cases_to_tickets(eval_last_run: dict) -> list[dict]:
         if not case_id:
             continue
         category = case.get("category") or ""
+        case_details = f"{case_id} ({category}) failed in eval run {run_id or 'current'}"
+        if _is_meta_error_details(case.get("details")) or _is_meta_error_details(case_details):
+            continue
         headline = f"eval failed: {case_id}"
         out.append({
             "id": _stable_id("eval-case", f"{case_id}|{run_id or 'current'}"),
@@ -242,7 +341,7 @@ def _eval_cases_to_tickets(eval_last_run: dict) -> list[dict]:
             "_section_hint": "todo",
             "_eval_case_id": case_id,
             "created_at": now, "moved_at": now,
-            "details": f"{case_id} ({category}) failed in eval run {run_id or 'current'}",
+            "details": case_details,
         })
     return out
 
