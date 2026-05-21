@@ -104,27 +104,52 @@ def compose_timeline(
     for agent in agent_names:
         key = _norm(agent)
         agent_runs = by_agent.get(key, [])
-        dots: list[dict] = []
+        # Collapse co-located events for the same agent that share the
+        # minute-resolution timestamp AND status: six recursion-guards in the
+        # same minute should render as a single dot whose title ends "×6"
+        # instead of overplotting six identical dots at the same left%.
+        grouped: dict[tuple[str, str], dict] = {}
+        order: list[tuple[str, str]] = []
         for run in agent_runs:
-            elapsed_s = (run["ts"] - window_start).total_seconds()
+            ts_minute = run["ts"].strftime("%H:%M")
+            status = run["status"]
+            group_key = (ts_minute, status)
+            entry = grouped.get(group_key)
+            if entry is None:
+                entry = {"runs": [run], "ts_minute": ts_minute}
+                grouped[group_key] = entry
+                order.append(group_key)
+            else:
+                entry["runs"].append(run)
+        dots: list[dict] = []
+        for group_key in order:
+            entry = grouped[group_key]
+            # Use the earliest timestamp in the group for left_pct positioning.
+            group_runs = sorted(entry["runs"], key=lambda r: r["ts"])
+            first = group_runs[0]
+            count = len(group_runs)
+            elapsed_s = (first["ts"] - window_start).total_seconds()
             left_pct = max(0.0, min(100.0, 100.0 * elapsed_s / window_seconds))
-            status_class = _classify(run["status"])
-            dur = _format_duration(run.get("duration_ms"))
-            ts_label = run["ts"].strftime("%H:%M")
-            title_bits = [agent, ts_label, run["status"]]
+            status_class = _classify(first["status"])
+            dur = _format_duration(first.get("duration_ms"))
+            title_bits = [agent, entry["ts_minute"], first["status"]]
             if dur:
                 title_bits.append(dur)
-            if run.get("cost_usd") and run["cost_usd"] > 0:
-                title_bits.append(f"${run['cost_usd']:.4f}")
+            if first.get("cost_usd") and first["cost_usd"] > 0:
+                title_bits.append(f"${first['cost_usd']:.4f}")
+            title = " · ".join(title_bits)
+            if count > 1:
+                title = f"{title} ×{count}"
             dots.append({
                 "left_pct": round(left_pct, 2),
                 "status_class": status_class,
-                "title": " · ".join(title_bits),
+                "title": title,
+                "count": count,
             })
         lanes.append({
             "agent": key,
             "display_name": agent,
-            "dot_count": len(dots),
+            "dot_count": sum(d["count"] for d in dots),
             "dots": dots,
         })
 

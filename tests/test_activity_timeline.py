@@ -75,3 +75,49 @@ def test_naive_timestamp_treated_as_utc():
     }]
     out = compose_timeline(runs, ["flush"], now=_NOW)
     assert out["lanes"][0]["dot_count"] == 1
+
+
+def test_colocated_events_collapse_to_one_dot_with_count():
+    """Six recursion-guards in the same minute → one dot, title ends "×6"."""
+    base = _NOW - timedelta(hours=6)  # ts_minute will be identical
+    runs = [
+        {
+            "ts": base + timedelta(seconds=i),  # same minute, different seconds
+            "agent": "flush",
+            "status": "recursion-guard",
+            "duration_ms": None,
+            "cost_usd": 0.0,
+            "notes": "",
+        }
+        for i in range(6)
+    ]
+    out = compose_timeline(runs, ["flush"], now=_NOW)
+    lane = out["lanes"][0]
+    assert len(lane["dots"]) == 1
+    dot = lane["dots"][0]
+    assert dot["count"] == 6
+    assert dot["title"].endswith("×6")
+    # The lane's reported dot_count still reflects total events, not dots.
+    assert lane["dot_count"] == 6
+
+
+def test_single_event_has_no_count_suffix():
+    runs = [_run("flush", hours_ago=2, status="recursion-guard")]
+    out = compose_timeline(runs, ["flush"], now=_NOW)
+    dot = out["lanes"][0]["dots"][0]
+    assert dot["count"] == 1
+    assert "×" not in dot["title"]
+
+
+def test_different_statuses_at_same_minute_do_not_collapse():
+    """Collapse keys on (minute, status); a success and an error in the same
+    minute stay as two distinct dots."""
+    base = _NOW - timedelta(hours=3)
+    runs = [
+        {"ts": base, "agent": "a", "status": "success",
+         "duration_ms": 200, "cost_usd": 0.0, "notes": ""},
+        {"ts": base + timedelta(seconds=10), "agent": "a", "status": "error",
+         "duration_ms": 200, "cost_usd": 0.0, "notes": ""},
+    ]
+    out = compose_timeline(runs, ["a"], now=_NOW)
+    assert len(out["lanes"][0]["dots"]) == 2
