@@ -246,7 +246,7 @@ def test_kpi_row_private_renders_headroom_fill_bar(tmp_path):
     tickets = kanban.compute_columns(tickets, data["agent_runs"])
     render.render_private(agg, tickets, tmp_path)
     fleet = (tmp_path / "index.html").read_text()
-    # Private card 3 uses a fill bar (headroom_bar), not a donut
+    # Private card 3 uses a fill bar (same cap_bar SVG as card 4), not a donut
     kpi_block = fleet[fleet.index('class="kpi-row"') : fleet.index('class="kpi-row"') + 4500]
     # Two fill bars on private: headroom + governor cap
     assert kpi_block.count('class="kpi-fill-bar"') >= 2

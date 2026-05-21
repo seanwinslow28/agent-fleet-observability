@@ -18,7 +18,7 @@
     <div class="kpi-label">{% if is_private %}Monthly headroom{% else %}Local-only share{% endif %}</div>
     {% if is_private %}
       <div class="kpi-primitive kpi-primitive--bar">
-        {{ kpi_primitive_svgs.headroom_bar|safe }}
+        {{ kpi_primitive_svgs.cap_bar|safe }}
       </div>
       <div class="kpi-value amber">
         ${{ "%.0f"|format(kpis.monthly_headroom_usd) }} / $50
