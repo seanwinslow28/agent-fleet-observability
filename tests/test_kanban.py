@@ -706,6 +706,85 @@ def test_lint_same_path_different_rule_does_not_collapse():
     assert all("edges" not in t["headline"] for t in lint)
 
 
+def test_compose_tickets_redacts_vault_paths_in_lint_details():
+    """Public pass: lint ticket details must not contain raw vault paths or
+    absolute home-prefixed paths. Both shapes (`vault/...` and the
+    `/Users/.../vault/...` absolute form Sean's vault readers actually emit)
+    must collapse to ``[redacted]`` before the dict ever materializes.
+    """
+    data = {
+        "lint_reports": {
+            "latest_date": "2026-05-17",
+            "issues_total": 2,
+            "issues_by_severity": {"HIGH": 2},
+            "issues": [
+                {
+                    "severity": "HIGH", "rule": "broken-wikilink", "tier": "T1",
+                    "path": (
+                        "/Users/seanwinslow/Code-Brain/code-brain/vault/"
+                        "20_projects/prj-job-hunt-2026/README.md"
+                    ),
+                    "context": "job_feed",
+                },
+                {
+                    "severity": "HIGH", "rule": "broken-wikilink", "tier": "T1",
+                    "path": "vault/20_projects/prj-job-hunt-2026/notes.md",
+                    "context": "second_edge",
+                },
+            ],
+        },
+    }
+    # Public pass — redact_paths=True.
+    public = kanban.compose_tickets(data, include_job_feed=False, redact_paths=True)
+    for ticket in (t for t in public if t["source"] == "lint"):
+        assert "/Users/seanwinslow" not in (ticket["details"] or "")
+        assert "prj-job-hunt-2026" not in (ticket["details"] or "")
+        assert "vault/20_projects" not in (ticket["details"] or "")
+        assert "[redacted]" in (ticket["details"] or "")
+
+    # Private pass — redact_paths default False — paths preserved.
+    private = kanban.compose_tickets(data, include_job_feed=True)
+    private_lint = [t for t in private if t["source"] == "lint"]
+    assert any(
+        "prj-job-hunt-2026" in (t["details"] or "") for t in private_lint
+    ), "private pass must preserve raw paths for Sean's own use"
+
+
+def test_compose_tickets_redacts_research_and_manual_titles_when_public():
+    """Public pass also redacts research and manual ticket titles/details so a
+    `vault/...` substring in either source doesn't leak through."""
+    data = {
+        "research_queue": {
+            "pending": [
+                {
+                    "title": (
+                        "Topic 99 — vault/20_projects/prj-job-hunt-2026/intake.md "
+                        "review. Something something."
+                    ),
+                    "assigned_agent": None,
+                },
+            ],
+            "in_flight": [],
+            "done": [],
+        },
+        "manual_tickets": {
+            "todo": [
+                {"title": "Audit /Users/seanwinslow/Code-Brain/code-brain/"
+                          "vault/20_projects/prj-job-hunt-2026/target-companies.md",
+                 "assigned_agent": "Sean"},
+            ],
+            "in_progress": [], "done": [],
+        },
+    }
+    public = kanban.compose_tickets(data, include_job_feed=False, redact_paths=True)
+    for ticket in public:
+        for field in ("headline", "title", "details"):
+            value = ticket.get(field) or ""
+            assert "/Users/seanwinslow" not in value, (ticket, field)
+            assert "prj-job-hunt-2026" not in value, (ticket, field)
+            assert "vault/" not in value, (ticket, field)
+
+
 # ---------------------------------------------------------------------------
 # Task 2: /kanban hero-plate stats
 # ---------------------------------------------------------------------------

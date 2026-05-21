@@ -82,6 +82,33 @@ def test_public_pass_does_not_mutate_input():
     assert src == snapshot
 
 
+def test_redact_paths_collapses_absolute_home_prefix():
+    """Regression: an absolute path like /Users/seanwinslow/.../vault/foo.md
+    must collapse the entire username + home-directory layout, not leave the
+    home prefix exposed while only redacting the vault suffix.
+    """
+    raw = (
+        "/Users/seanwinslow/Code-Brain/claude-code-superuser-pack/"
+        "vault/20_projects/prj-job-hunt-2026/README.md — job_feed"
+    )
+    out = anonymize._redact_paths(raw)
+    assert "/Users/seanwinslow" not in out
+    assert "prj-job-hunt-2026" not in out
+    assert "vault/" not in out
+    assert "[redacted]" in out
+    # The trailing non-path tail ("— job_feed") survives intact.
+    assert out.endswith("— job_feed")
+
+
+def test_redact_paths_still_collapses_bare_vault_prefix():
+    """The original `vault/...` shape still redacts — we didn't regress the
+    cheaper case while adding the absolute-prefix alternative.
+    """
+    out = anonymize._redact_paths("vault/20_projects/research/foo.md updated")
+    assert "vault/" not in out
+    assert "[redacted]" in out
+
+
 def test_public_pass_preserves_agent_state():
     """Regression guard: agent_state + column_sparklines must survive public_pass unchanged."""
     agg = {

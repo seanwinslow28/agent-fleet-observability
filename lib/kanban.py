@@ -109,13 +109,34 @@ def _stable_id(source: str, title: str) -> str:
     return f"{source}-{h[:8]}"
 
 
-def compose_tickets(data: dict, *, include_job_feed: bool) -> list[dict]:
+def compose_tickets(
+    data: dict, *, include_job_feed: bool, redact_paths: bool = False
+) -> list[dict]:
     """Build a single list of tickets across all sources.
 
     Each ticket has: id, title, source, assigned_agent, column (filled by
     compute_columns), is_running (default False), created_at, moved_at, details,
     plus optional source-specific fields (_severity for lint, etc.).
+
+    When ``redact_paths=True`` (the public pass), every field that flows from
+    raw vault paths/notes through to the public surface is redacted via
+    ``lib.anonymize._redact_paths`` before it ever lands on a ticket dict.
+    This extends the privacy boundary into the ticket pipeline — the prior
+    boundary stopped at the aggregation layer, but lint/research/manual tickets
+    are composed from raw source data and bypassed redaction. The public pass
+    in ``build.py`` is the only caller that should pass ``redact_paths=True``.
     """
+    # Local import — anonymize already imports kanban transitively in some
+    # call paths via tests; keep this lazy so a circular import is impossible.
+    from lib.anonymize import _redact_paths
+
+    def _scrub(text: str | None) -> str | None:
+        if not redact_paths:
+            return text
+        if text is None:
+            return None
+        return _redact_paths(text)
+
     out: list[dict] = []
     now = datetime.now(UTC).isoformat()
 
@@ -124,7 +145,8 @@ def compose_tickets(data: dict, *, include_job_feed: bool) -> list[dict]:
     for section_name, hint in [("pending", "pending"), ("in_flight", "in_flight")]:
         for item in rq.get(section_name, []):
             parsed = _parse_research_title(item["title"])
-            headline = parsed["headline"]
+            headline = _scrub(parsed["headline"]) or parsed["headline"]
+            details = _scrub(parsed["details"])
             out.append({
                 "id": _stable_id("research", headline),
                 "title": headline,          # back-compat alias for data.json consumers
@@ -134,7 +156,7 @@ def compose_tickets(data: dict, *, include_job_feed: bool) -> list[dict]:
                 "assigned_agent": item.get("assigned_agent"),
                 "_section_hint": hint,
                 "created_at": now, "moved_at": now,
-                "details": parsed["details"],
+                "details": details,
             })
 
     # --- lint (top 20, severity-drain; duplicate ids collapsed) ----------
@@ -153,8 +175,13 @@ def compose_tickets(data: dict, *, include_job_feed: bool) -> list[dict]:
     lint_by_id: dict[str, dict] = {}
     lint_order: list[str] = []
     for _idx, iss in ordered:
+        # Stable id keys on the *raw* path so the public and private passes
+        # agree on which edges collapse together. Only the surfaced strings
+        # (edge_detail, slug) are redacted — the id is internal.
         ticket_id = _stable_id("lint", f"{iss['severity']}|{iss['rule']}|{iss['path']}")
-        edge_detail = f"{iss['path']} — {iss['context']}"
+        scrubbed_path = _scrub(iss["path"]) or iss["path"]
+        scrubbed_context = _scrub(iss.get("context") or "") or ""
+        edge_detail = f"{scrubbed_path} — {scrubbed_context}"
         if ticket_id in lint_by_id:
             ticket = lint_by_id[ticket_id]
             # Asymmetric on purpose: details dedupe (we don't want to show the
@@ -207,14 +234,17 @@ def compose_tickets(data: dict, *, include_job_feed: bool) -> list[dict]:
 
     # --- eval (agent_runs failures + failing eval cases) -----------------
     runs = data.get("agent_runs") or []
-    out.extend(_failures_to_tickets(runs))
-    out.extend(_eval_cases_to_tickets(data.get("eval_last_run", {}) or {}))
+    eval_tickets = list(_failures_to_tickets(runs))
+    eval_tickets.extend(_eval_cases_to_tickets(data.get("eval_last_run", {}) or {}))
+    for t in eval_tickets:
+        t["details"] = _scrub(t.get("details"))
+    out.extend(eval_tickets)
 
     # --- manual ----------------------------------------------------------
     mt = data.get("manual_tickets", {})
     for section_name, hint in [("todo", "todo"), ("in_progress", "in_progress"), ("done", "done")]:
         for item in mt.get(section_name, []):
-            title = item["title"]
+            title = _scrub(item["title"]) or item["title"]
             out.append({
                 "id": _stable_id("manual", title),
                 "title": title,

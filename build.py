@@ -120,7 +120,13 @@ def main(argv: list[str] | None = None) -> int:
     tickets_private = kanban.compose_tickets(data, include_job_feed=True)
     tickets_private = kanban.compute_columns(tickets_private, data["agent_runs"])
 
-    tickets_public = kanban.compose_tickets(data, include_job_feed=False)
+    # Public pass: redact vault paths and home-prefixed absolute paths from
+    # every ticket field before they're frozen on the dict. Anonymize at the
+    # agg layer can't see ticket details — the privacy boundary needs to
+    # extend into the ticket pipeline itself.
+    tickets_public = kanban.compose_tickets(
+        data, include_job_feed=False, redact_paths=True
+    )
     tickets_public = kanban.compute_columns(tickets_public, data["agent_runs"])
 
     if args.dry_run:
