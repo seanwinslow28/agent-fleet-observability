@@ -57,6 +57,42 @@ def test_donut_renders_segments():
     assert "local-qwen" not in svg  # labels rendered separately by template
 
 
+def test_donut_small_wedge_renders_as_single_path():
+    """Each wedge is exactly ONE <path>, never split into two adjacent paths.
+
+    Regression: an earlier draft of donut() drew the small (<180°) wedge as
+    two arc commands meeting head-to-toe, which produced a visible seam at
+    the boundary. With 92.7% / 7.3%, the correct output is:
+      - one path for the big wedge (large-arc-flag=1, >180°)
+      - one path for the small wedge (large-arc-flag=0, <180°)
+    Plus the always-present background ring <circle>. No more, no less.
+    """
+    segments = [
+        {"label": "a", "value": 92.7, "color": "#F0B429"},
+        {"label": "b", "value": 7.3, "color": "#C084FC"},
+    ]
+    svg = svg_charts.donut(segments, size=160, stroke=18)
+    # Exactly one <path> per wedge (2 paths for 2 wedges).
+    assert svg.count("<path") == 2
+    # Sanity: small wedge uses large-arc-flag=0, big wedge uses large-arc-flag=1.
+    # The flag sits between the rotation (0) and sweep (1) in `A rx ry 0 L 1 x y`.
+    assert svg.count(" 0 1 1 ") == 1  # large=1 sweep=1 → the big wedge
+    assert svg.count(" 0 0 1 ") == 1  # large=0 sweep=1 → the small wedge
+    # Background ring is a <circle>, not a path — one of them.
+    assert svg.count("<circle") == 1
+
+
+def test_donut_three_wedges_renders_three_paths():
+    """Three small wedges (each <180°) → exactly three <path> elements."""
+    segments = [
+        {"value": 50, "color": "#F0B429"},
+        {"value": 30, "color": "#C084FC"},
+        {"value": 20, "color": "#FF5C46"},
+    ]
+    svg = svg_charts.donut(segments, size=120, stroke=14)
+    assert svg.count("<path") == 3
+
+
 def test_stacked_area_handles_multi_agent():
     days = [f"2026-05-{d:02d}" for d in range(1, 8)]
     series = {"vault_synthesizer": [0] * 7, "daily_driver": [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4]}
