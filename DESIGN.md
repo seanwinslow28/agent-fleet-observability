@@ -24,8 +24,7 @@ accent:
   alert:       "#FF5C46"
   cloud:       "#A78BFA"
 gradient:
-  spark:       "linear-gradient(180deg, #F0B429 0%, #C084FC 100%)"
-  spark-hero:  "linear-gradient(135deg, #F0B429 0%, #FFD66B 35%, #C084FC 100%)"
+  spark:       "linear-gradient(135deg, #F0B429 0%, #FFD66B 35%, #C084FC 100%)"
   amber-glow:  "radial-gradient(ellipse at center, rgba(240,180,41,0.18), transparent 60%)"
 typography:
   display:
@@ -93,7 +92,7 @@ Anti-pattern: scattering accent colors (teal, blue, green, red, purple, amber) a
 
 **Why warm:** the dashboard opens at 06:00. A blue-cold UI reads as Datadog/Grafana SaaS at that hour. Warm reads as a personal operations console. Same data, completely different feel.
 
-**The amber→purple gradient** appears in three load-bearing places: (1) the hero numeral via `background-clip: text`, (2) the regression-window annotation band, (3) the mascot arms (already there). Nothing else gets the gradient — its scarcity is what makes it feel intentional.
+**The amber→purple gradient** is a single token (`--gradient-spark`) — a 135° three-stop ramp (`#F0B429 → #FFD66B → #C084FC`) used in three load-bearing places: (1) the hero numeral via `background-clip: text`, (2) the regression-window annotation band, (3) the mascot arms. Hero and mascot share the exact same gradient so the page reads as one designed object. Nothing else gets the gradient — its scarcity is what makes it feel intentional.
 
 ## Typography
 

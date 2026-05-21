@@ -60,21 +60,31 @@
   }
 
   // ── 3. Kanban filter — blur+desaturate non-matching, not display:none ─────
+  // This is the SINGLE source of truth for filter-chip click handling. Tickets
+  // get the `.filtered-out` class (blur + desaturate via styles.css) so the
+  // board's spatial layout is preserved — never display:none.
   function bindKanbanFilters() {
     var chips = document.querySelectorAll('.filter-chip[data-source]');
     if (!chips.length) return;
     var active = new Set();
     chips.forEach(function (chip) {
       if (chip.getAttribute('data-active') === 'true') active.add(chip.getAttribute('data-source'));
+      // Mirror initial state to aria-pressed for assistive tech
+      chip.setAttribute('aria-pressed', chip.getAttribute('data-active') === 'true' ? 'true' : 'false');
       chip.addEventListener('click', function () {
         var source = chip.getAttribute('data-source');
         if (active.has(source)) active.delete(source); else active.add(source);
-        chip.setAttribute('data-active', active.has(source) ? 'true' : 'false');
+        var isOn = active.has(source);
+        chip.setAttribute('data-active', isOn ? 'true' : 'false');
+        chip.setAttribute('aria-pressed', isOn ? 'true' : 'false');
         applyFilter();
       });
     });
     function applyFilter() {
       var tickets = document.querySelectorAll('.ticket[data-source]');
+      // When every chip is OFF, show everything (no filter applied). When at
+      // least one chip is ON, only tickets whose source is in the active set
+      // render unblurred. This preserves the "click to narrow focus" model.
       var anyActive = active.size > 0;
       tickets.forEach(function (t) {
         var match = !anyActive || active.has(t.getAttribute('data-source'));

@@ -35,9 +35,10 @@
   --accent-red:    var(--accent-alert);
   --accent-blue:   var(--accent-purple);
 
-  /* Gradients — used sparingly, always trace back to the mascot */
-  --gradient-spark:      linear-gradient(180deg, #F0B429 0%, #C084FC 100%);
-  --gradient-spark-hero: linear-gradient(135deg, #F0B429 0%, #FFD66B 35%, #C084FC 100%);
+  /* Gradients — used sparingly, always trace back to the mascot.
+     ONE amber→purple gradient token. The 3-stop (with the #FFD66B waypoint)
+     is canonical; mascot arms, hero numeral, and kanban hero numeral all use it. */
+  --gradient-spark:      linear-gradient(135deg, #F0B429 0%, #FFD66B 35%, #C084FC 100%);
   --amber-glow:          radial-gradient(ellipse 800px 400px at 20% 0%, rgba(240,180,41,0.10), transparent 60%),
                          radial-gradient(ellipse 600px 400px at 80% 40%, rgba(192,132,252,0.08), transparent 60%);
 
@@ -473,7 +474,7 @@ a:hover { color: var(--accent-purple); }
   margin: 0 0 var(--space-2);
 }
 .hero-display .num {
-  background: var(--gradient-spark-hero);
+  background: var(--gradient-spark);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -553,7 +554,7 @@ a:hover { color: var(--accent-purple); }
   margin: 0 0 var(--space-2);
 }
 .kanban-hero-display .num {
-  background: var(--gradient-spark-hero);
+  background: var(--gradient-spark);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -841,9 +842,8 @@ a:hover { color: var(--accent-purple); }
   text-align: center;
   font-style: italic;
 }
-/* Blur-on-filter (preserves spatial memory) */
+/* Blur-on-filter (preserves spatial memory — never display:none, per DESIGN.md). */
 .ticket.filtered-out { filter: blur(2px) saturate(0.3); opacity: 0.35; pointer-events: none; }
-.ticket.hidden { display: none; }
 
 /* Live pulse for InProgress tickets */
 @keyframes live-pulse {
