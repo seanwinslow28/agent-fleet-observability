@@ -13,7 +13,7 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from lib import anonymize, svg_charts
+from lib import anonymize, kanban, svg_charts
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR = REPO_ROOT / "templates"
@@ -181,7 +181,12 @@ def render_public(agg: dict, tickets: list[dict], out_dir: Path) -> None:
         page_title="Agent Fleet Observability", **ctx)
     (out_dir / "index.html").write_text(fleet_html)
 
-    ctx_k = {**ctx, "active_route": "kanban", "tickets": tickets}
+    ctx_k = {
+        **ctx,
+        "active_route": "kanban",
+        "tickets": tickets,
+        "kanban_hero": kanban.compose_kanban_hero_stats(tickets),
+    }
     kb_html = _ENV.get_template("kanban.html").render(
         page_title="Agent Fleet · Kanban", **ctx_k)
     (out_dir / "kanban.html").write_text(kb_html)
@@ -204,7 +209,12 @@ def render_private(agg: dict, tickets: list[dict], out_dir: Path) -> None:
         page_title="Agent Fleet Observability · Private", **ctx)
     (out_dir / "index.html").write_text(fleet_html)
 
-    ctx_k = {**ctx, "active_route": "kanban", "tickets": tickets}
+    ctx_k = {
+        **ctx,
+        "active_route": "kanban",
+        "tickets": tickets,
+        "kanban_hero": kanban.compose_kanban_hero_stats(tickets),
+    }
     kb_html = _ENV.get_template("kanban.html").render(
         page_title="Agent Fleet · Kanban · Private", **ctx_k)
     (out_dir / "kanban.html").write_text(kb_html)

@@ -1,0 +1,51 @@
+{# Kanban hero-plate — narrative anchor for the /kanban page.
+   Vars: kanban_hero {total_7d, by_source, is_quiet_week}, is_private.
+   Mirrors the editorial proportions of partials/hero_regression.html at a
+   smaller scale so it doesn't compete with the topbar above. #}
+{% set hero = kanban_hero %}
+{% set source_order = [
+  ('research', 'research'),
+  ('lint',     'lint'),
+  ('eval',     'eval'),
+  ('manual',   'manual'),
+  ('feed',     'feed'),
+] %}
+<section class="kanban-hero" aria-labelledby="kanban-hero-headline">
+  <div class="eyebrow">TICKET FLOW · LAST 7 DAYS</div>
+
+  {% if hero.is_quiet_week %}
+    <h1 class="kanban-hero-display kanban-hero-display--quiet" id="kanban-hero-headline">
+      <span class="num">Quiet week.</span>
+    </h1>
+    <p class="kanban-hero-prose">
+      Nothing new from the fleet. Backlog is caught up, or the fleet is asleep.
+    </p>
+  {% else %}
+    <h1 class="kanban-hero-display" id="kanban-hero-headline">
+      <span class="num"
+            data-countup="{{ hero.total_7d }}"
+            aria-label="{{ hero.total_7d }}">{{ hero.total_7d }}</span>
+      <span class="label">tickets this week</span>
+    </h1>
+    <p class="kanban-hero-prose">
+      Tickets surfaced by the fleet this week.
+      Sourced from research queues, lint failures, and eval regressions.
+      Manual additions stay rare.
+    </p>
+  {% endif %}
+
+  <div class="kanban-hero-breakdown">
+    {% set parts = [] %}
+    {% for key, label in source_order %}
+      {% set n = hero.by_source.get(key, 0) %}
+      {% if n > 0 %}
+        {% set _ = parts.append(n ~ ' ' ~ label) %}
+      {% endif %}
+    {% endfor %}
+    {% if parts %}
+      {{ parts | join(' · ') }}
+    {% else %}
+      0 research · 0 lint · 0 eval · 0 manual
+    {% endif %}
+  </div>
+</section>

@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import hashlib
 import re
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, date, datetime, timedelta
 from os.path import basename, splitext
 
 from lib.statuses import ERR_STATUSES, OK_STATUSES
@@ -245,6 +245,69 @@ def compose_tickets(data: dict, *, include_job_feed: bool) -> list[dict]:
             })
 
     return out
+
+
+_HERO_WINDOW_DAYS = 7
+_HERO_SOURCES: tuple[str, ...] = ("research", "lint", "eval", "manual", "feed")
+
+
+def compose_kanban_hero_stats(
+    tickets: list[dict],
+    today: datetime | date | None = None,
+) -> dict:
+    """Roll up the ticket list into the /kanban hero-plate stats.
+
+    Counts tickets whose ``created_at`` falls within the last 7 days
+    (inclusive of the 7th day), bucketed by source. Tickets with no
+    ``created_at`` (or ``created_at == None``) are treated as "now" and
+    therefore always counted — we never silently drop a ticket.
+
+    Args:
+        tickets: composed ticket dicts (from ``compose_tickets``).
+        today: anchor datetime for the 7-day window. Defaults to now (UTC).
+               A ``date`` is accepted and lifted to UTC midnight.
+
+    Returns:
+        ``{"total_7d": int, "by_source": {source: int, ...}, "is_quiet_week": bool}``.
+        ``by_source`` always contains every key in ``_HERO_SOURCES`` so the
+        template can iterate without KeyError. ``feed`` is included
+        unconditionally; on the public pass the caller passes a feed-less
+        ticket list and the count naturally stays at 0 — the privacy
+        boundary is enforced upstream by ``compose_tickets(include_job_feed=...)``.
+    """
+    if today is None:
+        anchor = datetime.now(UTC)
+    elif isinstance(today, datetime):
+        anchor = today if today.tzinfo else today.replace(tzinfo=UTC)
+    else:  # date
+        anchor = datetime(today.year, today.month, today.day, tzinfo=UTC)
+    cutoff = anchor - timedelta(days=_HERO_WINDOW_DAYS)
+
+    by_source: dict[str, int] = dict.fromkeys(_HERO_SOURCES, 0)
+    total = 0
+    for t in tickets:
+        created_at = t.get("created_at")
+        if not created_at:
+            created_dt = anchor
+        else:
+            try:
+                created_dt = datetime.fromisoformat(created_at)
+            except (TypeError, ValueError):
+                created_dt = anchor
+            if created_dt.tzinfo is None:
+                created_dt = created_dt.replace(tzinfo=UTC)
+        if created_dt < cutoff:
+            continue
+        total += 1
+        src = t.get("source")
+        if src in by_source:
+            by_source[src] += 1
+
+    return {
+        "total_7d": total,
+        "by_source": by_source,
+        "is_quiet_week": total == 0,
+    }
 
 
 _FAILURE_WINDOW = timedelta(days=7)
