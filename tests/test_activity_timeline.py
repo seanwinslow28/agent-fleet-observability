@@ -23,7 +23,7 @@ def test_empty_runs_produces_lanes_for_each_agent():
     out = compose_timeline([], ["vault_indexer", "flush"], now=_NOW)
     assert len(out["lanes"]) == 2
     assert out["total_runs"] == 0
-    assert all(lane["dot_count"] == 0 for lane in out["lanes"])
+    assert all(lane["run_count"] == 0 for lane in out["lanes"])
     assert len(out["axis_labels"]) == 5
 
 
@@ -31,7 +31,7 @@ def test_run_within_window_appears_as_dot():
     runs = [_run("vault_indexer", hours_ago=3)]
     out = compose_timeline(runs, ["vault_indexer"], now=_NOW)
     lane = out["lanes"][0]
-    assert lane["dot_count"] == 1
+    assert lane["run_count"] == 1
     dot = lane["dots"][0]
     # 3h ago in a 24h window starting at now-24h = position (24-3)/24 = 87.5%
     assert 86.0 <= dot["left_pct"] <= 89.0
@@ -42,14 +42,14 @@ def test_run_within_window_appears_as_dot():
 def test_run_outside_window_is_dropped():
     runs = [_run("vault_indexer", hours_ago=48)]
     out = compose_timeline(runs, ["vault_indexer"], now=_NOW)
-    assert out["lanes"][0]["dot_count"] == 0
+    assert out["lanes"][0]["run_count"] == 0
 
 
 def test_dash_underscore_normalization():
     """CSV has `vault-indexer`; agent_names has `vault_indexer`. They must match."""
     runs = [_run("vault-indexer", hours_ago=2)]
     out = compose_timeline(runs, ["vault_indexer"], now=_NOW)
-    assert out["lanes"][0]["dot_count"] == 1
+    assert out["lanes"][0]["run_count"] == 1
 
 
 def test_status_classification():
@@ -74,7 +74,7 @@ def test_naive_timestamp_treated_as_utc():
         "notes": "",
     }]
     out = compose_timeline(runs, ["flush"], now=_NOW)
-    assert out["lanes"][0]["dot_count"] == 1
+    assert out["lanes"][0]["run_count"] == 1
 
 
 def test_colocated_events_collapse_to_one_dot_with_count():
@@ -97,8 +97,28 @@ def test_colocated_events_collapse_to_one_dot_with_count():
     dot = lane["dots"][0]
     assert dot["count"] == 6
     assert dot["title"].endswith("×6")
-    # The lane's reported dot_count still reflects total events, not dots.
-    assert lane["dot_count"] == 6
+    # The lane's reported run_count reflects raw event cardinality, not dots.
+    assert lane["run_count"] == 6
+
+
+def test_total_runs_counts_raw_events_not_collapsed_dots():
+    """Regression: total_runs must sum raw events, not dot count. Otherwise
+    the eyebrow at templates/partials/activity_timeline.html under-reports
+    fleet activity after collapse — the exact "headline contradicts data"
+    credibility bug Task 1 set out to fix.
+    """
+    base = _NOW - timedelta(hours=4)
+    runs = [
+        {"ts": base + timedelta(seconds=i), "agent": "flush",
+         "status": "recursion-guard", "duration_ms": None,
+         "cost_usd": 0.0, "notes": ""}
+        for i in range(6)
+    ]
+    out = compose_timeline(runs, ["flush"], now=_NOW)
+    # One visual dot, but six runs in the lane and in the fleet total.
+    assert len(out["lanes"][0]["dots"]) == 1
+    assert out["lanes"][0]["run_count"] == 6
+    assert out["total_runs"] == 6
 
 
 def test_single_event_has_no_count_suffix():

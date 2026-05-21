@@ -647,3 +647,60 @@ def test_eval_meta_error_substantive_details_are_kept():
     out = kanban._failures_to_tickets(runs)
     assert len(out) == 1
     assert "ConnectTimeout" in out[0]["details"]
+
+
+def test_eval_case_with_meta_error_details_is_filtered():
+    """Eval-case branch also drops meta-error placeholders.
+
+    Mirrors the agent-runs filter — readers may surface a structured
+    `details` field on a failing case, and if that field is itself an
+    eval-runner placeholder ("Check stderr output for details") we drop
+    the ticket.
+    """
+    data = {
+        **_data(),
+        "eval_last_run": {
+            "passed": 0, "failed": 2, "skipped": 0, "total_cases": 2,
+            "cases": [
+                {"id": "case-stderr", "category": "lint", "status": "failed",
+                 "details": "Check stderr output for details"},
+                {"id": "case-real", "category": "synth", "status": "failed",
+                 "details": "concept-edge cycle detected"},
+            ],
+            "run_id": "2026-05-18-run",
+        },
+    }
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    headlines = {t["headline"] for t in tickets if t["source"] == "eval"}
+    assert "eval failed: case-real" in headlines
+    assert not any("case-stderr" in h for h in headlines)
+
+
+def test_lint_same_path_different_rule_does_not_collapse():
+    """Collapse key pins severity|rule|path, not just path.
+
+    Two distinct lint rules firing on the same source file are two distinct
+    problems and must surface as two tickets. This test would fail loudly if
+    someone simplifies the collapse key to path-only.
+    """
+    data = {
+        "lint_reports": {
+            "latest_date": "2026-05-17",
+            "issues_total": 2,
+            "issues_by_severity": {"HIGH": 1, "MEDIUM": 1},
+            "issues": [
+                {"severity": "HIGH", "rule": "broken-wikilink", "tier": "T1",
+                 "path": "notes/foo.md", "context": "missing_target"},
+                {"severity": "MEDIUM", "rule": "tier-a-soul-conflict", "tier": "T2",
+                 "path": "notes/foo.md", "context": "soul_check"},
+            ],
+        },
+    }
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    lint = [t for t in tickets if t["source"] == "lint"]
+    assert len(lint) == 2
+    rules = {t["_rule"] for t in lint}
+    assert rules == {"broken-wikilink", "tier-a-soul-conflict"}
+    # Each ticket is a single-edge ticket — no "· N edges" suffix.
+    assert all(t["count"] == 1 for t in lint)
+    assert all("edges" not in t["headline"] for t in lint)
