@@ -354,3 +354,169 @@ def stacked_area(
     )
     parts.append("</svg>")
     return "".join(parts)
+
+
+# ───────── KPI-row inline primitives ─────────
+# Each helper renders a small inline SVG that sits inside one .kpi-card. The
+# point is that every card gets a visually DIFFERENT primitive — eye picks up
+# data shape before reading the kpi-value text. All primitives are decorative
+# (aria-hidden on the wrapping element) and have viewBoxes so they scale at
+# narrower widths when the .kpi-row collapses 4→2→1.
+
+
+def kpi_eval_dots(passed: int, failed: int, skipped: int, total: int) -> str:
+    """Row of `total` small circles — passed (amber fill), failed (alert fill),
+    skipped (hollow amber). Matches the `7 / 10` eval-pass card. If `total`
+    is zero, returns 10 muted hollow dots (placeholder for no-eval state).
+    """
+    if total <= 0:
+        # Empty placeholder — 10 hollow tertiary dots
+        passed = failed = skipped = 0
+        total = 10
+        empty = True
+    else:
+        empty = False
+    r = 3.0
+    gap = 4.0
+    diameter = r * 2
+    n = total
+    width = n * diameter + (n - 1) * gap
+    height = diameter
+    parts = [
+        f'<svg viewBox="0 0 {width:.1f} {height:.1f}" '
+        f'preserveAspectRatio="xMinYMid meet" '
+        f'xmlns="http://www.w3.org/2000/svg" '
+        f'class="kpi-dots" aria-hidden="true">'
+    ]
+    cy = r
+    for i in range(n):
+        cx = r + i * (diameter + gap)
+        if empty:
+            parts.append(
+                f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{r:.1f}" '
+                f'fill="none" stroke="{TERTIARY}" stroke-width="1"/>'
+            )
+        elif i < passed:
+            parts.append(
+                f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{r:.1f}" fill="{OK}"/>'
+            )
+        elif i < passed + failed:
+            parts.append(
+                f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{r:.1f}" fill="{ALERT}"/>'
+            )
+        elif i < passed + failed + skipped:
+            parts.append(
+                f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{r:.1f}" '
+                f'fill="none" stroke="{AMBER}" stroke-width="1.2"/>'
+            )
+        else:
+            # Cases counted in total but not passed/failed/skipped — hollow tertiary
+            parts.append(
+                f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{r:.1f}" '
+                f'fill="none" stroke="{TERTIARY}" stroke-width="1"/>'
+            )
+    parts.append("</svg>")
+    return "".join(parts)
+
+
+def kpi_spend_sparkline(daily_totals: list[float], color: str = AMBER) -> str:
+    """30-day spend sparkline. Width is responsive (100%), height fixed.
+    Empty data renders as a flat baseline so the card height stays stable.
+    """
+    width = 120.0
+    height = 22.0
+    if not daily_totals or all(v <= 0 for v in daily_totals):
+        # Flat baseline placeholder
+        y_mid = height - 1
+        return (
+            f'<svg viewBox="0 0 {width:.0f} {height:.0f}" '
+            f'preserveAspectRatio="none" '
+            f'xmlns="http://www.w3.org/2000/svg" '
+            f'class="kpi-sparkline" aria-hidden="true">'
+            f'<line x1="0" y1="{y_mid:.1f}" x2="{width:.0f}" y2="{y_mid:.1f}" '
+            f'stroke="{TERTIARY}" stroke-width="1.2" stroke-linecap="round" '
+            f'stroke-dasharray="2 3"/>'
+            f'</svg>'
+        )
+    v_lo, v_hi = min(daily_totals), max(daily_totals)
+    if v_hi == v_lo:
+        v_hi = v_lo + 1
+    pts: list[str] = []
+    n = len(daily_totals)
+    for i, v in enumerate(daily_totals):
+        x = i * (width - 2) / max(1, n - 1) + 1
+        y = height - 2 - (v - v_lo) * (height - 4) / (v_hi - v_lo)
+        pts.append(f"{x:.1f},{y:.1f}")
+    baseline_y = height - 1
+    area_pts = [f"1,{baseline_y:.1f}"] + pts + [f"{width - 1:.1f},{baseline_y:.1f}"]
+    return (
+        f'<svg viewBox="0 0 {width:.0f} {height:.0f}" '
+        f'preserveAspectRatio="none" '
+        f'xmlns="http://www.w3.org/2000/svg" '
+        f'class="kpi-sparkline" aria-hidden="true">'
+        f'<polygon fill="{color}" fill-opacity="0.18" '
+        f'points="{" ".join(area_pts)}"/>'
+        f'<polyline fill="none" stroke="{color}" stroke-width="1.5" '
+        f'stroke-linecap="round" stroke-linejoin="round" '
+        f'points="{" ".join(pts)}"/>'
+        f'</svg>'
+    )
+
+
+def kpi_fill_bar(current: float, cap: float, color: str = AMBER) -> str:
+    """Horizontal fill bar: current spend as fraction of cap. Bar is
+    100%-width of its container, 6px tall, pill-shaped. Over-cap renders the
+    bar full with a thin alert outline. Zero/empty renders an empty track.
+    """
+    width = 120.0
+    height = 6.0
+    radius = height / 2
+    track_fill = "rgba(192,132,252,0.10)"  # var(--hairline)-ish, recessed track
+    if cap <= 0:
+        ratio = 0.0
+    else:
+        ratio = max(0.0, current / cap)
+    over = ratio > 1.0
+    capped_ratio = min(ratio, 1.0)
+    bar_w = max(0.0, width * capped_ratio)
+    parts = [
+        f'<svg viewBox="0 0 {width:.0f} {height:.0f}" '
+        f'preserveAspectRatio="none" '
+        f'xmlns="http://www.w3.org/2000/svg" '
+        f'class="kpi-fill-bar" aria-hidden="true">',
+        f'<rect x="0" y="0" width="{width:.0f}" height="{height:.0f}" '
+        f'rx="{radius:.1f}" ry="{radius:.1f}" fill="{track_fill}"/>',
+    ]
+    if bar_w > 0:
+        parts.append(
+            f'<rect x="0" y="0" width="{bar_w:.2f}" height="{height:.0f}" '
+            f'rx="{radius:.1f}" ry="{radius:.1f}" fill="{color}"/>'
+        )
+    if over:
+        parts.append(
+            f'<rect x="0.5" y="0.5" width="{width - 1:.1f}" height="{height - 1:.1f}" '
+            f'rx="{radius:.1f}" ry="{radius:.1f}" fill="none" '
+            f'stroke="{ALERT}" stroke-width="1"/>'
+        )
+    parts.append("</svg>")
+    return "".join(parts)
+
+
+def kpi_donut(local_pct: float, size: int = 28, stroke: int = 4) -> str:
+    """Tiny inline donut for the local-only share card. Amber arc for local
+    share, purple-soft arc for cloud share. No center text — kpi-value text
+    sits BESIDE the donut, not inside.
+    """
+    cloud_pct = max(0.0, 100.0 - local_pct)
+    segments = [
+        {"value": local_pct, "color": AMBER},
+        {"value": cloud_pct, "color": PURPLE_SOFT},
+    ]
+    # Reuse existing donut helper at small size, no center text.
+    svg = donut(segments, size=size, stroke=stroke)
+    # Inject class + aria-hidden into the existing <svg ...> opener for the
+    # KPI-row primitive contract. (Existing donut helper does not accept these
+    # — minimal-touch approach is to splice them in.)
+    return svg.replace(
+        "<svg ", '<svg class="kpi-donut" aria-hidden="true" ', 1
+    )

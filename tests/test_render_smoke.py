@@ -5,6 +5,7 @@ Tests confirm:
 - Public pass strips job-feed vault paths, target_companies, warm_intros names
 - Private pass retains Strategic funnel, warm-intro names, Anthropic tier-1 row
 """
+
 import json
 from datetime import date
 
@@ -22,7 +23,10 @@ def _data():
         "lint_reports": readers.read_lint_reports(FIXTURES),
         "eval_last_run": readers.read_eval_last_run(FIXTURES / "sample-eval-last-run.md"),
         "job_feed_db": {
-            "total_postings": 4, "by_status": {"new": 1}, "top_fit": [], "active_count": 3
+            "total_postings": 4,
+            "by_status": {"new": 1},
+            "top_fit": [],
+            "active_count": 3,
         },
         "job_feed_manifests": {"latest": None, "last_7": []},
         "research_queue": readers.read_research_queue(FIXTURES / "sample-research-queue.md"),
@@ -30,8 +34,14 @@ def _data():
         "target_companies": readers.read_target_companies(FIXTURES / "sample-target-companies.md"),
         "warm_intros": readers.read_warm_intros(FIXTURES / "sample-warm-intros.md"),
         "agent_names": [
-            "vault_indexer", "vault_synthesizer", "deep_researcher", "meta_agent",
-            "daily_driver", "knowledge_lint", "flush", "job_feed",
+            "vault_indexer",
+            "vault_synthesizer",
+            "deep_researcher",
+            "meta_agent",
+            "daily_driver",
+            "knowledge_lint",
+            "flush",
+            "job_feed",
         ],
     }
 
@@ -40,8 +50,11 @@ def test_render_public_emits_html_and_data_json(tmp_path):
     data = _data()
     agg = aggregations.compute_all(data, end=date(2026, 5, 14))
     tickets = kanban.compose_tickets(
-        {**data, "lint_reports": {**data["lint_reports"], "raw_body": ""},
-         "eval_last_run": data["eval_last_run"]},
+        {
+            **data,
+            "lint_reports": {**data["lint_reports"], "raw_body": ""},
+            "eval_last_run": data["eval_last_run"],
+        },
         include_job_feed=False,
     )
     tickets = kanban.compute_columns(tickets, data["agent_runs"])
@@ -106,7 +119,7 @@ def test_kanban_template_renders_hero_plate(tmp_path):
     # Hero-plate appears before the filter-chip row in source order.
     assert html.index("kanban-hero") < html.index("kanban-filters")
     # No em dashes in our new prose strings (project copy guide).
-    hero_block = html[html.index("kanban-hero"):html.index("kanban-filters")]
+    hero_block = html[html.index("kanban-hero") : html.index("kanban-filters")]
     assert "—" not in hero_block
 
 
@@ -123,8 +136,14 @@ def test_fleet_ribbon_renders_glossary_and_legend(tmp_path):
     # Glossary block + every one of the 8 agent names + the legend
     assert 'class="fleet-glossary"' in fleet
     for agent in (
-        "vault_synthesizer", "vault_indexer", "deep_researcher", "meta_agent",
-        "daily_driver", "knowledge_lint", "flush", "job_feed",
+        "vault_synthesizer",
+        "vault_indexer",
+        "deep_researcher",
+        "meta_agent",
+        "daily_driver",
+        "knowledge_lint",
+        "flush",
+        "job_feed",
     ):
         assert f"<dt>{agent}</dt>" in fleet, f"glossary missing {agent}"
     assert "(private surface only)" in fleet  # job_feed glossary tag
@@ -134,7 +153,7 @@ def test_fleet_ribbon_renders_glossary_and_legend(tmp_path):
     assert fleet.index("ribbon-legend") < fleet.index("fleet-ribbon")
     # No em dashes introduced by the new blocks
     ribbon_close = fleet.index("</section>", fleet.index("fleet-ribbon"))
-    glossary_block = fleet[fleet.index("ribbon-legend"):ribbon_close]
+    glossary_block = fleet[fleet.index("ribbon-legend") : ribbon_close]
     assert "—" not in glossary_block
 
 
@@ -162,19 +181,21 @@ def test_kanban_quiet_week_prose_is_inflow_scoped(tmp_path):
     # Drive the renderer with zero tickets so the quiet-week branch fires.
     data = {
         "research_queue": {"pending": [], "in_flight": [], "done": []},
-        "lint_reports": {"latest_date": "2026-05-19", "issues_total": 0,
-                         "issues_by_severity": {}, "issues": []},
+        "lint_reports": {
+            "latest_date": "2026-05-19",
+            "issues_total": 0,
+            "issues_by_severity": {},
+            "issues": [],
+        },
         "manual_tickets": {"todo": [], "in_progress": [], "done": []},
         "agent_runs": [],
-        "eval_last_run": {"passed": 0, "failed": 0, "skipped": 0,
-                          "total_cases": 0, "cases": []},
+        "eval_last_run": {"passed": 0, "failed": 0, "skipped": 0, "total_cases": 0, "cases": []},
         "job_feed": {"total_postings": 0, "by_status": {}, "top_fit": [], "active_count": 0},
         "synth_manifests": [],
         "gemini_spend": {"total_usd": 0, "run_count": 0, "tiers": {}},
         "council_spend": {"month_total_usd": 0, "day_count": 0, "days": []},
         "job_feed_manifests": {"latest": None, "last_7": []},
-        "target_companies": {"tier_1": [], "tier_2": [], "tier_3": [],
-                             "by_status": {}, "total": 0},
+        "target_companies": {"tier_1": [], "tier_2": [], "tier_3": [], "by_status": {}, "total": 0},
         "warm_intros": {"active": [], "prospecting": [], "second_degree": [], "total": 0},
         "agent_names": ["vault_synthesizer"],
     }
@@ -189,25 +210,77 @@ def test_kanban_quiet_week_prose_is_inflow_scoped(tmp_path):
     # Old, misleading copy must be gone — it implied we know backlog state.
     assert "Backlog is caught up" not in kb
     # New prose is em-dash-free per project copy guide.
-    hero = kb[kb.index("kanban-hero"):kb.index("kanban-filters")]
+    hero = kb[kb.index("kanban-hero") : kb.index("kanban-filters")]
     assert "—" not in hero
+
+
+def test_kpi_row_renders_four_distinct_primitives(tmp_path):
+    """Task 5: the KPI row carries 4 visually distinct inner primitives —
+    a 10-dot row, a sparkline, a donut, and a fill bar — each matching its
+    card's data shape. Outer card shell unchanged."""
+    data = _data()
+    agg = aggregations.compute_all(data, end=date(2026, 5, 14))
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    tickets = kanban.compute_columns(tickets, data["agent_runs"])
+    render.render_public(agg, tickets, tmp_path)
+    fleet = (tmp_path / "index.html").read_text()
+    # Each primitive class appears at least once on the public /fleet
+    assert 'class="kpi-dots"' in fleet
+    assert 'class="kpi-sparkline"' in fleet
+    assert 'class="kpi-donut"' in fleet
+    assert 'class="kpi-fill-bar"' in fleet
+    # The outer card structure is unchanged — labels + values still emitted
+    assert fleet.count("kpi-card") == 4
+    assert fleet.count('class="kpi-label"') == 4
+    # All 4 primitives marked decorative for a11y
+    kpi_block = fleet[fleet.index('class="kpi-row"') : fleet.index('class="kpi-row"') + 4000]
+    assert kpi_block.count('aria-hidden="true"') >= 4
+
+
+def test_kpi_row_private_renders_headroom_fill_bar(tmp_path):
+    """Private pass swaps the local-only-share donut for a headroom fill bar
+    (data shape there is spend vs cap, not a percentage split)."""
+    data = _data()
+    agg = aggregations.compute_all(data, end=date(2026, 5, 14))
+    tickets = kanban.compose_tickets(data, include_job_feed=True)
+    tickets = kanban.compute_columns(tickets, data["agent_runs"])
+    render.render_private(agg, tickets, tmp_path)
+    fleet = (tmp_path / "index.html").read_text()
+    # Private card 3 uses a fill bar (headroom_bar), not a donut
+    kpi_block = fleet[fleet.index('class="kpi-row"') : fleet.index('class="kpi-row"') + 4500]
+    # Two fill bars on private: headroom + governor cap
+    assert kpi_block.count('class="kpi-fill-bar"') >= 2
+    # No donut on private KPI row
+    assert 'class="kpi-donut"' not in kpi_block
 
 
 def test_kanban_template_renders_headline_subheadline_and_modal_shell(tmp_path):
     """Kanban board uses .ticket-headline + .ticket-subheadline and emits a modal shell."""
     from lib import aggregations, kanban, render
+
     data = {
-        "research_queue": {"pending": [
-            {"title": "Topic 99 — Demo prompt. With prose body that should land in details.",
-             "assigned_agent": None},
-        ], "in_flight": [], "done": []},
-        "lint_reports": {"latest_date": "2026-05-19", "issues_total": 0,
-                         "issues_by_severity": {}, "issues": []},
+        "research_queue": {
+            "pending": [
+                {
+                    "title": "Topic 99 — Demo prompt. With prose body that should land in details.",
+                    "assigned_agent": None,
+                },
+            ],
+            "in_flight": [],
+            "done": [],
+        },
+        "lint_reports": {
+            "latest_date": "2026-05-19",
+            "issues_total": 0,
+            "issues_by_severity": {},
+            "issues": [],
+        },
         "manual_tickets": {"todo": [], "in_progress": [], "done": []},
-        "agent_runs": [], "eval_last_run": {"passed": 0, "failed": 0, "skipped": 0,
-                                             "total_cases": 0, "cases": []},
+        "agent_runs": [],
+        "eval_last_run": {"passed": 0, "failed": 0, "skipped": 0, "total_cases": 0, "cases": []},
         "job_feed": {"total_postings": 0, "by_status": {}, "top_fit": [], "active_count": 0},
-        "synth_manifests": [], "gemini_spend": {"total_usd": 0, "run_count": 0, "tiers": {}},
+        "synth_manifests": [],
+        "gemini_spend": {"total_usd": 0, "run_count": 0, "tiers": {}},
         "council_spend": {"month_total_usd": 0, "day_count": 0, "days": []},
         "job_feed_manifests": {"latest": None, "last_7": []},
         "target_companies": {"tier_1": [], "tier_2": [], "tier_3": [], "by_status": {}, "total": 0},

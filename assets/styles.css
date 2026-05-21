@@ -169,6 +169,45 @@ a:hover { color: var(--accent-purple); }
 .kpi-value.red   { color: var(--accent-alert); }
 .kpi-value.purple { color: var(--accent-purple); }
 
+/* Per-card inner primitives (Task 5 — Bloomberg-terminal varied composition).
+ * Outer .kpi-card shell (border, padding, radius) stays identical; only the
+ * inner visual primitive varies so the eye picks up data shape before reading
+ * the kpi-value text. All primitives are decorative — aria-hidden in markup. */
+.kpi-primitive {
+  margin-top: var(--space-2);
+  display: block;
+  line-height: 0;        /* prevents inline-svg phantom descent */
+}
+.kpi-primitive--dots { height: 6px; }
+.kpi-primitive--dots svg.kpi-dots {
+  width: auto;
+  max-width: 100%;
+  height: 6px;
+}
+.kpi-primitive--spark { height: 22px; }
+.kpi-primitive--spark svg.kpi-sparkline {
+  width: 100%;
+  height: 22px;
+  display: block;
+}
+.kpi-primitive--bar { height: 6px; }
+.kpi-primitive--bar svg.kpi-fill-bar {
+  width: 100%;
+  height: 6px;
+  display: block;
+}
+/* The donut variant lives BESIDE the kpi-value (not above), so the donut
+ * wrapper carries no margin-top and the .kpi-value-row provides flex layout. */
+.kpi-value-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+.kpi-value-row .kpi-value { margin-top: 0; }
+.kpi-value-row .kpi-primitive--donut { margin-top: 0; }
+.kpi-primitive--donut svg.kpi-donut { display: block; }
+
 /* ───── Fleet State Matchstick Ribbon (replaces 4×grid agent tiles) ───── */
 .fleet-ribbon {
   display: grid;
