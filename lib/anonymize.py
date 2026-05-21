@@ -13,7 +13,15 @@ from __future__ import annotations
 import copy
 import re
 
-_VAULT_PATH_RE = re.compile(r"vault/[\w\-/.]+")
+# Match either:
+#   (a) an absolute home-prefixed path containing `vault/...` — collapses the
+#       username + home-directory layout AND the vault subtree in one swoop, or
+#   (b) a bare `vault/...` relative path — the original case.
+# Order matters: the absolute alternative must be tried first because the
+# inner `vault/...` would otherwise match alone and leave the home prefix
+# exposed (pre-existing leak fixed here as part of the privacy boundary
+# extension into the ticket pipeline).
+_VAULT_PATH_RE = re.compile(r"/Users/[^/\s]+/[^\s]*?vault/[\w\-/.]+|vault/[\w\-/.]+")
 
 
 def _redact_paths(text: str | None) -> str:
