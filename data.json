@@ -14,8 +14,8 @@
       "_slug": "automation-failure-and-daily-note-disruption.md",
       "_humanized": "Automation failure and daily note disruption",
       "count": 3,
-      "created_at": "2026-05-22T10:00:06.551263+00:00",
-      "moved_at": "2026-05-22T10:00:06.551263+00:00",
+      "created_at": "2026-05-24T10:00:05.686002+00:00",
+      "moved_at": "2026-05-24T10:00:05.686002+00:00",
       "details": "knowledge/concepts/automation-failure-and-daily-note-disruption.md \u2014 contradicts agent-health-and-daily-routine-automation (source=sql)\nknowledge/concepts/automation-failure-and-daily-note-disruption.md \u2014 contradicts daily-note-generation (source=sql)\nknowledge/concepts/automation-failure-and-daily-note-disruption.md \u2014 contradicts daily-routine-automation (source=sql)",
       "column": "backlog",
       "is_running": false
@@ -34,8 +34,8 @@
       "_slug": "citation-quality.md",
       "_humanized": "Citation quality",
       "count": 1,
-      "created_at": "2026-05-22T10:00:06.551263+00:00",
-      "moved_at": "2026-05-22T10:00:06.551263+00:00",
+      "created_at": "2026-05-24T10:00:05.686002+00:00",
+      "moved_at": "2026-05-24T10:00:05.686002+00:00",
       "details": "knowledge/concepts/citation-quality.md \u2014 contradicts local-deep-research-ldr (source=sql)",
       "column": "backlog",
       "is_running": false
@@ -54,8 +54,8 @@
       "_slug": "daily-drive-agent.md",
       "_humanized": "Daily drive agent",
       "count": 1,
-      "created_at": "2026-05-22T10:00:06.551263+00:00",
-      "moved_at": "2026-05-22T10:00:06.551263+00:00",
+      "created_at": "2026-05-24T10:00:05.686002+00:00",
+      "moved_at": "2026-05-24T10:00:05.686002+00:00",
       "details": "knowledge/concepts/daily-drive-agent.md \u2014 contradicts automation-failure-and-daily-note-disruption (source=sql)",
       "column": "backlog",
       "is_running": false
@@ -74,8 +74,8 @@
       "_slug": "daily-note-generation.md",
       "_humanized": "Daily note generation",
       "count": 1,
-      "created_at": "2026-05-22T10:00:06.551263+00:00",
-      "moved_at": "2026-05-22T10:00:06.551263+00:00",
+      "created_at": "2026-05-24T10:00:05.686002+00:00",
+      "moved_at": "2026-05-24T10:00:05.686002+00:00",
       "details": "knowledge/concepts/daily-note-generation.md \u2014 contradicts automation-failure-and-daily-note-disruption (source=sql)",
       "column": "backlog",
       "is_running": false
@@ -94,8 +94,8 @@
       "_slug": "intent-engineering.md",
       "_humanized": "Intent engineering",
       "count": 1,
-      "created_at": "2026-05-22T10:00:06.551263+00:00",
-      "moved_at": "2026-05-22T10:00:06.551263+00:00",
+      "created_at": "2026-05-24T10:00:05.686002+00:00",
+      "moved_at": "2026-05-24T10:00:05.686002+00:00",
       "details": "knowledge/concepts/intent-engineering.md \u2014 contradicts vault-knowledge-mcp (source=sql)",
       "column": "backlog",
       "is_running": false
@@ -114,8 +114,8 @@
       "_slug": "local-deep-research-ldr.md",
       "_humanized": "Local deep research ldr",
       "count": 1,
-      "created_at": "2026-05-22T10:00:06.551263+00:00",
-      "moved_at": "2026-05-22T10:00:06.551263+00:00",
+      "created_at": "2026-05-24T10:00:05.686002+00:00",
+      "moved_at": "2026-05-24T10:00:05.686002+00:00",
       "details": "knowledge/concepts/local-deep-research-ldr.md \u2014 contradicts gemini-deep-research (source=sql)",
       "column": "backlog",
       "is_running": false
@@ -134,8 +134,8 @@
       "_slug": "mcp-server-and-knowledge-graph-synergy.md",
       "_humanized": "MCP server and knowledge graph synergy",
       "count": 8,
-      "created_at": "2026-05-22T10:00:06.551263+00:00",
-      "moved_at": "2026-05-22T10:00:06.551263+00:00",
+      "created_at": "2026-05-24T10:00:05.686002+00:00",
+      "moved_at": "2026-05-24T10:00:05.686002+00:00",
       "details": "[redacted] \u2014 concept_edges\n[redacted] \u2014 knowledge_loop",
       "column": "backlog",
       "is_running": false
@@ -154,8 +154,8 @@
       "_slug": "agent-resilience-across-travel-and-work-setup.md",
       "_humanized": "Agent resilience across travel and work setup",
       "count": 1,
-      "created_at": "2026-05-22T10:00:06.551263+00:00",
-      "moved_at": "2026-05-22T10:00:06.551263+00:00",
+      "created_at": "2026-05-24T10:00:05.686002+00:00",
+      "moved_at": "2026-05-24T10:00:05.686002+00:00",
       "details": "[redacted] \u2014 Deep Researcher Fleet Reinstall",
       "column": "backlog",
       "is_running": false
@@ -174,8 +174,8 @@
       "_slug": "automation-and-travel-resilience-in-job-hunt-infrastructure.md",
       "_humanized": "Automation and travel resilience in job hunt infrastructure",
       "count": 1,
-      "created_at": "2026-05-22T10:00:06.551263+00:00",
-      "moved_at": "2026-05-22T10:00:06.551263+00:00",
+      "created_at": "2026-05-24T10:00:05.686002+00:00",
+      "moved_at": "2026-05-24T10:00:05.686002+00:00",
       "details": "[redacted] \u2014 MBP Travel Fallback Strategy",
       "column": "backlog",
       "is_running": false
@@ -194,8 +194,8 @@
       "_slug": "automation-reliability-and-job-hunt-workflows.md",
       "_humanized": "Automation reliability and job hunt workflows",
       "count": 1,
-      "created_at": "2026-05-22T10:00:06.551263+00:00",
-      "moved_at": "2026-05-22T10:00:06.551263+00:00",
+      "created_at": "2026-05-24T10:00:05.686002+00:00",
+      "moved_at": "2026-05-24T10:00:05.686002+00:00",
       "details": "[redacted] \u2014 Job Hunt 2026",
       "column": "backlog",
       "is_running": false
@@ -214,8 +214,8 @@
       "_slug": "mcp-server-pattern-repeatability.md",
       "_humanized": "MCP server pattern repeatability",
       "count": 3,
-      "created_at": "2026-05-22T10:00:06.551263+00:00",
-      "moved_at": "2026-05-22T10:00:06.551263+00:00",
+      "created_at": "2026-05-24T10:00:05.686002+00:00",
+      "moved_at": "2026-05-24T10:00:05.686002+00:00",
       "details": "[redacted] \u2014 concept_edges\n[redacted] \u2014 knowledge_loop\n[redacted] \u2014 MCP Server",
       "column": "backlog",
       "is_running": false
@@ -234,8 +234,8 @@
       "_slug": "product-management-and-ai-system-delivery-integration.md",
       "_humanized": "Product management and AI system delivery integration",
       "count": 1,
-      "created_at": "2026-05-22T10:00:06.551263+00:00",
-      "moved_at": "2026-05-22T10:00:06.551263+00:00",
+      "created_at": "2026-05-24T10:00:05.686002+00:00",
+      "moved_at": "2026-05-24T10:00:05.686002+00:00",
       "details": "[redacted] \u2014 Strategic Roadmap",
       "column": "backlog",
       "is_running": false
@@ -254,8 +254,8 @@
       "_slug": "agent-health-monitoring-and-job-hunt-2026-automation-reliability.md",
       "_humanized": "Agent health monitoring and job hunt 2026 automation reliability",
       "count": 1,
-      "created_at": "2026-05-22T10:00:06.551263+00:00",
-      "moved_at": "2026-05-22T10:00:06.551263+00:00",
+      "created_at": "2026-05-24T10:00:05.686002+00:00",
+      "moved_at": "2026-05-24T10:00:05.686002+00:00",
       "details": "[redacted] \u2014 Job-Hunt-2026",
       "column": "backlog",
       "is_running": false
@@ -274,8 +274,8 @@
       "_slug": "agent-health-and-professional-role-automation.md",
       "_humanized": "Agent health and professional role automation",
       "count": 1,
-      "created_at": "2026-05-22T10:00:06.551263+00:00",
-      "moved_at": "2026-05-22T10:00:06.551263+00:00",
+      "created_at": "2026-05-24T10:00:05.686002+00:00",
+      "moved_at": "2026-05-24T10:00:05.686002+00:00",
       "details": "[redacted] \u2014 Integration of Agentic Systems in Professional Roles",
       "column": "backlog",
       "is_running": false
@@ -294,8 +294,8 @@
       "_slug": "vault-knowledge-mcp.md",
       "_humanized": "Vault knowledge MCP",
       "count": 3,
-      "created_at": "2026-05-22T10:00:06.551263+00:00",
-      "moved_at": "2026-05-22T10:00:06.551263+00:00",
+      "created_at": "2026-05-24T10:00:05.686002+00:00",
+      "moved_at": "2026-05-24T10:00:05.686002+00:00",
       "details": "[redacted] \u2014 concept_edges\n[redacted] \u2014 knowledge_loop\n[redacted] \u2014 MCP Server",
       "column": "backlog",
       "is_running": false
@@ -314,8 +314,8 @@
       "_slug": "research-prompt-autoresearch-agentic-polymarket-crypto-cash-flow.md",
       "_humanized": "Research prompt autoresearch agentic polymarket crypto cash flow",
       "count": 1,
-      "created_at": "2026-05-22T10:00:06.551263+00:00",
-      "moved_at": "2026-05-22T10:00:06.551263+00:00",
+      "created_at": "2026-05-24T10:00:05.686002+00:00",
+      "moved_at": "2026-05-24T10:00:05.686002+00:00",
       "details": "[redacted] \u2014 Prompt Engineering",
       "column": "backlog",
       "is_running": false
@@ -334,8 +334,8 @@
       "_slug": "batch-export.md",
       "_humanized": "Batch export",
       "count": 1,
-      "created_at": "2026-05-22T10:00:06.551263+00:00",
-      "moved_at": "2026-05-22T10:00:06.551263+00:00",
+      "created_at": "2026-05-24T10:00:05.686002+00:00",
+      "moved_at": "2026-05-24T10:00:05.686002+00:00",
       "details": "[redacted] \u2014 Export",
       "column": "backlog",
       "is_running": false
@@ -354,8 +354,8 @@
       "_slug": "jitter-ai.md",
       "_humanized": "Jitter AI",
       "count": 1,
-      "created_at": "2026-05-22T10:00:06.551263+00:00",
-      "moved_at": "2026-05-22T10:00:06.551263+00:00",
+      "created_at": "2026-05-24T10:00:05.686002+00:00",
+      "moved_at": "2026-05-24T10:00:05.686002+00:00",
       "details": "[redacted] \u2014 Animation",
       "column": "backlog",
       "is_running": false
@@ -374,8 +374,8 @@
       "_slug": "README.md",
       "_humanized": "Readme",
       "count": 2,
-      "created_at": "2026-05-22T10:00:06.551263+00:00",
-      "moved_at": "2026-05-22T10:00:06.551263+00:00",
+      "created_at": "2026-05-24T10:00:05.686002+00:00",
+      "moved_at": "2026-05-24T10:00:05.686002+00:00",
       "details": "[redacted] \u2014 job_feed",
       "column": "backlog",
       "is_running": false
@@ -394,24 +394,10 @@
       "_slug": "target-companies.md",
       "_humanized": "Target companies",
       "count": 4,
-      "created_at": "2026-05-22T10:00:06.551263+00:00",
-      "moved_at": "2026-05-22T10:00:06.551263+00:00",
+      "created_at": "2026-05-24T10:00:05.686002+00:00",
+      "moved_at": "2026-05-24T10:00:05.686002+00:00",
       "details": "[redacted] \u2014 job_feed",
       "column": "backlog",
-      "is_running": false
-    },
-    {
-      "id": "eval-a964495f",
-      "title": "vault-synthesizer failed: error",
-      "headline": "vault-synthesizer failed: error",
-      "subheadline": "2026-05-22",
-      "source": "eval",
-      "assigned_agent": "vault-synthesizer",
-      "_section_hint": "todo",
-      "created_at": "2026-05-22T03:15:48+00:00",
-      "moved_at": "2026-05-22T03:15:48+00:00",
-      "details": "concepts=0 connections=0 rejected=0 edges=0",
-      "column": "todo",
       "is_running": false
     },
     {
@@ -429,5 +415,5 @@
       "is_running": false
     }
   ],
-  "snapshot_ts": "2026-05-22 10:00 UTC"
+  "snapshot_ts": "2026-05-24 10:00 UTC"
 }
