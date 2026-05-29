@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="topbar">
-<div class="spark" data-state="degraded" aria-hidden="true">
+<div class="spark" data-state="healthy" aria-hidden="true">
   <div class="arms">
     <div class="arm arm-v"></div>
     <div class="arm arm-h"></div>
@@ -27,8 +27,8 @@
     <span class="brand-url mono">fleet.seanwinslow.com</span>
     <span class="brand-wordmark">Agent Fleet Observability</span>
   </div>
-  <span class="status-pill mono"><span class="status-pill-dot" data-state="degraded" aria-hidden="true">●</span> 5/8 HEALTHY</span>
-  <span class="subtitle" style="margin-left: auto;">2026-05-26 10:00 UTC</span>
+  <span class="status-pill mono"><span class="status-pill-dot" data-state="healthy" aria-hidden="true">●</span> 7/8 HEALTHY</span>
+  <span class="subtitle" style="margin-left: auto;">2026-05-29 10:00 UTC</span>
   <nav style="display: flex; gap: 4px;">
     <a class="nav-link " href="./index.html">/fleet</a>
     <a class="nav-link active" href="./kanban.html">/kanban</a>
@@ -39,8 +39,8 @@
 
     <h1 class="kanban-hero-display" id="kanban-hero-headline">
       <span class="num"
-            data-countup="21"
-            aria-label="21">21</span>
+            data-countup="24"
+            aria-label="24">24</span>
       <span class="label">tickets this week</span>
     </h1>
     <p class="kanban-hero-prose">
@@ -50,12 +50,12 @@
     </p>
 
   <div class="kanban-hero-breakdown">
-      20 lint · 1 eval
+      3 research · 20 lint · 1 eval
   </div>
 </section>
 <div class="kanban-filters">
     <button class="filter-chip research" data-source="research" data-active="true" aria-pressed="true">
-      ● Research 0    </button>
+      ● Research 3    </button>
     <button class="filter-chip lint" data-source="lint" data-active="true" aria-pressed="true">
       ● Lint 20    </button>
     <button class="filter-chip eval" data-source="eval" data-active="true" aria-pressed="true">
@@ -68,8 +68,50 @@
     <div class="kanban-column" data-column="backlog">
       <div class="kanban-column-header">
         <span class="column-label">Backlog</span>
-        <span class="column-count">20</span>
+        <span class="column-count">23</span>
       </div>
+        <button type="button" class="ticket" data-source="research"
+                data-id="research-2de5a758"
+                data-details="Topic 24 — Procedural-memory / self-editing-prompt pattern in agentic systems (2026): how do production agents automatically update their own system prompts, tool descriptions, or skill definitions based on observed outcomes, and what specific guardrail prevents a bad lesson from being canonicalized as a default behavior? Cite the Voyager (Wang et al., 2023) skill-library paper, DSPy&#39;s prompt-optimization docs, Promptbreeder, and any 2025-2026 community implementations of self-editing skills or auto-updated SKILL.md files."
+                data-headline="Topic 24 — Procedural-memory / self-editing-prompt pattern in agentic systems (2026): how do production agents automatically update their own system prompts, tool descriptions, or skill definitions based on observed outcomes, and what specific guardrail prevents a bad lesson from being canonicalized as a default behavior? Cite the Voyager (Wang et al., 2023) skill-library paper, DSPy&#39;s prompt-optimization docs, Promptbreeder, and any 2025-2026 community implementations of self-editing skills or auto-updated SKILL.md files"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Topic 24 — Procedural-memory / self-editing-prompt pattern in agentic systems (2026): how do production agents automatically update their own system prompts, tool descriptions, or skill definitions based on observed outcomes, and what specific guardrail prevents a bad lesson from being canonicalized as a default behavior? Cite the Voyager (Wang et al., 2023) skill-library paper, DSPy&#39;s prompt-optimization docs, Promptbreeder, and any 2025-2026 community implementations of self-editing skills or auto-updated SKILL.md files
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="research" aria-hidden="true"></span>
+            research
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="research"
+                data-id="research-1b1067e2"
+                data-details="Topic 25 — Verification-before-completion patterns for coding agents in 2026: what prevents an agent from emitting &#34;task complete&#34; before tests/lints actually pass? Compare three patterns — (a) hardcoded pre-commit verification loops where lint/typecheck/test must exit 0 before the agent can claim done, (b) LLM-judge self-evaluation of the diff, (c) evidence-production patterns where the agent must paste actual passing test output into its completion message. Cite Cursor / Claude Code / Cognition Devin published postmortems and community patterns from 2025-2026."
+                data-headline="Topic 25 — Verification-before-completion patterns for coding agents in 2026: what prevents an agent from emitting &#34;task complete&#34; before tests/lints actually pass? Compare three patterns — (a) hardcoded pre-commit verification loops where lint/typecheck/test must exit 0 before the agent can claim done, (b) LLM-judge self-evaluation of the diff, (c) evidence-production patterns where the agent must paste actual passing test output into its completion message"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Topic 25 — Verification-before-completion patterns for coding agents in 2026: what prevents an agent from emitting &#34;task complete&#34; before tests/lints actually pass? Compare three patterns — (a) hardcoded pre-commit verification loops where lint/typecheck/test must exit 0 before the agent can claim done, (b) LLM-judge self-evaluation of the diff, (c) evidence-production patterns where the agent must paste actual passing test output into its completion message
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="research" aria-hidden="true"></span>
+            research
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="research"
+                data-id="research-12b7c588"
+                data-details="Topic 26 — Mem0 as a long-term memory backend for a self-hosted personal agent fleet on Apple Silicon in 2026: what is the documented retention quality on long-conversation benchmarks (LoCoMo or equivalent), what&#39;s the write-path (automatic LLM-extraction vs explicit &#34;remember this&#34; calls), and what are the operational gotchas reported by users self-hosting on Mac Mini / MBP class hardware (storage backend choice, embedding-model dependency, latency per turn)? Cite the Mem0 GitHub repo + 2025-2026 independent benchmark posts and self-host writeups."
+                data-headline="Topic 26 — Mem0 as a long-term memory backend for a self-hosted personal agent fleet on Apple Silicon in 2026: what is the documented retention quality on long-conversation benchmarks (LoCoMo or equivalent), what&#39;s the write-path (automatic LLM-extraction vs explicit &#34;remember this&#34; calls), and what are the operational gotchas reported by users self-hosting on Mac Mini / MBP class hardware (storage backend choice, embedding-model dependency, latency per turn)? Cite the Mem0 GitHub repo + 2025-2026 independent benchmark posts and self-host writeups"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Topic 26 — Mem0 as a long-term memory backend for a self-hosted personal agent fleet on Apple Silicon in 2026: what is the documented retention quality on long-conversation benchmarks (LoCoMo or equivalent), what&#39;s the write-path (automatic LLM-extraction vs explicit &#34;remember this&#34; calls), and what are the operational gotchas reported by users self-hosting on Mac Mini / MBP class hardware (storage backend choice, embedding-model dependency, latency per turn)? Cite the Mem0 GitHub repo + 2025-2026 independent benchmark posts and self-host writeups
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="research" aria-hidden="true"></span>
+            research
+          </div>
+        </button>
         <button type="button" class="ticket" data-source="lint"
                 data-id="lint-e52b1145"
                 data-details="knowledge/concepts/accountability-gap.md — contradicts automation-routines (source=sql)"
@@ -377,22 +419,20 @@ knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generatio
       <div class="kanban-column-header">
         <span class="column-label">ToDo</span>
         <span class="column-count">1</span>
-          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#FF5C46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,11.0 8.7,11.0 16.3,1.0 24.0,11.0 31.7,11.0 39.3,11.0 47.0,11.0"/></svg></span>
+          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#FF5C46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,11.0 8.7,11.0 16.3,11.0 24.0,11.0 31.7,11.0 39.3,11.0 47.0,11.0"/></svg></span>
       </div>
         <button type="button" class="ticket" data-source="eval"
-                data-id="eval-1710c34a"
-                data-details="API failure: Error code: 400 - [{&#39;error&#39;: {&#39;code&#39;: 400, &#39;message&#39;: &#39;API key expired. Please renew the API key.&#39;, &#39;status&#39;: &#39;INVALID_ARGUMENT&#39;, &#39;details&#39;: [{&#39;@type&#39;: &#39;type.googleapis.com/google.rpc.ErrorInfo&#39;, &#39;rea"
-                data-headline="gemini-dr failed: error"
-                data-subheadline="2026-05-21"
+                data-id="eval-case-35aaa01e"
+                data-details="vs-017 (status-misreport) failed in eval run current"
+                data-headline="eval failed: vs-017"
+                data-subheadline=""
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            gemini-dr failed: error
+            eval failed: vs-017
           </div>
-            <div class="ticket-subheadline">2026-05-21</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="eval" aria-hidden="true"></span>
             eval
-              · <span class="agent-dot agent-dot--unknown"></span>@gemini-dr
           </div>
         </button>
     </div>
@@ -415,7 +455,7 @@ knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generatio
       <div class="kanban-column-header">
         <span class="column-label">Done</span>
         <span class="column-count">0</span>
-          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#3FB950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,4.3 8.7,3.5 16.3,5.2 24.0,11.0 31.7,1.8 39.3,1.0 47.0,9.3"/></svg></span>
+          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#3FB950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,11.0 8.7,4.9 16.3,4.3 24.0,6.6 31.7,6.0 39.3,1.0 47.0,6.6"/></svg></span>
       </div>
         <div class="kanban-empty">Nothing in Done right now.</div>
     </div>
@@ -437,7 +477,7 @@ knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generatio
   <strong>Built by Sean Winslow</strong>.
   Multi-agent fleet on macOS launchd, 99% local-first inference.
   <a href="https://github.com/seanwinslow28/agent-fleet-observability">View source</a>
-  · last build 2026-05-26 10:00 UTC
+  · last build 2026-05-29 10:00 UTC
 </footer>  <script src="assets/motion.js" defer></script>
   <script src="assets/kanban-modal.js" defer></script>
 </body>
