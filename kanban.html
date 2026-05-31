@@ -28,7 +28,7 @@
     <span class="brand-wordmark">Agent Fleet Observability</span>
   </div>
   <span class="status-pill mono"><span class="status-pill-dot" data-state="healthy" aria-hidden="true">●</span> 7/8 HEALTHY</span>
-  <span class="subtitle" style="margin-left: auto;">2026-05-30 10:00 UTC</span>
+  <span class="subtitle" style="margin-left: auto;">2026-05-31 10:00 UTC</span>
   <nav style="display: flex; gap: 4px;">
     <a class="nav-link " href="./index.html">/fleet</a>
     <a class="nav-link active" href="./kanban.html">/kanban</a>
@@ -39,8 +39,8 @@
 
     <h1 class="kanban-hero-display" id="kanban-hero-headline">
       <span class="num"
-            data-countup="27"
-            aria-label="27">27</span>
+            data-countup="31"
+            aria-label="31">31</span>
       <span class="label">tickets this week</span>
     </h1>
     <p class="kanban-hero-prose">
@@ -50,40 +50,26 @@
     </p>
 
   <div class="kanban-hero-breakdown">
-      2 research · 20 lint · 1 eval · 4 manual
+      1 research · 20 lint · 1 eval · 9 manual
   </div>
 </section>
 <div class="kanban-filters">
     <button class="filter-chip research" data-source="research" data-active="true" aria-pressed="true">
-      ● Research 2    </button>
+      ● Research 1    </button>
     <button class="filter-chip lint" data-source="lint" data-active="true" aria-pressed="true">
       ● Lint 20    </button>
     <button class="filter-chip eval" data-source="eval" data-active="true" aria-pressed="true">
       ● Eval 1    </button>
     <button class="filter-chip manual" data-source="manual" data-active="true" aria-pressed="true">
-      ● Manual 4    </button>
+      ● Manual 9    </button>
 </div>
 
 <div class="kanban-board">
     <div class="kanban-column" data-column="backlog">
       <div class="kanban-column-header">
         <span class="column-label">Backlog</span>
-        <span class="column-count">22</span>
+        <span class="column-count">21</span>
       </div>
-        <button type="button" class="ticket" data-source="research"
-                data-id="research-1b1067e2"
-                data-details="Topic 25 — Verification-before-completion patterns for coding agents in 2026: what prevents an agent from emitting &#34;task complete&#34; before tests/lints actually pass? Compare three patterns — (a) hardcoded pre-commit verification loops where lint/typecheck/test must exit 0 before the agent can claim done, (b) LLM-judge self-evaluation of the diff, (c) evidence-production patterns where the agent must paste actual passing test output into its completion message. Cite Cursor / Claude Code / Cognition Devin published postmortems and community patterns from 2025-2026."
-                data-headline="Topic 25 — Verification-before-completion patterns for coding agents in 2026: what prevents an agent from emitting &#34;task complete&#34; before tests/lints actually pass? Compare three patterns — (a) hardcoded pre-commit verification loops where lint/typecheck/test must exit 0 before the agent can claim done, (b) LLM-judge self-evaluation of the diff, (c) evidence-production patterns where the agent must paste actual passing test output into its completion message"
-                data-subheadline=""
-                aria-haspopup="dialog">
-          <div class="ticket-headline">
-            Topic 25 — Verification-before-completion patterns for coding agents in 2026: what prevents an agent from emitting &#34;task complete&#34; before tests/lints actually pass? Compare three patterns — (a) hardcoded pre-commit verification loops where lint/typecheck/test must exit 0 before the agent can claim done, (b) LLM-judge self-evaluation of the diff, (c) evidence-production patterns where the agent must paste actual passing test output into its completion message
-          </div>
-          <div class="ticket-meta">
-            <span class="ticket-source-dot" data-source="research" aria-hidden="true"></span>
-            research
-          </div>
-        </button>
         <button type="button" class="ticket" data-source="research"
                 data-id="research-12b7c588"
                 data-details="Topic 26 — Mem0 as a long-term memory backend for a self-hosted personal agent fleet on Apple Silicon in 2026: what is the documented retention quality on long-conversation benchmarks (LoCoMo or equivalent), what&#39;s the write-path (automatic LLM-extraction vs explicit &#34;remember this&#34; calls), and what are the operational gotchas reported by users self-hosting on Mac Mini / MBP class hardware (storage backend choice, embedding-model dependency, latency per turn)? Cite the Mem0 GitHub repo + 2025-2026 independent benchmark posts and self-host writeups."
@@ -404,7 +390,7 @@ knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generatio
     <div class="kanban-column" data-column="todo">
       <div class="kanban-column-header">
         <span class="column-label">ToDo</span>
-        <span class="column-count">5</span>
+        <span class="column-count">10</span>
           <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#FF5C46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,11.0 8.7,11.0 16.3,11.0 24.0,11.0 31.7,11.0 39.3,11.0 47.0,11.0"/></svg></span>
       </div>
         <button type="button" class="ticket" data-source="eval"
@@ -481,6 +467,81 @@ knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generatio
               · <span class="agent-dot agent-dot--unknown"></span>@Sean
           </div>
         </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-75c52d93"
+                data-details=""
+                data-headline="vault-knowledge-mcp launch comms: record the 90-sec Loom from docs/LOOM-SCRIPT.md (all 3 tools, lead on find_contradictions), drop npm + GitHub links into the LinkedIn first-comment, then post docs/LINKEDIN-DRAFT.md tagging Anthropic"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            vault-knowledge-mcp launch comms: record the 90-sec Loom from docs/LOOM-SCRIPT.md (all 3 tools, lead on find_contradictions), drop npm + GitHub links into the LinkedIn first-comment, then post docs/LINKEDIN-DRAFT.md tagging Anthropic
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-f18ae504"
+                data-details=""
+                data-headline="vault-knowledge-mcp: log the first recruiter/hiring-manager engagement attributable to this artifact in target-companies.md (spec §8 criterion 9, the last open success criterion)"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            vault-knowledge-mcp: log the first recruiter/hiring-manager engagement attributable to this artifact in target-companies.md (spec §8 criterion 9, the last open success criterion)
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-4aa1a2a2"
+                data-details=""
+                data-headline="Task 19 mock-interview rig: one-time `agents-sdk/.venv/bin/pip install faster-whisper` on the Mac (only setup left before the rig produces a grade)"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Task 19 mock-interview rig: one-time `agents-sdk/.venv/bin/pip install faster-whisper` on the Mac (only setup left before the rig produces a grade)
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-707ef6cb"
+                data-details=""
+                data-headline="Task 19 Step 4 / Gate C: record + grade the 3 first-test answers (TMAY / &#34;walk me through what happened with The Block&#34; / &#34;shipped something hard&#34;) via mock_interview_loop.py; drill to 8+/10 ×3 consecutive. Also grades the Task 16 stories + Task 17 TMAY"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Task 19 Step 4 / Gate C: record + grade the 3 first-test answers (TMAY / &#34;walk me through what happened with The Block&#34; / &#34;shipped something hard&#34;) via mock_interview_loop.py; drill to 8+/10 ×3 consecutive. Also grades the Task 16 stories + Task 17 TMAY
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-5693a1e3"
+                data-details=""
+                data-headline="TMAY per-company file: fill a Why-Here swap for each remaining top-5 target before its interview (4 already filled: Anthropic FDE / Sierra / Decagon / ServiceNow)"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            TMAY per-company file: fill a Why-Here swap for each remaining top-5 target before its interview (4 already filled: Anthropic FDE / Sierra / Decagon / ServiceNow)
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
     </div>
     <div class="kanban-column" data-column="in_progress">
       <div class="kanban-column-header">
@@ -501,7 +562,7 @@ knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generatio
       <div class="kanban-column-header">
         <span class="column-label">Done</span>
         <span class="column-count">0</span>
-          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#3FB950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,6.3 8.7,4.3 16.3,7.7 24.0,7.0 31.7,1.0 39.3,4.3 47.0,11.0"/></svg></span>
+          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#3FB950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,5.0 8.7,7.7 16.3,7.0 24.0,1.0 31.7,4.3 39.3,7.0 47.0,11.0"/></svg></span>
       </div>
         <div class="kanban-empty">Nothing in Done right now.</div>
     </div>
@@ -523,7 +584,7 @@ knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generatio
   <strong>Built by Sean Winslow</strong>.
   Multi-agent fleet on macOS launchd, 99% local-first inference.
   <a href="https://github.com/seanwinslow28/agent-fleet-observability">View source</a>
-  · last build 2026-05-30 10:00 UTC
+  · last build 2026-05-31 10:00 UTC
 </footer>  <script src="assets/motion.js" defer></script>
   <script src="assets/kanban-modal.js" defer></script>
 </body>
