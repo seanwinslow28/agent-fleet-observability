@@ -28,7 +28,7 @@
     <span class="brand-wordmark">Agent Fleet Observability</span>
   </div>
   <span class="status-pill mono"><span class="status-pill-dot" data-state="healthy" aria-hidden="true">●</span> 7/8 HEALTHY</span>
-  <span class="subtitle" style="margin-left: auto;">2026-06-02 10:00 UTC</span>
+  <span class="subtitle" style="margin-left: auto;">2026-06-02 18:30 UTC</span>
   <nav style="display: flex; gap: 4px;">
     <a class="nav-link " href="./index.html">/fleet</a>
     <a class="nav-link active" href="./kanban.html">/kanban</a>
@@ -39,8 +39,8 @@
 
     <h1 class="kanban-hero-display" id="kanban-hero-headline">
       <span class="num"
-            data-countup="36"
-            aria-label="36">36</span>
+            data-countup="41"
+            aria-label="41">41</span>
       <span class="label">tickets this week</span>
     </h1>
     <p class="kanban-hero-prose">
@@ -50,7 +50,7 @@
     </p>
 
   <div class="kanban-hero-breakdown">
-      20 lint · 1 eval · 15 manual
+      20 lint · 1 eval · 20 manual
   </div>
 </section>
 <div class="kanban-filters">
@@ -61,7 +61,7 @@
     <button class="filter-chip eval" data-source="eval" data-active="true" aria-pressed="true">
       ● Eval 1    </button>
     <button class="filter-chip manual" data-source="manual" data-active="true" aria-pressed="true">
-      ● Manual 15    </button>
+      ● Manual 20    </button>
 </div>
 
 <div class="kanban-board">
@@ -379,7 +379,7 @@ knowledge/concepts/infrastructure-status-and-agent-failure.md — contradicts cr
     <div class="kanban-column" data-column="todo">
       <div class="kanban-column-header">
         <span class="column-label">ToDo</span>
-        <span class="column-count">15</span>
+        <span class="column-count">20</span>
           <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#FF5C46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,11.0 8.7,11.0 16.3,11.0 24.0,11.0 31.7,11.0 39.3,11.0 47.0,11.0"/></svg></span>
       </div>
         <button type="button" class="ticket" data-source="eval"
@@ -606,6 +606,81 @@ knowledge/concepts/infrastructure-status-and-agent-failure.md — contradicts cr
               · <span class="agent-dot agent-dot--unknown"></span>@Sean
           </div>
         </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-704ff022"
+                data-details=""
+                data-headline="Task 23 MCP Security Audit (v0.1.1 already published to npm + registry): run npm run build in sw-ai-pm-portfolio to confirm /transactions/mcp-security-audit/ resolves, then commit the new mcp-security-audit.mdx ledger row; post sw-mcp-intent-engineering/docs/LINKEDIN-DRAFT.md (links in first comment, tag Anthropic) and optionally commit that draft file"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Task 23 MCP Security Audit (v0.1.1 already published to npm + registry): run npm run build in sw-ai-pm-portfolio to confirm /transactions/mcp-security-audit/ resolves, then commit the new mcp-security-audit.mdx ledger row; post sw-mcp-intent-engineering/docs/LINKEDIN-DRAFT.md (links in first comment, tag Anthropic) and optionally commit that draft file
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-0562472a"
+                data-details=""
+                data-headline="vault-critic AG hang — read tomorrow&#39;s 03:30 capture: check [redacted]*.log + critic-manifest-2026-06-03.json for 429/RESOURCE_EXHAUSTED/Quota/&#34;Request cancelled.&#34; If confirmed (high-confidence hypothesis: gemini-cli #22648 swallows a preview-model 429 at the 00:30-Pacific quota-reset boundary), migrate the nightly off oauth-personal to GEMINI_API_KEY (also forced by oauth-personal-via-gemini-cli EOL 2026-06-18), then REMOVE the temporary VAULT_CRITIC_AG_DEBUG=1 from schedules/com.sean.agent.vault-critic.plist + reload. Context: agents-sdk/CONTINUATION-2026-06-02-vault-critic-antigravity.md Session 3"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            vault-critic AG hang — read tomorrow&#39;s 03:30 capture: check [redacted]*.log + critic-manifest-2026-06-03.json for 429/RESOURCE_EXHAUSTED/Quota/&#34;Request cancelled.&#34; If confirmed (high-confidence hypothesis: gemini-cli #22648 swallows a preview-model 429 at the 00:30-Pacific quota-reset boundary), migrate the nightly off oauth-personal to GEMINI_API_KEY (also forced by oauth-personal-via-gemini-cli EOL 2026-06-18), then REMOVE the temporary VAULT_CRITIC_AG_DEBUG=1 from schedules/com.sean.agent.vault-critic.plist + reload. Context: agents-sdk/CONTINUATION-2026-06-02-vault-critic-antigravity.md Session 3
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-2b884652"
+                data-details=""
+                data-headline="daily-driver morning cost cap breach: 2026-06-02 run cost $0.6848 vs $0.60 cap (second breach after 5/29 hit $0.97) yet meta-agent reported &#34;healthy&#34;. Either raise the cap deliberately or investigate the overrun; also fold cost&gt;cap into the meta-agent alert blind-spot ticket"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            daily-driver morning cost cap breach: 2026-06-02 run cost $0.6848 vs $0.60 cap (second breach after 5/29 hit $0.97) yet meta-agent reported &#34;healthy&#34;. Either raise the cap deliberately or investigate the overrun; also fold cost&gt;cap into the meta-agent alert blind-spot ticket
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-9994e5e3"
+                data-details=""
+                data-headline="test suite hang: tests/test_gemini_dr.py makes a real unmocked network call to the Gemini DR API with no timeout, so `pytest tests/` hangs indefinitely (must run per-file or deselect). Mock the API call or mark it integration/skip-by-default so the full suite completes"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            test suite hang: tests/test_gemini_dr.py makes a real unmocked network call to the Gemini DR API with no timeout, so `pytest tests/` hangs indefinitely (must run per-file or deselect). Mock the API call or mark it integration/skip-by-default so the full suite completes
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-dcfa7681"
+                data-details=""
+                data-headline="Task 24 Discovery PRD (content-complete + council-revised; ledger row validated clean via scripts/validate_content.mjs): run `npm run build` in sw-ai-pm-portfolio to confirm /transactions/discovery-prd-content-workflow/ resolves, then commit the new discovery-prd-content-workflow.mdx (surface: product) by hand; optional LinkedIn teaser on the cross-functional-translation angle"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Task 24 Discovery PRD (content-complete + council-revised; ledger row validated clean via scripts/validate_content.mjs): run `npm run build` in sw-ai-pm-portfolio to confirm /transactions/discovery-prd-content-workflow/ resolves, then commit the new discovery-prd-content-workflow.mdx (surface: product) by hand; optional LinkedIn teaser on the cross-functional-translation angle
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
     </div>
     <div class="kanban-column" data-column="in_progress">
       <div class="kanban-column-header">
@@ -626,7 +701,7 @@ knowledge/concepts/infrastructure-status-and-agent-failure.md — contradicts cr
       <div class="kanban-column-header">
         <span class="column-label">Done</span>
         <span class="column-count">1</span>
-          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#3FB950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,6.6 8.7,1.0 16.3,4.1 24.0,6.6 31.7,6.6 39.3,5.4 47.0,11.0"/></svg></span>
+          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#3FB950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,1.0 8.7,5.3 16.3,9.6 24.0,11.0 31.7,9.6 39.3,9.6 47.0,8.1"/></svg></span>
       </div>
         <button type="button" class="ticket" data-source="manual"
                 data-id="manual-4aa1a2a2"
@@ -662,7 +737,7 @@ knowledge/concepts/infrastructure-status-and-agent-failure.md — contradicts cr
   <strong>Built by Sean Winslow</strong>.
   Multi-agent fleet on macOS launchd, 99% local-first inference.
   <a href="https://github.com/seanwinslow28/agent-fleet-observability">View source</a>
-  · last build 2026-06-02 10:00 UTC
+  · last build 2026-06-02 18:30 UTC
 </footer>  <script src="assets/motion.js" defer></script>
   <script src="assets/kanban-modal.js" defer></script>
 </body>
