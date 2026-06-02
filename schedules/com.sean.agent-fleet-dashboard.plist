@@ -5,12 +5,16 @@
 <dict>
   <key>Label</key>
   <string>com.sean.agent-fleet-dashboard</string>
+  <!-- Daily build runs in a worktree pinned to `main` so the snapshot it
+       commits is what Vercel deploys to production (fleet.seanwinslow.com).
+       The primary checkout at agent-fleet-observability/ is Sean's
+       interactive working tree and may be on a feature/polish branch. -->
   <key>WorkingDirectory</key>
-  <string>/Users/seanwinslow/Code-Brain/agent-fleet-observability</string>
+  <string>/Users/seanwinslow/Code-Brain/agent-fleet-build</string>
   <key>ProgramArguments</key>
   <array>
-    <string>/Users/seanwinslow/Code-Brain/agent-fleet-observability/.venv/bin/python</string>
-    <string>/Users/seanwinslow/Code-Brain/agent-fleet-observability/build.py</string>
+    <string>/Users/seanwinslow/Code-Brain/agent-fleet-build/.venv/bin/python</string>
+    <string>/Users/seanwinslow/Code-Brain/agent-fleet-build/build.py</string>
   </array>
   <key>EnvironmentVariables</key>
   <dict>
