@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="topbar">
-<div class="spark" data-state="degraded" aria-hidden="true">
+<div class="spark" data-state="healthy" aria-hidden="true">
   <div class="arms">
     <div class="arm arm-v"></div>
     <div class="arm arm-h"></div>
@@ -27,8 +27,8 @@
     <span class="brand-url mono">fleet.seanwinslow.com</span>
     <span class="brand-wordmark">Agent Fleet Observability</span>
   </div>
-  <span class="status-pill mono"><span class="status-pill-dot" data-state="degraded" aria-hidden="true">●</span> 5/8 HEALTHY</span>
-  <span class="subtitle" style="margin-left: auto;">2026-05-21 15:27 UTC</span>
+  <span class="status-pill mono"><span class="status-pill-dot" data-state="healthy" aria-hidden="true">●</span> 7/8 HEALTHY</span>
+  <span class="subtitle" style="margin-left: auto;">2026-06-02 10:00 UTC</span>
   <nav style="display: flex; gap: 4px;">
     <a class="nav-link " href="./index.html">/fleet</a>
     <a class="nav-link active" href="./kanban.html">/kanban</a>
@@ -39,8 +39,8 @@
 
     <h1 class="kanban-hero-display" id="kanban-hero-headline">
       <span class="num"
-            data-countup="25"
-            aria-label="25">25</span>
+            data-countup="36"
+            aria-label="36">36</span>
       <span class="label">tickets this week</span>
     </h1>
     <p class="kanban-hero-prose">
@@ -50,411 +50,562 @@
     </p>
 
   <div class="kanban-hero-breakdown">
-      5 research · 20 lint
+      20 lint · 1 eval · 15 manual
   </div>
 </section>
 <div class="kanban-filters">
     <button class="filter-chip research" data-source="research" data-active="true" aria-pressed="true">
-      ● Research 5    </button>
+      ● Research 0    </button>
     <button class="filter-chip lint" data-source="lint" data-active="true" aria-pressed="true">
       ● Lint 20    </button>
     <button class="filter-chip eval" data-source="eval" data-active="true" aria-pressed="true">
-      ● Eval 0    </button>
+      ● Eval 1    </button>
     <button class="filter-chip manual" data-source="manual" data-active="true" aria-pressed="true">
-      ● Manual 0    </button>
+      ● Manual 15    </button>
 </div>
 
 <div class="kanban-board">
     <div class="kanban-column" data-column="backlog">
       <div class="kanban-column-header">
         <span class="column-label">Backlog</span>
-        <span class="column-count">25</span>
+        <span class="column-count">20</span>
       </div>
-        <button type="button" class="ticket" data-source="research"
-                data-id="research-483bb055"
-                data-details="Topic 15 — Pi + OpenRouter integration pattern in 2026. How to configure Pi (pi.dev) to use OpenRouter as a model provider. Cover: auth pattern (`OPENROUTER_API_KEY` env var vs config file), per-task model routing within Pi, cost-tracking + per-day caps, automatic-fallback behavior when a model is rate-limited, and whether Pi can mix OpenRouter with first-party Anthropic/OpenAI keys in the same project. Cite Pi docs + OpenRouter docs + 2026 community recipes."
-                data-headline="Topic 15 — Pi + OpenRouter integration pattern in 2026"
-                data-subheadline=""
-                aria-haspopup="dialog">
-          <div class="ticket-headline">
-            Topic 15 — Pi + OpenRouter integration pattern in 2026
-          </div>
-          <div class="ticket-meta">
-            <span class="ticket-source-dot" data-source="research" aria-hidden="true"></span>
-            research
-          </div>
-        </button>
-        <button type="button" class="ticket" data-source="research"
-                data-id="research-d8acc463"
-                data-details="Topic 16 — Pi + local Ollama integration pattern in 2026. How to point Pi (pi.dev) at a local Ollama instance (localhost or LAN-reachable Mac Mini / Alienware). Cover: config syntax, OpenAI-compatible endpoint expectations (`/v1/chat/completions`), recommended context-window settings, tool-calling reliability with current Ollama models, latency vs cloud, and any documented gotchas with streaming or `keep_alive`. Cite Pi docs + Ollama docs + 2026 community recipes."
-                data-headline="Topic 16 — Pi + local Ollama integration pattern in 2026"
-                data-subheadline=""
-                aria-haspopup="dialog">
-          <div class="ticket-headline">
-            Topic 16 — Pi + local Ollama integration pattern in 2026
-          </div>
-          <div class="ticket-meta">
-            <span class="ticket-source-dot" data-source="research" aria-hidden="true"></span>
-            research
-          </div>
-        </button>
-        <button type="button" class="ticket" data-source="research"
-                data-id="research-0561662c"
-                data-details="Topic 17 — Pi + Gemini CLI interoperability in 2026. Can Pi (pi.dev) invoke `gemini` CLI as a sub-tool, or vice versa? Survey integration patterns: shell-out from Pi to `gemini` for specific tasks, any Gemini CLI extension at https://geminicli.com/extensions/ that hands work to Pi, MCP bridge if either side exposes one, and shared-context patterns. Cite Pi docs + Gemini CLI extensions catalog + 2026 community workflows."
-                data-headline="Topic 17 — Pi + Gemini CLI interoperability in 2026"
-                data-subheadline=""
-                aria-haspopup="dialog">
-          <div class="ticket-headline">
-            Topic 17 — Pi + Gemini CLI interoperability in 2026
-          </div>
-          <div class="ticket-meta">
-            <span class="ticket-source-dot" data-source="research" aria-hidden="true"></span>
-            research
-          </div>
-        </button>
-        <button type="button" class="ticket" data-source="research"
-                data-id="research-0eb9cbd4"
-                data-details="Topic 18 — Pi + ChatGPT Codex (OpenAI coding agent) subscription integration in 2026. How to plug an existing ChatGPT Codex subscription into Pi (pi.dev) — auth pattern, supported model IDs, hybrid workflows where Pi orchestrates Codex for code generation while another model handles planning, and known limitations vs using the OpenAI API key directly. Cite Pi docs + OpenAI Codex docs + 2026 community recipes."
-                data-headline="Topic 18 — Pi + ChatGPT Codex (OpenAI coding agent) subscription integration in 2026"
-                data-subheadline=""
-                aria-haspopup="dialog">
-          <div class="ticket-headline">
-            Topic 18 — Pi + ChatGPT Codex (OpenAI coding agent) subscription integration in 2026
-          </div>
-          <div class="ticket-meta">
-            <span class="ticket-source-dot" data-source="research" aria-hidden="true"></span>
-            research
-          </div>
-        </button>
-        <button type="button" class="ticket" data-source="research"
-                data-id="research-81182d7c"
-                data-details="Topic 19 — Optimal Ollama model for Pi-driven coding + agentic workflows in 2026, ranked by RAM/VRAM tier. Recommend the single best Ollama model (and 1-2 runners-up) for Pi (pi.dev) workloads as of mid-2026, with one row per hardware tier: (a) M4 Max MacBook Pro, unified-memory class typical for a 2024-2025 high-end MBP; (b) M4 Pro Mac Mini 24GB unified memory (always-on headless); (c) NVIDIA RTX 3090 / 4090-class desktop GPU with 24GB VRAM (Alienware). For each row: model name + parameter count + quantization (Q4_K_M, Q5_K_M, MLX-4bit, etc.), expected tokens/sec, the workload it&#39;s best at (tool-calling, code completion, multi-turn reasoning), and the smallest competent alternative for low-RAM sessions. Cite the Ollama library + 2026 r/LocalLLaMA benchmark threads + any published Pi compatibility notes."
-                data-headline="Topic 19 — Optimal Ollama model for Pi-driven coding + agentic workflows in 2026, ranked by RAM/VRAM tier"
-                data-subheadline=""
-                aria-haspopup="dialog">
-          <div class="ticket-headline">
-            Topic 19 — Optimal Ollama model for Pi-driven coding + agentic workflows in 2026, ranked by RAM/VRAM tier
-          </div>
-          <div class="ticket-meta">
-            <span class="ticket-source-dot" data-source="research" aria-hidden="true"></span>
-            research
-          </div>
-        </button>
         <button type="button" class="ticket" data-source="lint"
-                data-id="lint-5a39957f"
-                data-details="knowledge/concepts/automation-failure-and-daily-note-disruption.md — contradicts agent-health-and-daily-routine-automation (source=sql)
-knowledge/concepts/automation-failure-and-daily-note-disruption.md — contradicts daily-note-generation (source=sql)
-knowledge/concepts/automation-failure-and-daily-note-disruption.md — contradicts daily-routine-automation (source=sql)"
-                data-headline="contradiction · Automation failure and daily note disruption · 3 edges"
-                data-subheadline="2026-05-17"
+                data-id="lint-e52b1145"
+                data-details="knowledge/concepts/accountability-gap.md — contradicts automation-routines (source=sql)"
+                data-headline="contradiction · Accountability gap"
+                data-subheadline="2026-05-31"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            contradiction · Automation failure and daily note disruption · 3 edges
+            contradiction · Accountability gap
           </div>
-            <div class="ticket-subheadline">2026-05-17</div>
+            <div class="ticket-subheadline">2026-05-31</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
  · <span title="Tier 2: in-flight projects, no immediate deadline.">T2</span>          </div>
         </button>
         <button type="button" class="ticket" data-source="lint"
-                data-id="lint-93b629c1"
-                data-details="knowledge/concepts/citation-quality.md — contradicts local-deep-research-ldr (source=sql)"
-                data-headline="contradiction · Citation quality"
-                data-subheadline="2026-05-17"
+                data-id="lint-b45d09c1"
+                data-details="knowledge/concepts/agent-health.md — contradicts daily-note-generation (source=sql)"
+                data-headline="contradiction · Agent health"
+                data-subheadline="2026-05-31"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            contradiction · Citation quality
+            contradiction · Agent health
           </div>
-            <div class="ticket-subheadline">2026-05-17</div>
+            <div class="ticket-subheadline">2026-05-31</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
  · <span title="Tier 2: in-flight projects, no immediate deadline.">T2</span>          </div>
         </button>
         <button type="button" class="ticket" data-source="lint"
-                data-id="lint-7411eea2"
-                data-details="knowledge/concepts/daily-drive-agent.md — contradicts automation-failure-and-daily-note-disruption (source=sql)"
-                data-headline="contradiction · Daily drive agent"
-                data-subheadline="2026-05-17"
+                data-id="lint-8ebd396a"
+                data-details="knowledge/concepts/agent-health-monitoring.md — contradicts infrastructure-status-and-agent-failure (source=sql)"
+                data-headline="contradiction · Agent health monitoring"
+                data-subheadline="2026-05-31"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            contradiction · Daily drive agent
+            contradiction · Agent health monitoring
           </div>
-            <div class="ticket-subheadline">2026-05-17</div>
+            <div class="ticket-subheadline">2026-05-31</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
  · <span title="Tier 2: in-flight projects, no immediate deadline.">T2</span>          </div>
         </button>
         <button type="button" class="ticket" data-source="lint"
-                data-id="lint-9dc631f7"
-                data-details="knowledge/concepts/daily-note-generation.md — contradicts automation-failure-and-daily-note-disruption (source=sql)"
-                data-headline="contradiction · Daily note generation"
-                data-subheadline="2026-05-17"
+                data-id="lint-743a6c16"
+                data-details="knowledge/concepts/automation-pipeline.md — contradicts agent-health-monitoring (source=sql)"
+                data-headline="contradiction · Automation pipeline"
+                data-subheadline="2026-05-31"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            contradiction · Daily note generation
+            contradiction · Automation pipeline
           </div>
-            <div class="ticket-subheadline">2026-05-17</div>
+            <div class="ticket-subheadline">2026-05-31</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
  · <span title="Tier 2: in-flight projects, no immediate deadline.">T2</span>          </div>
         </button>
         <button type="button" class="ticket" data-source="lint"
-                data-id="lint-24a448a6"
-                data-details="knowledge/concepts/intent-engineering.md — contradicts vault-knowledge-mcp (source=sql)"
-                data-headline="contradiction · Intent engineering"
-                data-subheadline="2026-05-17"
+                data-id="lint-9a427b3e"
+                data-details="knowledge/concepts/automation-reliability.md — contradicts cost-capped-agentic-workflows (source=sql)"
+                data-headline="contradiction · Automation reliability"
+                data-subheadline="2026-05-31"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            contradiction · Intent engineering
+            contradiction · Automation reliability
           </div>
-            <div class="ticket-subheadline">2026-05-17</div>
+            <div class="ticket-subheadline">2026-05-31</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
  · <span title="Tier 2: in-flight projects, no immediate deadline.">T2</span>          </div>
         </button>
         <button type="button" class="ticket" data-source="lint"
-                data-id="lint-284a8ae5"
-                data-details="knowledge/concepts/local-deep-research-ldr.md — contradicts gemini-deep-research (source=sql)"
-                data-headline="contradiction · Local deep research ldr"
-                data-subheadline="2026-05-17"
+                data-id="lint-e01cc4d4"
+                data-details="knowledge/concepts/automation-routines.md — contradicts accountability-gap (source=sql)
+knowledge/concepts/automation-routines.md — contradicts writing-voice-modes (source=sql)"
+                data-headline="contradiction · Automation routines · 2 edges"
+                data-subheadline="2026-05-31"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            contradiction · Local deep research ldr
+            contradiction · Automation routines · 2 edges
           </div>
-            <div class="ticket-subheadline">2026-05-17</div>
+            <div class="ticket-subheadline">2026-05-31</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
  · <span title="Tier 2: in-flight projects, no immediate deadline.">T2</span>          </div>
         </button>
         <button type="button" class="ticket" data-source="lint"
-                data-id="lint-24a49d50"
-                data-details="[redacted] — concept_edges
-[redacted] — knowledge_loop"
-                data-headline="broken-wikilink · MCP server and knowledge graph synergy · 8 edges"
-                data-subheadline="2026-05-17"
+                data-id="lint-6eb8b724"
+                data-details="knowledge/concepts/benchmarking-artifact.md — contradicts agent-health (source=sql)
+knowledge/concepts/benchmarking-artifact.md — contradicts automation-reliability (source=sql)
+knowledge/concepts/benchmarking-artifact.md — contradicts infrastructure-status (source=sql)"
+                data-headline="contradiction · Benchmarking artifact · 3 edges"
+                data-subheadline="2026-05-31"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            broken-wikilink · MCP server and knowledge graph synergy · 8 edges
+            contradiction · Benchmarking artifact · 3 edges
           </div>
-            <div class="ticket-subheadline">2026-05-17</div>
+            <div class="ticket-subheadline">2026-05-31</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
- · <span title="Tier 1: highest priority, direct customer or deadline work.">T1</span>          </div>
+ · <span title="Tier 2: in-flight projects, no immediate deadline.">T2</span>          </div>
         </button>
         <button type="button" class="ticket" data-source="lint"
-                data-id="lint-18a5f1a6"
-                data-details="[redacted] — Deep Researcher Fleet Reinstall"
-                data-headline="broken-wikilink · Agent resilience across travel and work setup"
-                data-subheadline="2026-05-17"
+                data-id="lint-472624e7"
+                data-details="knowledge/concepts/comprehension-audit.md — contradicts automation-reliability (source=sql)"
+                data-headline="contradiction · Comprehension audit"
+                data-subheadline="2026-05-31"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            broken-wikilink · Agent resilience across travel and work setup
+            contradiction · Comprehension audit
           </div>
-            <div class="ticket-subheadline">2026-05-17</div>
+            <div class="ticket-subheadline">2026-05-31</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
- · <span title="Tier 1: highest priority, direct customer or deadline work.">T1</span>          </div>
+ · <span title="Tier 2: in-flight projects, no immediate deadline.">T2</span>          </div>
         </button>
         <button type="button" class="ticket" data-source="lint"
-                data-id="lint-dec79c39"
-                data-details="[redacted] — MBP Travel Fallback Strategy"
-                data-headline="broken-wikilink · Automation and travel resilience in job hunt infrastructure"
-                data-subheadline="2026-05-17"
+                data-id="lint-fda91d6f"
+                data-details="knowledge/concepts/cost-capped-agentic-workflows.md — contradicts provider-fallback-mechanism (source=sql)"
+                data-headline="contradiction · Cost capped agentic workflows"
+                data-subheadline="2026-05-31"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            broken-wikilink · Automation and travel resilience in job hunt infrastructure
+            contradiction · Cost capped agentic workflows
           </div>
-            <div class="ticket-subheadline">2026-05-17</div>
+            <div class="ticket-subheadline">2026-05-31</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
- · <span title="Tier 1: highest priority, direct customer or deadline work.">T1</span>          </div>
+ · <span title="Tier 2: in-flight projects, no immediate deadline.">T2</span>          </div>
         </button>
         <button type="button" class="ticket" data-source="lint"
-                data-id="lint-6508b663"
-                data-details="[redacted] — Job Hunt 2026"
-                data-headline="broken-wikilink · Automation reliability and job hunt workflows"
-                data-subheadline="2026-05-17"
+                data-id="lint-807d685e"
+                data-details="knowledge/concepts/creative-studio-workflows.md — contradicts automation-failure-and-daily-note-disruption (source=sql)"
+                data-headline="contradiction · Creative studio workflows"
+                data-subheadline="2026-05-31"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            broken-wikilink · Automation reliability and job hunt workflows
+            contradiction · Creative studio workflows
           </div>
-            <div class="ticket-subheadline">2026-05-17</div>
+            <div class="ticket-subheadline">2026-05-31</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
- · <span title="Tier 1: highest priority, direct customer or deadline work.">T1</span>          </div>
+ · <span title="Tier 2: in-flight projects, no immediate deadline.">T2</span>          </div>
         </button>
         <button type="button" class="ticket" data-source="lint"
-                data-id="lint-7b846dd2"
-                data-details="[redacted] — concept_edges
-[redacted] — knowledge_loop
-[redacted] — MCP Server"
-                data-headline="broken-wikilink · MCP server pattern repeatability · 3 edges"
-                data-subheadline="2026-05-17"
+                data-id="lint-91e8a03e"
+                data-details="knowledge/concepts/cross-domain-bridging.md — contradicts automation-routines (source=sql)
+knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generation (source=sql)"
+                data-headline="contradiction · Cross domain bridging · 2 edges"
+                data-subheadline="2026-05-31"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            broken-wikilink · MCP server pattern repeatability · 3 edges
+            contradiction · Cross domain bridging · 2 edges
           </div>
-            <div class="ticket-subheadline">2026-05-17</div>
+            <div class="ticket-subheadline">2026-05-31</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
- · <span title="Tier 1: highest priority, direct customer or deadline work.">T1</span>          </div>
+ · <span title="Tier 2: in-flight projects, no immediate deadline.">T2</span>          </div>
         </button>
         <button type="button" class="ticket" data-source="lint"
-                data-id="lint-74fd7e53"
-                data-details="[redacted] — Strategic Roadmap"
-                data-headline="broken-wikilink · Product management and AI system delivery integration"
-                data-subheadline="2026-05-17"
+                data-id="lint-adfe67d1"
+                data-details="knowledge/concepts/decentralized-ecosystem-invariant.md — contradicts centralized-distribution-mechanism (source=sql)"
+                data-headline="contradiction · Decentralized ecosystem invariant"
+                data-subheadline="2026-05-31"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            broken-wikilink · Product management and AI system delivery integration
+            contradiction · Decentralized ecosystem invariant
           </div>
-            <div class="ticket-subheadline">2026-05-17</div>
+            <div class="ticket-subheadline">2026-05-31</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
- · <span title="Tier 1: highest priority, direct customer or deadline work.">T1</span>          </div>
+ · <span title="Tier 2: in-flight projects, no immediate deadline.">T2</span>          </div>
         </button>
         <button type="button" class="ticket" data-source="lint"
-                data-id="lint-52ced764"
-                data-details="[redacted] — Job-Hunt-2026"
-                data-headline="broken-wikilink · Agent health monitoring and job hunt 2026 automation reliability"
-                data-subheadline="2026-05-17"
+                data-id="lint-99fbe828"
+                data-details="knowledge/concepts/deep-work.md — contradicts two-audiences (source=sql)"
+                data-headline="contradiction · Deep work"
+                data-subheadline="2026-05-31"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            broken-wikilink · Agent health monitoring and job hunt 2026 automation reliability
+            contradiction · Deep work
           </div>
-            <div class="ticket-subheadline">2026-05-17</div>
+            <div class="ticket-subheadline">2026-05-31</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
- · <span title="Tier 1: highest priority, direct customer or deadline work.">T1</span>          </div>
+ · <span title="Tier 2: in-flight projects, no immediate deadline.">T2</span>          </div>
         </button>
         <button type="button" class="ticket" data-source="lint"
-                data-id="lint-5778a268"
-                data-details="[redacted] — Integration of Agentic Systems in Professional Roles"
-                data-headline="broken-wikilink · Agent health and professional role automation"
-                data-subheadline="2026-05-17"
+                data-id="lint-f0b96619"
+                data-details="knowledge/concepts/eval-vocabulary.md — contradicts infrastructure-status (source=sql)"
+                data-headline="contradiction · Eval vocabulary"
+                data-subheadline="2026-05-31"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            broken-wikilink · Agent health and professional role automation
+            contradiction · Eval vocabulary
           </div>
-            <div class="ticket-subheadline">2026-05-17</div>
+            <div class="ticket-subheadline">2026-05-31</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
- · <span title="Tier 1: highest priority, direct customer or deadline work.">T1</span>          </div>
+ · <span title="Tier 2: in-flight projects, no immediate deadline.">T2</span>          </div>
         </button>
         <button type="button" class="ticket" data-source="lint"
-                data-id="lint-e8997510"
-                data-details="[redacted] — concept_edges
-[redacted] — knowledge_loop
-[redacted] — MCP Server"
-                data-headline="broken-wikilink · Vault knowledge MCP · 3 edges"
-                data-subheadline="2026-05-17"
+                data-id="lint-70454918"
+                data-details="knowledge/concepts/gemini-deep-research.md — contradicts research-agents (source=sql)"
+                data-headline="contradiction · Gemini deep research"
+                data-subheadline="2026-05-31"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            broken-wikilink · Vault knowledge MCP · 3 edges
+            contradiction · Gemini deep research
           </div>
-            <div class="ticket-subheadline">2026-05-17</div>
+            <div class="ticket-subheadline">2026-05-31</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
- · <span title="Tier 1: highest priority, direct customer or deadline work.">T1</span>          </div>
+ · <span title="Tier 2: in-flight projects, no immediate deadline.">T2</span>          </div>
         </button>
         <button type="button" class="ticket" data-source="lint"
-                data-id="lint-5a6f015d"
-                data-details="[redacted] — Prompt Engineering"
-                data-headline="broken-wikilink · Research prompt autoresearch agentic polymarket crypto cash flow"
-                data-subheadline="2026-05-17"
+                data-id="lint-d53a29d5"
+                data-details="knowledge/concepts/infrastructure-status.md — contradicts automation-reliability (source=sql)"
+                data-headline="contradiction · Infrastructure status"
+                data-subheadline="2026-05-31"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            broken-wikilink · Research prompt autoresearch agentic polymarket crypto cash flow
+            contradiction · Infrastructure status
           </div>
-            <div class="ticket-subheadline">2026-05-17</div>
+            <div class="ticket-subheadline">2026-05-31</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
- · <span title="Tier 1: highest priority, direct customer or deadline work.">T1</span>          </div>
+ · <span title="Tier 2: in-flight projects, no immediate deadline.">T2</span>          </div>
         </button>
         <button type="button" class="ticket" data-source="lint"
-                data-id="lint-48485358"
-                data-details="[redacted] — Export"
-                data-headline="broken-wikilink · Batch export"
-                data-subheadline="2026-05-17"
+                data-id="lint-9343c6b3"
+                data-details="knowledge/concepts/infrastructure-status-and-agent-failure.md — contradicts agent-health-monitoring (source=sql)
+knowledge/concepts/infrastructure-status-and-agent-failure.md — contradicts creative-studio-workflows (source=sql)"
+                data-headline="contradiction · Infrastructure status and agent failure · 2 edges"
+                data-subheadline="2026-05-31"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            broken-wikilink · Batch export
+            contradiction · Infrastructure status and agent failure · 2 edges
           </div>
-            <div class="ticket-subheadline">2026-05-17</div>
+            <div class="ticket-subheadline">2026-05-31</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
- · <span title="Tier 1: highest priority, direct customer or deadline work.">T1</span>          </div>
+ · <span title="Tier 2: in-flight projects, no immediate deadline.">T2</span>          </div>
         </button>
         <button type="button" class="ticket" data-source="lint"
-                data-id="lint-62df9beb"
-                data-details="[redacted] — Animation"
-                data-headline="broken-wikilink · Jitter AI"
-                data-subheadline="2026-05-17"
+                data-id="lint-f9c53a7c"
+                data-details="knowledge/concepts/mcp-server-hardening.md — contradicts agent-health-monitoring (source=sql)"
+                data-headline="contradiction · MCP server hardening"
+                data-subheadline="2026-05-31"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            broken-wikilink · Jitter AI
+            contradiction · MCP server hardening
           </div>
-            <div class="ticket-subheadline">2026-05-17</div>
+            <div class="ticket-subheadline">2026-05-31</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
- · <span title="Tier 1: highest priority, direct customer or deadline work.">T1</span>          </div>
+ · <span title="Tier 2: in-flight projects, no immediate deadline.">T2</span>          </div>
         </button>
         <button type="button" class="ticket" data-source="lint"
-                data-id="lint-8b9005b1"
-                data-details="[redacted] — job_feed"
-                data-headline="broken-wikilink · Readme · 2 edges"
-                data-subheadline="2026-05-17"
+                data-id="lint-27599b39"
+                data-details="knowledge/concepts/negative-constraints.md — contradicts creative-studio-workflows (source=sql)"
+                data-headline="contradiction · Negative constraints"
+                data-subheadline="2026-05-31"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            broken-wikilink · Readme · 2 edges
+            contradiction · Negative constraints
           </div>
-            <div class="ticket-subheadline">2026-05-17</div>
+            <div class="ticket-subheadline">2026-05-31</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
- · <span title="Tier 1: highest priority, direct customer or deadline work.">T1</span>          </div>
+ · <span title="Tier 2: in-flight projects, no immediate deadline.">T2</span>          </div>
         </button>
         <button type="button" class="ticket" data-source="lint"
-                data-id="lint-4347914b"
-                data-details="[redacted] — job_feed"
-                data-headline="broken-wikilink · Target companies · 4 edges"
-                data-subheadline="2026-05-17"
+                data-id="lint-14a473d0"
+                data-details="knowledge/concepts/project-room-workflow.md — contradicts creative-studio-workflows (source=sql)"
+                data-headline="contradiction · Project room workflow"
+                data-subheadline="2026-05-31"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            broken-wikilink · Target companies · 4 edges
+            contradiction · Project room workflow
           </div>
-            <div class="ticket-subheadline">2026-05-17</div>
+            <div class="ticket-subheadline">2026-05-31</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
- · <span title="Tier 1: highest priority, direct customer or deadline work.">T1</span>          </div>
+ · <span title="Tier 2: in-flight projects, no immediate deadline.">T2</span>          </div>
         </button>
     </div>
     <div class="kanban-column" data-column="todo">
       <div class="kanban-column-header">
         <span class="column-label">ToDo</span>
-        <span class="column-count">0</span>
-          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#FF5C46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,1.0 8.7,6.0 16.3,1.0 24.0,11.0 31.7,6.0 39.3,11.0 47.0,11.0"/></svg></span>
+        <span class="column-count">15</span>
+          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#FF5C46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,11.0 8.7,11.0 16.3,11.0 24.0,11.0 31.7,11.0 39.3,11.0 47.0,11.0"/></svg></span>
       </div>
-        <div class="kanban-empty">Nothing in ToDo right now.</div>
+        <button type="button" class="ticket" data-source="eval"
+                data-id="eval-case-35aaa01e"
+                data-details="vs-017 (status-misreport) failed in eval run current"
+                data-headline="eval failed: vs-017"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            eval failed: vs-017
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="eval" aria-hidden="true"></span>
+            eval
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-6856c8f6"
+                data-details=""
+                data-headline="Re-add fleet-memory to daily_driver via cheap read-only inject (drop MCP bridge + context-management beta that doubled cost to $0.97 and tripped the cap 5/29); reuse inject_memories_into_prompt() like vault_synthesizer"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Re-add fleet-memory to daily_driver via cheap read-only inject (drop MCP bridge + context-management beta that doubled cost to $0.97 and tripped the cap 5/29); reuse inject_memories_into_prompt() like vault_synthesizer
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-d6dbe792"
+                data-details=""
+                data-headline="Build a $0/run local summarizer (gemma4:e4b / qwen3 on Mac Mini) that curates daily_driver&#39;s fleet-memory namespace, so the Opus agent only reads, never writes"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Build a $0/run local summarizer (gemma4:e4b / qwen3 on Mac Mini) that curates daily_driver&#39;s fleet-memory namespace, so the Opus agent only reads, never writes
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-f30d3b19"
+                data-details=""
+                data-headline="Wire SDK fleet agents to surface/read open tickets from tickets.md (mirror the interactive session-start-inject-tickets.sh hook) — GATE: only do this once agents have real tasks beyond vault upkeep (e.g. substack-drafter); the current vault-upkeep loop agents don&#39;t need it"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Wire SDK fleet agents to surface/read open tickets from tickets.md (mirror the interactive session-start-inject-tickets.sh hook) — GATE: only do this once agents have real tasks beyond vault upkeep (e.g. substack-drafter); the current vault-upkeep loop agents don&#39;t need it
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-a3cce7b1"
+                data-details=""
+                data-headline="Build a $0/run local critic-synthesizer (gemma4:e4b / qwen3 on Mac Mini) that reads the nightly critic-manifest-{date}.json after the 03:30 run, ranks+dedupes vault_critic suggestions, and writes a top-N shortlist to a SEPARATE suggestions lane (NOT the hand-curated Manual Todo) for Sean to review and promote — propose-don&#39;t-auto-promote, human-in-the-loop — GATE: only build after ~2 weeks of clean vault_critic nightly runs (recent runs show status=partial / ag_fail=5; don&#39;t triage noise)"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Build a $0/run local critic-synthesizer (gemma4:e4b / qwen3 on Mac Mini) that reads the nightly critic-manifest-{date}.json after the 03:30 run, ranks+dedupes vault_critic suggestions, and writes a top-N shortlist to a SEPARATE suggestions lane (NOT the hand-curated Manual Todo) for Sean to review and promote — propose-don&#39;t-auto-promote, human-in-the-loop — GATE: only build after ~2 weeks of clean vault_critic nightly runs (recent runs show status=partial / ag_fail=5; don&#39;t triage noise)
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-75c52d93"
+                data-details=""
+                data-headline="vault-knowledge-mcp launch comms: record the 90-sec Loom from docs/LOOM-SCRIPT.md (all 3 tools, lead on find_contradictions), drop npm + GitHub links into the LinkedIn first-comment, then post docs/LINKEDIN-DRAFT.md tagging Anthropic"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            vault-knowledge-mcp launch comms: record the 90-sec Loom from docs/LOOM-SCRIPT.md (all 3 tools, lead on find_contradictions), drop npm + GitHub links into the LinkedIn first-comment, then post docs/LINKEDIN-DRAFT.md tagging Anthropic
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-f18ae504"
+                data-details=""
+                data-headline="vault-knowledge-mcp: log the first recruiter/hiring-manager engagement attributable to this artifact in target-companies.md (spec §8 criterion 9, the last open success criterion)"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            vault-knowledge-mcp: log the first recruiter/hiring-manager engagement attributable to this artifact in target-companies.md (spec §8 criterion 9, the last open success criterion)
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-707ef6cb"
+                data-details=""
+                data-headline="Task 19 Step 4 / Gate C: record + grade the 3 first-test answers (TMAY / &#34;walk me through what happened with The Block&#34; / &#34;shipped something hard&#34;) via mock_interview_loop.py; drill to 8+/10 ×3 consecutive. Also grades the Task 16 stories + Task 17 TMAY"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Task 19 Step 4 / Gate C: record + grade the 3 first-test answers (TMAY / &#34;walk me through what happened with The Block&#34; / &#34;shipped something hard&#34;) via mock_interview_loop.py; drill to 8+/10 ×3 consecutive. Also grades the Task 16 stories + Task 17 TMAY
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-5693a1e3"
+                data-details=""
+                data-headline="TMAY per-company file: fill a Why-Here swap for each remaining top-5 target before its interview (4 already filled: Anthropic FDE / Sierra / Decagon / ServiceNow)"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            TMAY per-company file: fill a Why-Here swap for each remaining top-5 target before its interview (4 already filled: Anthropic FDE / Sierra / Decagon / ServiceNow)
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-83a1535e"
+                data-details=""
+                data-headline="Task 12 judge layer Steps 8-9 (Sean-host): run the full pytest suite + validate.py per 2026-05-31-task-12-day-6-handoff.md; record the 90-sec --demo-injection Loom; post the LinkedIn draft tagging Anthropic + FDE-Boston JD; commit + tag judge-layer-v0.1.0 (paste-ready CHANGELOG block in the handoff doc)"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Task 12 judge layer Steps 8-9 (Sean-host): run the full pytest suite + validate.py per 2026-05-31-task-12-day-6-handoff.md; record the 90-sec --demo-injection Loom; post the LinkedIn draft tagging Anthropic + FDE-Boston JD; commit + tag judge-layer-v0.1.0 (paste-ready CHANGELOG block in the handoff doc)
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-9921b113"
+                data-details=""
+                data-headline="Task 12 judge layer: add the /transactions/judge-layer ledger row in sw-ai-pm-portfolio (surface: control-plane) — GATE: Gap-Fill 3 personal-site deploy must land first so the page resolves"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Task 12 judge layer: add the /transactions/judge-layer ledger row in sw-ai-pm-portfolio (surface: control-plane) — GATE: Gap-Fill 3 personal-site deploy must land first so the page resolves
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-b505a082"
+                data-details=""
+                data-headline="Task 25 LDR Grounding-Collapse: create the standalone repo from the 5 staged scratchpad files (mkdir ~/Code-Brain/ldr-grounding-collapse, copy README.md + the-failure.md + the-diagnosis.md + the-fix.md + eval-case.yaml, git init, gh repo create --public, push) — the standalone path isn&#39;t a mounted folder so it must be created host-side"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Task 25 LDR Grounding-Collapse: create the standalone repo from the 5 staged scratchpad files (mkdir ~/Code-Brain/ldr-grounding-collapse, copy README.md + the-failure.md + the-diagnosis.md + the-fix.md + eval-case.yaml, git init, gh repo create --public, push) — the standalone path isn&#39;t a mounted folder so it must be created host-side
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-3f8d9d77"
+                data-details=""
+                data-headline="Task 25 LDR Grounding-Collapse: run writing-voice-modes on substack-drafts/2026-05-29-ldr-grounding-collapse.md, then publish Substack Post 1 (gates Posts 2-3 + the Task 13 manifesto + the Looms); confirm npm run build in sw-ai-pm-portfolio resolves /transactions/ldr-grounding-collapse/; swap the repo URL placeholder → live in both the Substack draft and the ledger row once pushed"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Task 25 LDR Grounding-Collapse: run writing-voice-modes on substack-drafts/2026-05-29-ldr-grounding-collapse.md, then publish Substack Post 1 (gates Posts 2-3 + the Task 13 manifesto + the Looms); confirm npm run build in sw-ai-pm-portfolio resolves /transactions/ldr-grounding-collapse/; swap the repo URL placeholder → live in both the Substack draft and the ledger row once pushed
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-b762542f"
+                data-details=""
+                data-headline="meta-agent monitoring blind spot: it reported &#34;all healthy&#34; through the vault_critic Anti-Gravity 5/5 nightly failures (5/26→6/1) because critic status=partial is treated as tolerable. Add an alert when a CLI&#39;s failures == calls (100% failure) OR tokens_total==0 with calls&gt;0, even if overall status is partial — so a fully-dead sub-CLI surfaces. Now that the manifest carries antigravity_last_error/codex_last_error, surface that text in the alert"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            meta-agent monitoring blind spot: it reported &#34;all healthy&#34; through the vault_critic Anti-Gravity 5/5 nightly failures (5/26→6/1) because critic status=partial is treated as tolerable. Add an alert when a CLI&#39;s failures == calls (100% failure) OR tokens_total==0 with calls&gt;0, even if overall status is partial — so a fully-dead sub-CLI surfaces. Now that the manifest carries antigravity_last_error/codex_last_error, surface that text in the alert
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-7beaafee"
+                data-details=""
+                data-headline="job-feed ATS watchlist decay: 14 company pollers 404 every run (huggingface, beehiiv, framer, scale, glean, tome, spline, fourthwall, draftkings, circle, together-ai, replicate, canva, datarobot) + mistral ReadTimeout + web3career_token missing from Keychain. Audit/refresh the ATS endpoint URLs (greenhouse/lever board tokens likely renamed) and add the web3.career token, or prune dead entries so the err.log stops filling"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            job-feed ATS watchlist decay: 14 company pollers 404 every run (huggingface, beehiiv, framer, scale, glean, tome, spline, fourthwall, draftkings, circle, together-ai, replicate, canva, datarobot) + mistral ReadTimeout + web3career_token missing from Keychain. Audit/refresh the ATS endpoint URLs (greenhouse/lever board tokens likely renamed) and add the web3.career token, or prune dead entries so the err.log stops filling
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
     </div>
     <div class="kanban-column" data-column="in_progress">
       <div class="kanban-column-header">
@@ -474,10 +625,24 @@ knowledge/concepts/automation-failure-and-daily-note-disruption.md — contradic
     <div class="kanban-column" data-column="done">
       <div class="kanban-column-header">
         <span class="column-label">Done</span>
-        <span class="column-count">0</span>
-          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#3FB950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,11.0 8.7,6.0 16.3,1.0 24.0,3.5 31.7,6.0 39.3,3.5 47.0,6.0"/></svg></span>
+        <span class="column-count">1</span>
+          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#3FB950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,6.6 8.7,1.0 16.3,4.1 24.0,6.6 31.7,6.6 39.3,5.4 47.0,11.0"/></svg></span>
       </div>
-        <div class="kanban-empty">Nothing in Done right now.</div>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-4aa1a2a2"
+                data-details=""
+                data-headline="Task 19 mock-interview rig: one-time `agents-sdk/.venv/bin/pip install faster-whisper` on the Mac (only setup left before the rig produces a grade)"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Task 19 mock-interview rig: one-time `agents-sdk/.venv/bin/pip install faster-whisper` on the Mac (only setup left before the rig produces a grade)
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
     </div>
 </div>
 
@@ -497,7 +662,7 @@ knowledge/concepts/automation-failure-and-daily-note-disruption.md — contradic
   <strong>Built by Sean Winslow</strong>.
   Multi-agent fleet on macOS launchd, 99% local-first inference.
   <a href="https://github.com/seanwinslow28/agent-fleet-observability">View source</a>
-  · last build 2026-05-21 15:27 UTC
+  · last build 2026-06-02 10:00 UTC
 </footer>  <script src="assets/motion.js" defer></script>
   <script src="assets/kanban-modal.js" defer></script>
 </body>
