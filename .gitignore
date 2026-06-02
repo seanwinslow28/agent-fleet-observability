@@ -9,3 +9,4 @@ __pycache__/
 *.egg-info/
 .vercel/
 logs/
+.playwright-mcp/
