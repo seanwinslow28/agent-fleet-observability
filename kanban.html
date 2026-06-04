@@ -28,7 +28,7 @@
     <span class="brand-wordmark">Agent Fleet Observability</span>
   </div>
   <span class="status-pill mono"><span class="status-pill-dot" data-state="healthy" aria-hidden="true">●</span> 7/8 HEALTHY</span>
-  <span class="subtitle" style="margin-left: auto;">2026-06-03 10:00 UTC</span>
+  <span class="subtitle" style="margin-left: auto;">2026-06-04 10:00 UTC</span>
   <nav style="display: flex; gap: 4px;">
     <a class="nav-link " href="./index.html">/fleet</a>
     <a class="nav-link active" href="./kanban.html">/kanban</a>
@@ -39,8 +39,8 @@
 
     <h1 class="kanban-hero-display" id="kanban-hero-headline">
       <span class="num"
-            data-countup="41"
-            aria-label="41">41</span>
+            data-countup="51"
+            aria-label="51">51</span>
       <span class="label">tickets this week</span>
     </h1>
     <p class="kanban-hero-prose">
@@ -50,7 +50,7 @@
     </p>
 
   <div class="kanban-hero-breakdown">
-      20 lint · 1 eval · 20 manual
+      20 lint · 1 eval · 30 manual
   </div>
 </section>
 <div class="kanban-filters">
@@ -61,7 +61,7 @@
     <button class="filter-chip eval" data-source="eval" data-active="true" aria-pressed="true">
       ● Eval 1    </button>
     <button class="filter-chip manual" data-source="manual" data-active="true" aria-pressed="true">
-      ● Manual 20    </button>
+      ● Manual 30    </button>
 </div>
 
 <div class="kanban-board">
@@ -379,7 +379,7 @@ knowledge/concepts/infrastructure-status-and-agent-failure.md — contradicts cr
     <div class="kanban-column" data-column="todo">
       <div class="kanban-column-header">
         <span class="column-label">ToDo</span>
-        <span class="column-count">20</span>
+        <span class="column-count">30</span>
           <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#FF5C46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,11.0 8.7,11.0 16.3,11.0 24.0,11.0 31.7,11.0 39.3,11.0 47.0,11.0"/></svg></span>
       </div>
         <button type="button" class="ticket" data-source="eval"
@@ -394,6 +394,81 @@ knowledge/concepts/infrastructure-status-and-agent-failure.md — contradicts cr
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="eval" aria-hidden="true"></span>
             eval
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-467ece1a"
+                data-details=""
+                data-headline="vault-critic AG hang — root cause REVISED (6/03): NOT a swallowed-429 quota hang. Captured nightly --debug stderr (ag-timeout-2026-06-03T07-*.log) shows zero 429/quota strings; the only network activity logged is the Clearcut telemetry flush failing with `UND_ERR_CONNECT_TIMEOUT` to play.googleapis.com:443 (4/5 runs; 1 got HTTP 400). Daytime that exact host connects in ~30ms on IPv4 AND IPv6 → the nightly connect-timeout is a REAL signal: gemini&#39;s model request to cloudcode-pa.googleapis.com can&#39;t reach Google&#39;s API frontend at ~03:30 and hangs (no short connect timeout) to the 120s kill. Codex survives because OpenAI endpoints are different infra. NEXT (after 03:30 6/04): read the new `===== CONNECTIVITY PROBE =====` section in ag-timeout captures — if curl6 PROBE-TIMEOUTs while curl4 connects → IPv6-to-Google nighttime breakage; if both fail while OpenAI control connects → general Google-ASN reachability (ISP peering/router). Then pick fix"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            vault-critic AG hang — root cause REVISED (6/03): NOT a swallowed-429 quota hang. Captured nightly --debug stderr (ag-timeout-2026-06-03T07-*.log) shows zero 429/quota strings; the only network activity logged is the Clearcut telemetry flush failing with `UND_ERR_CONNECT_TIMEOUT` to play.googleapis.com:443 (4/5 runs; 1 got HTTP 400). Daytime that exact host connects in ~30ms on IPv4 AND IPv6 → the nightly connect-timeout is a REAL signal: gemini&#39;s model request to cloudcode-pa.googleapis.com can&#39;t reach Google&#39;s API frontend at ~03:30 and hangs (no short connect timeout) to the 120s kill. Codex survives because OpenAI endpoints are different infra. NEXT (after 03:30 6/04): read the new `===== CONNECTIVITY PROBE =====` section in ag-timeout captures — if curl6 PROBE-TIMEOUTs while curl4 connects → IPv6-to-Google nighttime breakage; if both fail while OpenAI control connects → general Google-ASN reachability (ISP peering/router). Then pick fix
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-7803ec4c"
+                data-details=""
+                data-headline="vault-critic AG migration (HARD DEADLINE June 18 2026): gemini-cli oauth-personal is EOL&#39;d for Google One/unpaid tiers June 18 (confirmed verbatim in captured experiment flag 45740200). The AG/gemini second-opinion path dies regardless of the network bug. Decide: (a) move to GEMINI_API_KEY/AI Studio — fixes EOL+quota but if root cause is nighttime Google-reachability the hang persists (still Google ASN); (b) move to Antigravity CLI; (c) drop the gemini second-opinion and run Codex-only. Whichever, also add a hard connect timeout so a network stall fails fast instead of hanging 120s"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            vault-critic AG migration (HARD DEADLINE June 18 2026): gemini-cli oauth-personal is EOL&#39;d for Google One/unpaid tiers June 18 (confirmed verbatim in captured experiment flag 45740200). The AG/gemini second-opinion path dies regardless of the network bug. Decide: (a) move to GEMINI_API_KEY/AI Studio — fixes EOL+quota but if root cause is nighttime Google-reachability the hang persists (still Google ASN); (b) move to Antigravity CLI; (c) drop the gemini second-opinion and run Codex-only. Whichever, also add a hard connect timeout so a network stall fails fast instead of hanging 120s
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-8ab5a1a0"
+                data-details=""
+                data-headline="vault-critic budget waste — RESOLVED 6/03 (verify on tonight&#39;s run): shipped an AG circuit-breaker (`antigravity_circuit_threshold` in config.toml, set to 1 while AG is dead). After 1 consecutive AG failure the run stops invoking AG and goes Codex-only, reclaiming ~120s/article of wall budget; manifest now carries `antigravity_skipped`. VERIFY after 03:30 6/04: manifest should show `antigravity_calls`≈1, `antigravity_skipped`≈N-1, more articles_critiqued, duration well under 600s. Raise threshold to 2 (or 0=off) once AG is healthy/migrated"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            vault-critic budget waste — RESOLVED 6/03 (verify on tonight&#39;s run): shipped an AG circuit-breaker (`antigravity_circuit_threshold` in config.toml, set to 1 while AG is dead). After 1 consecutive AG failure the run stops invoking AG and goes Codex-only, reclaiming ~120s/article of wall budget; manifest now carries `antigravity_skipped`. VERIFY after 03:30 6/04: manifest should show `antigravity_calls`≈1, `antigravity_skipped`≈N-1, more articles_critiqued, duration well under 600s. Raise threshold to 2 (or 0=off) once AG is healthy/migrated
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-aa36f747"
+                data-details=""
+                data-headline="Remove `VAULT_CRITIC_AG_DEBUG=1` from com.sean.agent.vault-critic.plist (and the run-once connectivity probe is gated behind it) once the 6/04 probe evidence pins the sub-cause — it appends gemini --debug noise + a ~10s probe to every nightly AG timeout"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Remove `VAULT_CRITIC_AG_DEBUG=1` from com.sean.agent.vault-critic.plist (and the run-once connectivity probe is gated behind it) once the 6/04 probe evidence pins the sub-cause — it appends gemini --debug noise + a ~10s probe to every nightly AG timeout
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-e6554fd5"
+                data-details=""
+                data-headline="Obsidian-Git stale `.git/index.lock` recurs (fixed 5/31 and 6/03) — root cause is git commit crashing mid-write when Modern Standby cuts power during the 60-min auto-commit cycle. Permanent fix instead of repeated manual `rm .git/index.lock`: either widen the commit interval, gate commits on machine-awake, or add a pre-commit stale-lock sweep that only deletes a &gt;5-min-old EMPTY index.lock with no live git process"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Obsidian-Git stale `.git/index.lock` recurs (fixed 5/31 and 6/03) — root cause is git commit crashing mid-write when Modern Standby cuts power during the 60-min auto-commit cycle. Permanent fix instead of repeated manual `rm .git/index.lock`: either widen the commit interval, gate commits on machine-awake, or add a pre-commit stale-lock sweep that only deletes a &gt;5-min-old EMPTY index.lock with no live git process
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
           </div>
         </button>
         <button type="button" class="ticket" data-source="manual"
@@ -681,6 +756,80 @@ knowledge/concepts/infrastructure-status-and-agent-failure.md — contradicts cr
               · <span class="agent-dot agent-dot--unknown"></span>@Sean
           </div>
         </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-08be9bf2"
+                data-details=""
+                data-headline="Tier C soak ADOPTED 2026-06-03 (gemma4_26b-32k @ Alienware, 17/17 clean — see 2026-06-03-topic-20-tier-c-soak-closeout.md): wire it as a Tier C batch route — add a `[routing.task_map]` entry for batch summarization, decide whether HybridRouter `fallback_to_api` is acceptable on that route (probably not — keep fail-fast Pattern E shape), and add the Tier C &#34;production&#34; note to CLAUDE.md"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Tier C soak ADOPTED 2026-06-03 (gemma4_26b-32k @ Alienware, 17/17 clean — see 2026-06-03-topic-20-tier-c-soak-closeout.md): wire it as a Tier C batch route — add a `[routing.task_map]` entry for batch summarization, decide whether HybridRouter `fallback_to_api` is acceptable on that route (probably not — keep fail-fast Pattern E shape), and add the Tier C &#34;production&#34; note to CLAUDE.md
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-793ca601"
+                data-details=""
+                data-headline="Add the writing-humanity-pass skill to an export-group manifest (export-groups/*/playground.json) + a preset if it should ship via the installer; until then it is correctly listed in README as not-in-any-group"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Add the writing-humanity-pass skill to an export-group manifest (export-groups/*/playground.json) + a preset if it should ship via the installer; until then it is correctly listed in README as not-in-any-group
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-c0b22990"
+                data-details=""
+                data-headline="Re-verify sean-anchor + claude-mascot Bibles&#39; Pass-3 on a PINNED model — the 2026-06-02 provenance forensics found both were verified by the Antigravity backend-default gemini-3.5-flash (agy `-p` with no `-m`), NOT the &#34;Gemini 3.1 Pro&#34; their docs claimed. Cy&#39;s Pass-3 now routes through the Gemini API transport (gemini-3.5-flash, pinned by ID, served model read back from resp.model_version) per the A2 hardening PR; this ticket is the COSTED re-run of the two locked Bibles on that pinned path, scheduled AFTER the hardening PR merges. Decide Flash-as-shipped vs a deliberate gemini-3.1-pro upgrade (re-baseline whichever is chosen). See docs/2026-06-02-em-provenance-and-hardening-kickoff.md §A4"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Re-verify sean-anchor + claude-mascot Bibles&#39; Pass-3 on a PINNED model — the 2026-06-02 provenance forensics found both were verified by the Antigravity backend-default gemini-3.5-flash (agy `-p` with no `-m`), NOT the &#34;Gemini 3.1 Pro&#34; their docs claimed. Cy&#39;s Pass-3 now routes through the Gemini API transport (gemini-3.5-flash, pinned by ID, served model read back from resp.model_version) per the A2 hardening PR; this ticket is the COSTED re-run of the two locked Bibles on that pinned path, scheduled AFTER the hardening PR merges. Decide Flash-as-shipped vs a deliberate gemini-3.1-pro upgrade (re-baseline whichever is chosen). See docs/2026-06-02-em-provenance-and-hardening-kickoff.md §A4
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-ead978d7"
+                data-details=""
+                data-headline="ESCALATION (2026-06-03, B1b DINOv2 spike): this is BIGGER than &#34;Flash-verified.&#34; sean-anchor&#39;s BODY turnarounds are proportion-OFF — head reads ~1:5.3 (profile-right), ~1:4.6 (back), ~1:4-4.5 (walk-cycle) instead of the 1:7 target — and were baked into the LOCKED Bible anyway because the Pass-2.5 similarity gate is record-only (it never measured proportion). So a re-verify on a pinned model isn&#39;t enough; the body plates need a proportion re-bake to clean 1:7, then re-lock. Evidence: anima PR #20 + evals/vision_critic/traces/dinov2-separation-2026-06-03.md."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            ESCALATION (2026-06-03, B1b DINOv2 spike): this is BIGGER than &#34;Flash-verified.&#34; sean-anchor&#39;s BODY turnarounds are proportion-OFF — head reads ~1:5.3 (profile-right), ~1:4.6 (back), ~1:4-4.5 (walk-cycle) instead of the 1:7 target — and were baked into the LOCKED Bible anyway because the Pass-2.5 similarity gate is record-only (it never measured proportion). So a re-verify on a pinned model isn&#39;t enough; the body plates need a proportion re-bake to clean 1:7, then re-lock. Evidence: anima PR #20 + evals/vision_critic/traces/dinov2-separation-2026-06-03.md.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-ecdc5949"
+                data-details=""
+                data-headline="SUB-ITEM (gates on the re-bake): the Em vision_critic eval fixtures are contaminated — the proportion-defect fixtures (evals/vision_critic/fixtures/frames/defect_body_*.png) are SHA-identical to the drifted Bible plates (verified byte-for-byte, 2026-06-03). Once the Bible body plates are re-baked clean, those fixtures must be RE-DERIVED (or the eval is testing against drifted ground truth), and the cases.yaml labels RE-RATIFIED against the clean fixtures (Sean&#39;s call — locked-label rule)."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            SUB-ITEM (gates on the re-bake): the Em vision_critic eval fixtures are contaminated — the proportion-defect fixtures (evals/vision_critic/fixtures/frames/defect_body_*.png) are SHA-identical to the drifted Bible plates (verified byte-for-byte, 2026-06-03). Once the Bible body plates are re-baked clean, those fixtures must be RE-DERIVED (or the eval is testing against drifted ground truth), and the cases.yaml labels RE-RATIFIED against the clean fixtures (Sean&#39;s call — locked-label rule).
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
     </div>
     <div class="kanban-column" data-column="in_progress">
       <div class="kanban-column-header">
@@ -701,7 +850,7 @@ knowledge/concepts/infrastructure-status-and-agent-failure.md — contradicts cr
       <div class="kanban-column-header">
         <span class="column-label">Done</span>
         <span class="column-count">1</span>
-          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#3FB950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,1.0 8.7,4.8 16.3,7.9 24.0,7.9 31.7,6.4 39.3,8.7 47.0,11.0"/></svg></span>
+          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#3FB950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,1.0 8.7,4.8 16.3,4.8 24.0,2.2 31.7,6.0 39.3,2.2 47.0,11.0"/></svg></span>
       </div>
         <button type="button" class="ticket" data-source="manual"
                 data-id="manual-4aa1a2a2"
@@ -737,7 +886,7 @@ knowledge/concepts/infrastructure-status-and-agent-failure.md — contradicts cr
   <strong>Built by Sean Winslow</strong>.
   Multi-agent fleet on macOS launchd, 99% local-first inference.
   <a href="https://github.com/seanwinslow28/agent-fleet-observability">View source</a>
-  · last build 2026-06-03 10:00 UTC
+  · last build 2026-06-04 10:00 UTC
 </footer>  <script src="assets/motion.js" defer></script>
   <script src="assets/kanban-modal.js" defer></script>
 </body>
