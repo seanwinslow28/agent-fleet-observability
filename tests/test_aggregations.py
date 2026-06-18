@@ -214,6 +214,7 @@ def test_compute_clean_streak_no_regression_returns_full_window():
     assert out["last_regression_end"] is None
     assert out["nights_clean"] == 60
     assert out["active_incident"] is False
+    assert out["incident_nights"] == 0
 
 
 def test_compute_clean_streak_ignores_benign_missing_nights():

@@ -483,7 +483,7 @@ def kpi_fill_bar(current: float, cap: float, color: str = AMBER) -> str:
     width = 120.0
     height = 6.0
     radius = height / 2
-    track_fill = "rgba(192,132,252,0.10)"  # var(--hairline)-ish, recessed track
+    track_fill = "rgba(45,212,191,0.10)"  # var(--hairline)-ish, recessed track
     if cap <= 0:
         ratio = 0.0
     else:
