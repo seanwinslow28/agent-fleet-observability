@@ -76,15 +76,19 @@ chart:
   axis-text: "#66736F"
 ---
 
-# Agent Fleet Observability · Spark Console
+# Agent Fleet Observability · Chrome Register
 
-> Design system for a static observability dashboard rendered nightly on a Mac Mini. Dark mode only. Anchored by the Asterisk Spark mascot whose colors are the brand.
+> Design system for a static observability dashboard rendered nightly on a Mac Mini. Dark mode only. A chrome register — sharp corners, JetBrains Mono wire-service labels, restrained teal+orange on warm-dark.
 
 ## Identity
 
-The mascot is the brand. Every appearance of color on this page traces back to the Spark — amber to purple, gradient or solid. The page reads as one designed object: the mascot in the top-left, the gradient on the hero numeral, the amber pulse on healthy agents, the purple chip on private mode. **If a color is on the page, it's because it's in the mascot.**
+This dashboard is the SW portfolio's **chrome register** — a nightly print-run, not a live SaaS UI. The aesthetic traces to physical operations consoles and animation/cel frame numbering: sharp corners, measured mono labels, a four-color working palette. Nothing decorative.
 
-Anti-pattern: scattering accent colors (blue, green, red, purple, amber) at equal weight across charts. The current build does this and reads as Chart.js noise. Spark Console collapses to four working colors: **amber** (warm orange, primary signal, healthy, local), **purple** (teal, secondary, cloud, regression annotation), **alert-red** (failures only), **status-green** (the existing `healthy` dot — kept because the data already encodes it).
+The top-left mark is a sharp **frame bracket** in teal — a nod to the `A-1` frame numbers used in animation cels — with a state-tinted center dot. It is not a character. It carries no personality beyond "this frame of the fleet is registered." The health pill to its right carries the live status text; the mark carries only the structural presence.
+
+Color discipline traces to **four working colors**, not to a mascot: **amber** (warm orange `#E89060` — primary signal, healthy, local), **teal** (secondary `#2DD4BF` — cloud, frame mark, regression annotation), **alert-red** (failures only), **status-green** (the existing `healthy` dot — kept because the data already encodes it). The orange→teal gradient (`--gradient-spark`) remains in three load-bearing places — hero numeral, regression band, gradient token — and nowhere else; its scarcity is intentional.
+
+**If a color is on the page, it is one of the four. If it isn't, remove it.**
 
 ## Color
 
@@ -107,7 +111,7 @@ Tabular numerals everywhere mono is used (`font-variant-numeric: tabular-nums`) 
 - Panel radius: **14px** (raised from 8px). Larger radius reads less utilitarian, more designed.
 - Hero plate radius: **20px**.
 - Panel elevation uses **three layered shadows**: 1px inset highlight + 1px purple ring + 8px outer drop. This is the depth recipe — single `shadow-lg` was the prior slop signal.
-- Hover state for interactive cards: ring color shifts from purple-soft to amber-soft. The hover *feels* like the Spark looked at the card.
+- Hover state for interactive cards: ring color shifts from purple-soft to amber-soft. The hover draws from the same teal-to-orange palette register.
 
 ## Motion
 
@@ -115,7 +119,7 @@ Three signature moments, each with one purpose:
 
 1. **Hero count-up** — the regression-night numeral counts 0 → N over 800ms on first viewport entry. Re-enacts the silent regression building up.
 2. **Regression band wipe** — `clip-path: inset(0 100% 0 0) → inset(0 0 0 0)` over 1200ms, fires after the count-up settles. The band fills in left-to-right exactly like the silent nights accumulated.
-3. **Spark pulse tied to fleet state** — the mascot core's `box-shadow` slow-pulses amber when healthy, purple when degraded, red when down. Mascot becomes a glanceable status light.
+3. **Frame mark state dot** — the center dot of the chrome-register mark tints teal when healthy, orange when degraded, red when down. Static, no pulse; the health pill carries the live status text. Mark becomes a glanceable structural anchor.
 
 Plus the invisible-correctness layer per Emil Kowalski's rules: `:active` press = `scale(0.97)` 160ms ease-out; stagger reveals 50ms between siblings; kanban filter uses blur+desaturate (not `display:none`) so spatial memory is preserved; all motion wrapped in `prefers-reduced-motion`.
 
@@ -123,7 +127,7 @@ Plus the invisible-correctness layer per Emil Kowalski's rules: `:active` press 
 
 ## Charts
 
-Single rule: **four colors max per chart**, drawn from the chart palette (`amber`, `purple`, `alert`, `neutral`). No teal, no blue, no green-other-than-status-dots, no GitHub red. The cost-trend stacked area collapses from 11 agent-colors to 3 semantic bands (local · cloud-anthropic · cloud-gemini). The model-mix donut shows the same three.
+Single rule: **four colors max per chart**, drawn from the chart palette (`amber`, `purple`, `alert`, `neutral`). No extra hues beyond the four, no green-other-than-status-dots, no GitHub red. The cost-trend stacked area collapses from 11 agent-colors to 3 semantic bands (local · cloud-anthropic · cloud-gemini). The model-mix donut shows the same three.
 
 Inline SVG only — no Chart.js, no CDN. Charts consume tokens from this file via `lib/svg_charts.py`. Grid lines are `rgba(45,212,191,0.06)`. Axis labels are `JetBrains Mono` 10px in `#66736F`.
 
@@ -135,4 +139,4 @@ Microcopy is locked per `docs/2026-05-15-agent-fleet-dashboard-design.md` §5e. 
 
 This is the machine-readable contract. `assets/styles.css` consumes the tokens; `lib/svg_charts.py` consumes the chart palette; future Claude sessions read the front-matter to stay on-brand. When you change a token here, it changes everywhere — that's the point.
 
-When in doubt: **does the Spark mascot have this color? If no, don't use it.**
+When in doubt: **is this one of the four working colors? If no, don't use it.**

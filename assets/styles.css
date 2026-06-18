@@ -680,57 +680,15 @@ a:hover { color: var(--accent-purple); }
   letter-spacing: 0.04em;
 }
 
-/* ───── Asterisk Spark mascot — colors locked, animations preserved ───── */
-@keyframes m-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-@keyframes m-blink {
-  0%, 88%, 100% { transform: scaleY(1); }
-  91%, 95% { transform: scaleY(0.08); }
-}
-@keyframes spark-pulse-healthy {
-  0%, 100% { box-shadow: 0 0 16px rgba(232,144,96,0.4), 0 0 0 1px var(--accent-amber); }
-  50%      { box-shadow: 0 0 28px rgba(232,144,96,0.7), 0 0 0 1px var(--accent-amber); }
-}
-@keyframes spark-pulse-degraded {
-  0%, 100% { box-shadow: 0 0 16px rgba(45,212,191,0.4), 0 0 0 1px var(--accent-purple); }
-  50%      { box-shadow: 0 0 24px rgba(45,212,191,0.7), 0 0 0 1px var(--accent-purple); }
-}
-@keyframes spark-pulse-down {
-  0%, 100% { box-shadow: 0 0 16px rgba(255,92,70,0.5), 0 0 0 1px var(--accent-alert); }
-  50%      { box-shadow: 0 0 28px rgba(255,92,70,0.9), 0 0 0 1px var(--accent-alert); }
-}
-.spark {
-  width: 32px; height: 32px; position: relative;
-  display: inline-flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.spark .arms { position: absolute; width: 100%; height: 100%; animation: m-spin 12s linear infinite; }
-.spark .arm {
-  position: absolute;
-  background: var(--gradient-spark);
-  border-radius: 1px;
-}
-.spark .arm-v  { width: 2px; height: 100%; left: 50%; transform: translateX(-50%); }
-.spark .arm-h  { width: 100%; height: 2px; top: 50%; transform: translateY(-50%); }
-.spark .arm-d1 { width: 2px; height: 90%; left: 50%; top: 5%; transform: translateX(-50%) rotate(45deg); opacity: 0.6; }
-.spark .arm-d2 { width: 2px; height: 90%; left: 50%; top: 5%; transform: translateX(-50%) rotate(-45deg); opacity: 0.6; }
-.spark .core {
-  width: 14px; height: 14px;
-  background: var(--bg-base);
-  border-radius: 50%; position: relative; z-index: 2;
-  border: 1px solid var(--accent-amber);
-  animation: spark-pulse-healthy 2.4s var(--ease-in-out) infinite;
-}
-.spark[data-state="degraded"] .core { animation-name: spark-pulse-degraded; border-color: var(--accent-purple); }
-.spark[data-state="down"] .core { animation-name: spark-pulse-down; border-color: var(--accent-alert); }
-.spark .eye {
-  position: absolute; width: 1.8px; height: 2.2px;
-  background: var(--accent-amber); border-radius: 0.5px; top: 4px;
-  animation: m-blink 5.5s infinite; transform-origin: center;
-}
-.spark[data-state="degraded"] .eye { background: var(--accent-purple); }
-.spark[data-state="down"] .eye { background: var(--accent-alert); }
-.spark .eye-l { left: 3px; }
-.spark .eye-r { right: 3px; }
+/* ───── Chrome-register mark — sharp frame + status dot, static ───── */
+.mark { width: 32px; height: 32px; display: inline-flex; flex-shrink: 0; }
+.mark svg { display: block; }
+.mark .mark-frame { stroke: var(--accent-purple); }
+.mark .mark-dot { fill: var(--accent-purple); }
+.mark[data-state="degraded"] .mark-frame,
+.mark[data-state="degraded"] .mark-dot { stroke: var(--accent-amber); fill: var(--accent-amber); }
+.mark[data-state="down"] .mark-frame,
+.mark[data-state="down"] .mark-dot { stroke: var(--accent-alert); fill: var(--accent-alert); }
 
 /* ───── Kanban ───── */
 .kanban-filters { display: flex; gap: var(--space-2); flex-wrap: wrap; margin-bottom: var(--space-4); }
@@ -1075,9 +1033,6 @@ button:active, .button:active { transform: scale(0.97); }
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  .spark .arms,
-  .spark .core,
-  .spark .eye { animation: none !important; }
   .pulse-dot { animation: none !important; }
   [data-stagger] > * { opacity: 1; transform: none; }
   .hero-band-wipe { clip-path: inset(0 0 0 0); }
