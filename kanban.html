@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/styles.css?v=6db4b395">
 </head>
 <body>
 <div class="topbar">
@@ -23,7 +23,7 @@
     <span class="brand-wordmark">Agent Fleet Observability</span>
   </div>
   <span class="status-pill mono"><span class="status-pill-dot" data-state="degraded" aria-hidden="true">●</span> 5/8 HEALTHY</span>
-  <span class="subtitle" style="margin-left: auto;">2026-06-18 18:11 UTC</span>
+  <span class="subtitle" style="margin-left: auto;">2026-06-18 18:57 UTC</span>
   <nav style="display: flex; gap: 4px;">
     <a class="nav-link " href="./index.html">/fleet</a>
     <a class="nav-link active" href="./kanban.html">/kanban</a>
@@ -379,7 +379,7 @@ knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generatio
     <div class="kanban-column" data-column="todo">
       <div class="kanban-column-header">
         <span class="column-label">ToDo</span>
-        <span class="column-count">72</span>
+        <span class="column-count">69</span>
           <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#FF5C46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,11.0 8.7,1.0 16.3,1.0 24.0,11.0 31.7,11.0 39.3,11.0 47.0,11.0"/></svg></span>
       </div>
         <button type="button" class="ticket" data-source="eval"
@@ -394,21 +394,6 @@ knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generatio
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="eval" aria-hidden="true"></span>
             eval
-          </div>
-        </button>
-        <button type="button" class="ticket" data-source="manual"
-                data-id="manual-ac62f082"
-                data-details=""
-                data-headline="llm-council transcript render crashes when any council model returns null content: `_render_markdown` appends `r[&#34;content&#34;]` (None) to `lines`, so `&#34;\n&#34;.join(lines)` raises `TypeError: sequence item N: expected str instance, NoneType found` and the whole transcript fails to write even though the run + spend succeeded (hit 2026-06-16 on the 16BitFit 4Q run, gemini-pro returned null; recovered by reconstructing the .md from the session JSON archive). One-line fix at [tools/llm-council/council/cli.py](tools/llm-council/council/cli.py) line 40: change `lines.append(r[&#34;content&#34;])` to `lines.append(r[&#34;content&#34;] or &#34;_(no response: model returned null)_&#34;)`. Optional follow-on: guard chairman content (line 52) + ranking reasoning (line 47) the same way."
-                data-subheadline=""
-                aria-haspopup="dialog">
-          <div class="ticket-headline">
-            llm-council transcript render crashes when any council model returns null content: `_render_markdown` appends `r[&#34;content&#34;]` (None) to `lines`, so `&#34;\n&#34;.join(lines)` raises `TypeError: sequence item N: expected str instance, NoneType found` and the whole transcript fails to write even though the run + spend succeeded (hit 2026-06-16 on the 16BitFit 4Q run, gemini-pro returned null; recovered by reconstructing the .md from the session JSON archive). One-line fix at [tools/llm-council/council/cli.py](tools/llm-council/council/cli.py) line 40: change `lines.append(r[&#34;content&#34;])` to `lines.append(r[&#34;content&#34;] or &#34;_(no response: model returned null)_&#34;)`. Optional follow-on: guard chairman content (line 52) + ranking reasoning (line 47) the same way.
-          </div>
-          <div class="ticket-meta">
-            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
-            manual
-              · <span class="agent-dot agent-dot--unknown"></span>@Sean
           </div>
         </button>
         <button type="button" class="ticket" data-source="manual"
@@ -922,21 +907,6 @@ knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generatio
           </div>
         </button>
         <button type="button" class="ticket" data-source="manual"
-                data-id="manual-9994e5e3"
-                data-details=""
-                data-headline="test suite hang: tests/test_gemini_dr.py makes a real unmocked network call to the Gemini DR API with no timeout, so `pytest tests/` hangs indefinitely (must run per-file or deselect). Mock the API call or mark it integration/skip-by-default so the full suite completes"
-                data-subheadline=""
-                aria-haspopup="dialog">
-          <div class="ticket-headline">
-            test suite hang: tests/test_gemini_dr.py makes a real unmocked network call to the Gemini DR API with no timeout, so `pytest tests/` hangs indefinitely (must run per-file or deselect). Mock the API call or mark it integration/skip-by-default so the full suite completes
-          </div>
-          <div class="ticket-meta">
-            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
-            manual
-              · <span class="agent-dot agent-dot--unknown"></span>@Sean
-          </div>
-        </button>
-        <button type="button" class="ticket" data-source="manual"
                 data-id="manual-dcfa7681"
                 data-details=""
                 data-headline="Task 24 Discovery PRD (content-complete + council-revised; ledger row validated clean via scripts/validate_content.mjs): run `npm run build` in sw-ai-pm-portfolio to confirm /transactions/discovery-prd-content-workflow/ resolves, then commit the new discovery-prd-content-workflow.mdx (surface: product) by hand; optional LinkedIn teaser on the cross-functional-translation angle"
@@ -944,21 +914,6 @@ knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generatio
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             Task 24 Discovery PRD (content-complete + council-revised; ledger row validated clean via scripts/validate_content.mjs): run `npm run build` in sw-ai-pm-portfolio to confirm /transactions/discovery-prd-content-workflow/ resolves, then commit the new discovery-prd-content-workflow.mdx (surface: product) by hand; optional LinkedIn teaser on the cross-functional-translation angle
-          </div>
-          <div class="ticket-meta">
-            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
-            manual
-              · <span class="agent-dot agent-dot--unknown"></span>@Sean
-          </div>
-        </button>
-        <button type="button" class="ticket" data-source="manual"
-                data-id="manual-08be9bf2"
-                data-details=""
-                data-headline="Tier C soak ADOPTED 2026-06-03 (gemma4_26b-32k @ Alienware, 17/17 clean — see 2026-06-03-topic-20-tier-c-soak-closeout.md): wire it as a Tier C batch route — add a `[routing.task_map]` entry for batch summarization, decide whether HybridRouter `fallback_to_api` is acceptable on that route (probably not — keep fail-fast Pattern E shape), and add the Tier C &#34;production&#34; note to CLAUDE.md"
-                data-subheadline=""
-                aria-haspopup="dialog">
-          <div class="ticket-headline">
-            Tier C soak ADOPTED 2026-06-03 (gemma4_26b-32k @ Alienware, 17/17 clean — see 2026-06-03-topic-20-tier-c-soak-closeout.md): wire it as a Tier C batch route — add a `[routing.task_map]` entry for batch summarization, decide whether HybridRouter `fallback_to_api` is acceptable on that route (probably not — keep fail-fast Pattern E shape), and add the Tier C &#34;production&#34; note to CLAUDE.md
           </div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
@@ -1479,10 +1434,51 @@ knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generatio
     <div class="kanban-column" data-column="done">
       <div class="kanban-column-header">
         <span class="column-label">Done</span>
-        <span class="column-count">0</span>
-          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#3FB950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,11.0 8.7,11.0 16.3,11.0 24.0,11.0 31.7,1.0 39.3,11.0 47.0,6.0"/></svg></span>
+        <span class="column-count">3</span>
+          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#3FB950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,11.0 8.7,11.0 16.3,11.0 24.0,11.0 31.7,1.0 39.3,11.0 47.0,1.0"/></svg></span>
       </div>
-        <div class="kanban-empty">Nothing in Done right now.</div>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-58c0cb10"
+                data-details=""
+                data-headline="DONE 2026-06-18 (Claude Code): llm-council transcript render no longer crashes on null model content. Guarded all three model-supplied appends in `_render_markdown` at [tools/llm-council/council/cli.py](tools/llm-council/council/cli.py) — response content (line 40), ranking reasoning (line 47), and chairman synthesis (line 52) — each now falls back to a `_(no response…)_` placeholder instead of appending `None` into `lines`. Added regression test `test_render_markdown_handles_null_content` in [tools/llm-council/tests/test_cli.py](tools/llm-council/tests/test_cli.py) that reproduces the exact `TypeError` (red before fix) and asserts the placeholder + real content survive. Verified: `pytest tests/` → 34 passed, 1 skipped. NOTE: code lives outside the vault and is uncommitted in the working tree — commit when ready."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            DONE 2026-06-18 (Claude Code): llm-council transcript render no longer crashes on null model content. Guarded all three model-supplied appends in `_render_markdown` at [tools/llm-council/council/cli.py](tools/llm-council/council/cli.py) — response content (line 40), ranking reasoning (line 47), and chairman synthesis (line 52) — each now falls back to a `_(no response…)_` placeholder instead of appending `None` into `lines`. Added regression test `test_render_markdown_handles_null_content` in [tools/llm-council/tests/test_cli.py](tools/llm-council/tests/test_cli.py) that reproduces the exact `TypeError` (red before fix) and asserts the placeholder + real content survive. Verified: `pytest tests/` → 34 passed, 1 skipped. NOTE: code lives outside the vault and is uncommitted in the working tree — commit when ready.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-cd176975"
+                data-details=""
+                data-headline="DONE 2026-06-18 (Claude Code, verify-and-close — already shipped): Tier C batch route wiring. All three asks are satisfied in-tree: the route `tier_c_batch_summarize = { model = &#34;gemma4_26b-32k&#34;, machine = &#34;alienware&#34;, fallback = &#34;none&#34; }` exists at [agents-sdk/config.toml](agents-sdk/config.toml) line 403 (fail-fast Pattern-E shape, no API fallback — the recommended choice), and the Tier C &#34;production&#34; note is in [CLAUDE.md](CLAUDE.md) line 170. No further work needed; closing the stale ticket."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            DONE 2026-06-18 (Claude Code, verify-and-close — already shipped): Tier C batch route wiring. All three asks are satisfied in-tree: the route `tier_c_batch_summarize = { model = &#34;gemma4_26b-32k&#34;, machine = &#34;alienware&#34;, fallback = &#34;none&#34; }` exists at [agents-sdk/config.toml](agents-sdk/config.toml) line 403 (fail-fast Pattern-E shape, no API fallback — the recommended choice), and the Tier C &#34;production&#34; note is in [CLAUDE.md](CLAUDE.md) line 170. No further work needed; closing the stale ticket.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-69f7559e"
+                data-details=""
+                data-headline="DONE 2026-06-18 (Claude Code): &#34;test suite hang&#34; on the Gemini DR call resolved — `pytest tests/` now completes (895 passed in ~13s, was hanging). Root cause was subtler than reported: `test_run_warn_called_with_mtd_plus_pred` in [agents-sdk/tests/test_gemini_dr.py](agents-sdk/tests/test_gemini_dr.py) pre-seeded the ledger with a hard-coded 2026-05-03 entry, but `run()` computes mtd/today against the live `date.today()`. Once real time passed into June the May entry stopped counting, the daily-cap refusal no longer fired, and execution fell through to the real `client.interactions.create()` (genai + get_credential were unpatched) — a live DR call that polls up to 3900s. Fix: dated the ledger entry to `date.today()` so the cap math engages (also restores the intended $12.80 warn assertion), and added hermetic `patch(&#34;scripts.gemini_dr.genai&#34;)` + `get_credential` guards plus `mock_genai.Client.assert_not_called()` so no test can ever reach the network again. NOTE: code lives outside the vault and is uncommitted in the working tree — commit when ready."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            DONE 2026-06-18 (Claude Code): &#34;test suite hang&#34; on the Gemini DR call resolved — `pytest tests/` now completes (895 passed in ~13s, was hanging). Root cause was subtler than reported: `test_run_warn_called_with_mtd_plus_pred` in [agents-sdk/tests/test_gemini_dr.py](agents-sdk/tests/test_gemini_dr.py) pre-seeded the ledger with a hard-coded 2026-05-03 entry, but `run()` computes mtd/today against the live `date.today()`. Once real time passed into June the May entry stopped counting, the daily-cap refusal no longer fired, and execution fell through to the real `client.interactions.create()` (genai + get_credential were unpatched) — a live DR call that polls up to 3900s. Fix: dated the ledger entry to `date.today()` so the cap math engages (also restores the intended $12.80 warn assertion), and added hermetic `patch(&#34;scripts.gemini_dr.genai&#34;)` + `get_credential` guards plus `mock_genai.Client.assert_not_called()` so no test can ever reach the network again. NOTE: code lives outside the vault and is uncommitted in the working tree — commit when ready.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+          </div>
+        </button>
     </div>
 </div>
 
@@ -1502,8 +1498,8 @@ knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generatio
   <strong>Built by Sean Winslow</strong>.
   Multi-agent fleet on macOS launchd, 99% local-first inference.
   <a href="https://github.com/seanwinslow28/agent-fleet-observability">View source</a>
-  · last build 2026-06-18 18:11 UTC
-</footer>  <script src="assets/motion.js" defer></script>
-  <script src="assets/kanban-modal.js" defer></script>
+  · last build 2026-06-18 18:57 UTC
+</footer>  <script src="assets/motion.js?v=fecca888" defer></script>
+  <script src="assets/kanban-modal.js?v=45838d0f" defer></script>
 </body>
 </html>
