@@ -6,7 +6,9 @@ Tests confirm:
 - Private pass retains Strategic funnel, warm-intro names, Anthropic tier-1 row
 """
 
+import hashlib
 import json
+import re
 from datetime import date
 
 from lib import aggregations, kanban, readers, render
@@ -366,3 +368,50 @@ def test_filter_chips_seed_aria_pressed_at_first_paint(tmp_path):
     # Public pass = 4 chips (research, lint, eval, manual), all seeded active
     assert kb.count('aria-pressed="true"') == 4
     assert kb.count('data-active="true"') >= 4
+
+
+def test_asset_urls_are_fingerprinted_with_content_hash(tmp_path):
+    """Cache-busting: asset <link>/<script> refs carry ?v=<8 hex> matching the
+    sha1 of the real asset bytes, so an immutable cache busts on any byte change.
+
+    base.html owns styles.css + motion.js (inherited by both pages); kanban.html
+    adds kanban-modal.js.
+    """
+    data = _data()
+    agg = aggregations.compute_all(data, end=date(2026, 5, 14))
+    tickets = kanban.compose_tickets(data, include_job_feed=False)
+    tickets = kanban.compute_columns(tickets, data["agent_runs"])
+    render.render_public(agg, tickets, tmp_path)
+    fleet = (tmp_path / "index.html").read_text()
+    kb = (tmp_path / "kanban.html").read_text()
+
+    def expected(name: str) -> str:
+        return hashlib.sha1((render.ASSETS_DIR / name).read_bytes()).hexdigest()[:8]
+
+    # styles.css + motion.js appear on both pages (base.html); kanban-modal.js only on kanban
+    for html in (fleet, kb):
+        assert f"assets/styles.css?v={expected('styles.css')}" in html
+        assert f"assets/motion.js?v={expected('motion.js')}" in html
+    assert f"assets/kanban-modal.js?v={expected('kanban-modal.js')}" in kb
+
+    # tokens are 8 lowercase hex chars, never an empty/unversioned ref
+    for m in re.findall(r"assets/[\w.-]+\?v=([^\"]*)", fleet + kb):
+        assert re.fullmatch(r"[0-9a-f]{8}", m), f"bad cache-bust token: {m!r}"
+
+
+def test_asset_version_token_changes_when_bytes_change(tmp_path, monkeypatch):
+    """A content change to an asset must change its ?v= token (else the cache
+    would not bust). Proven by pointing ASSETS_DIR at a scratch copy and mutating
+    one file between renders."""
+    scratch = tmp_path / "assets"
+    scratch.mkdir()
+    for name in render._ASSET_FILES:
+        (scratch / name).write_bytes((render.ASSETS_DIR / name).read_bytes())
+    monkeypatch.setattr(render, "ASSETS_DIR", scratch)
+
+    before = render._asset_versions()["styles_css"]
+    (scratch / "styles.css").write_bytes(b"/* changed */\n")
+    after = render._asset_versions()["styles_css"]
+
+    assert re.fullmatch(r"[0-9a-f]{8}", before)
+    assert before != after
