@@ -183,3 +183,57 @@ def test_compute_column_sparklines_normalizes_status_case():
     assert out["todo"][-1] == 1
     assert out["in_progress"][-1] == 1
     assert out["done"][-1] == 1
+
+
+def test_compute_clean_streak_counts_nights_since_recovery():
+    manifests = [{"date": date(2026, 5, d), "concepts_written": 0} for d in range(1, 11)]
+    manifests.append({"date": date(2026, 5, 11), "concepts_written": 90})
+    manifests.append({"date": date(2026, 5, 13), "concepts_written": 114})
+    out = aggregations.compute_clean_streak(manifests, end=date(2026, 5, 20))
+    assert out["last_regression_end"] == date(2026, 5, 10)
+    assert out["nights_clean"] == 10            # 05-20 minus 05-10
+    assert out["active_incident"] is False
+    assert out["incident_nights"] == 0
+
+
+def test_compute_clean_streak_flags_active_trailing_incident():
+    manifests = [
+        {"date": date(2026, 5, 10), "concepts_written": 50},
+        {"date": date(2026, 5, 11), "concepts_written": 0},
+        {"date": date(2026, 5, 12), "concepts_written": 0},
+        {"date": date(2026, 5, 13), "concepts_written": 0},
+    ]
+    out = aggregations.compute_clean_streak(manifests, end=date(2026, 5, 13))
+    assert out["active_incident"] is True
+    assert out["incident_nights"] == 3
+
+
+def test_compute_clean_streak_no_regression_returns_full_window():
+    manifests = [{"date": date(2026, 5, d), "concepts_written": 40 + d} for d in range(1, 15)]
+    out = aggregations.compute_clean_streak(manifests, end=date(2026, 5, 20))
+    assert out["last_regression_end"] is None
+    assert out["nights_clean"] == 60
+    assert out["active_incident"] is False
+
+
+def test_compute_clean_streak_ignores_benign_missing_nights():
+    manifests = [
+        {"date": date(2026, 5, 9), "concepts_written": 30},
+        {"date": date(2026, 5, 10), "concepts_written": 0},    # one dark night
+        {"date": date(2026, 5, 13), "concepts_written": 88},   # 11,12 MISSING (asleep)
+        {"date": date(2026, 5, 14), "concepts_written": 91},
+    ]
+    out = aggregations.compute_clean_streak(manifests, end=date(2026, 5, 20))
+    assert out["last_regression_end"] == date(2026, 5, 10)
+    assert out["active_incident"] is False
+    assert out["incident_nights"] == 0
+
+
+def test_compute_clean_streak_anchors_to_most_recent_not_longest():
+    manifests = [{"date": date(2026, 5, d), "concepts_written": 0} for d in range(1, 9)]  # 8 dark (longest)
+    manifests.append({"date": date(2026, 5, 9), "concepts_written": 70})
+    manifests.append({"date": date(2026, 5, 15), "concepts_written": 0})   # recent single dark
+    manifests.append({"date": date(2026, 5, 16), "concepts_written": 80})
+    out = aggregations.compute_clean_streak(manifests, end=date(2026, 5, 20))
+    assert out["last_regression_end"] == date(2026, 5, 15)
+    assert out["nights_clean"] == 5

@@ -212,6 +212,10 @@ def _common_context(agg: dict, *, is_private: bool, snapshot_ts: str | None = No
         "fleet_status": agg["fleet_status"],
         "agent_state": agg.get("agent_state", {}),
         "regression_window": agg["regression_window"],
+        "clean_streak": agg.get("clean_streak", {
+            "nights_clean": 60, "last_regression_end": None,
+            "active_incident": False, "incident_nights": 0,
+        }),
         "end_date": agg["end_date"],
         "recent_runs": agg["recent_runs"],
         "activity_timeline": agg.get(
