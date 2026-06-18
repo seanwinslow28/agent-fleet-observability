@@ -231,7 +231,8 @@ def test_compute_clean_streak_ignores_benign_missing_nights():
 
 
 def test_compute_clean_streak_anchors_to_most_recent_not_longest():
-    manifests = [{"date": date(2026, 5, d), "concepts_written": 0} for d in range(1, 9)]  # 8 dark (longest)
+    # 8 consecutive dark nights = the longest run (but not the most recent)
+    manifests = [{"date": date(2026, 5, d), "concepts_written": 0} for d in range(1, 9)]
     manifests.append({"date": date(2026, 5, 9), "concepts_written": 70})
     manifests.append({"date": date(2026, 5, 15), "concepts_written": 0})   # recent single dark
     manifests.append({"date": date(2026, 5, 16), "concepts_written": 80})
