@@ -514,6 +514,12 @@ a:hover { color: var(--accent-purple); }
   margin-left: var(--space-3);
   vertical-align: 0.45em;
 }
+.hero-display--incident .num {
+  background: none;
+  -webkit-text-fill-color: var(--accent-alert);
+  color: var(--accent-alert);
+  filter: drop-shadow(0 0 24px rgba(255,92,70,0.4));
+}
 .hero-prose {
   font-family: var(--font-display);
   font-size: clamp(15px, 1.4vw, 18px);
