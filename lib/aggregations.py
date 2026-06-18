@@ -17,6 +17,8 @@ from datetime import date as _date
 
 from lib.statuses import ERR_STATUSES, OK_STATUSES
 
+REGRESSION_THRESHOLD_NIGHTS = 3
+
 
 def _is_local(model: str | None) -> bool:
     """Return True when the run used a local (zero-cost) model."""
@@ -212,6 +214,55 @@ def compute_regression_window(manifests: list[dict]) -> dict:
     return best
 
 
+def compute_clean_streak(manifests: list[dict], end: _date) -> dict:
+    """Nights since the most recent caught regression, plus an active-incident flag.
+
+    A 'caught regression' is a run of consecutive present-but-zero nights
+    (concepts_written == 0). Missing nights (no manifest) are benign MBP-asleep
+    gaps: they neither count as a regression nor reset the streak (mirrors
+    compute_regression_window, which only iterates present manifests).
+
+    Returns dict with:
+      nights_clean        days from the most-recent zero-run END to `end`
+                          (capped at the 60-night window; render shows "60+")
+      last_regression_end date of the most-recent dark night, or None
+      active_incident     latest present manifest is zero AND the trailing
+                          zero-run length >= REGRESSION_THRESHOLD_NIGHTS
+      incident_nights     length of that trailing zero-run (0 if none)
+    """
+    window = 60
+    empty = {"nights_clean": window, "last_regression_end": None,
+             "active_incident": False, "incident_nights": 0}
+    if not manifests:
+        return empty
+    sorted_m = sorted(manifests, key=lambda m: m["date"])
+
+    # Most-recent dark night (end of the most-recent zero-run).
+    last_regression_end: _date | None = None
+    for m in sorted_m:
+        if m.get("concepts_written", 0) == 0:
+            last_regression_end = m["date"]
+
+    if last_regression_end is None:
+        return empty
+
+    # Trailing zero-run: consecutive zeros ending at the latest manifest.
+    trailing = 0
+    for m in reversed(sorted_m):
+        if m.get("concepts_written", 0) == 0:
+            trailing += 1
+        else:
+            break
+
+    nights_clean = min(window, max(0, (end - last_regression_end).days))
+    return {
+        "nights_clean": nights_clean,
+        "last_regression_end": last_regression_end,
+        "active_incident": trailing >= REGRESSION_THRESHOLD_NIGHTS,
+        "incident_nights": trailing,
+    }
+
+
 def compute_eval_sparkline(eval_run: dict, days: int = 14) -> list[int]:
     """v1: no historical eval store, so emit a flat-tail sparkline ending at today.
 
@@ -293,6 +344,7 @@ def compute_all(data: dict, *, end: _date | None = None) -> dict:
         "synth_series_60d": compute_synth_series(manifests, days=60, end=end),
         "synth_series_14d": compute_synth_series(manifests, days=14, end=end),
         "regression_window": compute_regression_window(manifests),
+        "clean_streak": compute_clean_streak(manifests, end),
         "eval_sparkline": compute_eval_sparkline(eval_run, days=14),
         "cost_trend_30d": compute_cost_trend(runs, days=30, end=end),
         "model_mix": compute_model_mix(

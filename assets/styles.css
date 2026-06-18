@@ -3,28 +3,28 @@
  * If a color isn't in the Spark mascot, it doesn't belong on this page. */
 
 :root {
-  /* Surface ladder — warm OLED with purple undertone */
-  --bg-base:        #0E0B14;
-  --bg-raised:      #171320;
-  --bg-recessed:    #0A0810;
-  --hairline:       rgba(192,132,252,0.08);
-  --hairline-strong: rgba(192,132,252,0.18);
-  --glow-amber:     rgba(240,180,41,0.04);
-  --glow-purple:    rgba(192,132,252,0.06);
+  /* Surface ladder — warm-dark with teal undertone */
+  --bg-base:        #0C100F;
+  --bg-raised:      #141917;
+  --bg-recessed:    #080B0A;
+  --hairline:       rgba(45,212,191,0.08);
+  --hairline-strong: rgba(45,212,191,0.18);
+  --glow-amber:     rgba(232,144,96,0.05);
+  --glow-purple:    rgba(45,212,191,0.06);
 
-  /* Text — warm off-white, purple-tinted neutrals */
+  /* Text — warm off-white, teal-tinted neutrals */
   --text-primary:   #F4EFE6;
-  --text-secondary: #A89FB0;
-  --text-tertiary:  #6B6478;
+  --text-secondary: #A0AEAB;
+  --text-tertiary:  #66736F;
 
   /* Accents — only what's in the mascot */
-  --accent-amber:       #F0B429;
-  --accent-amber-soft:  rgba(240,180,41,0.35);
-  --accent-purple:      #C084FC;
-  --accent-purple-soft: rgba(192,132,252,0.35);
+  --accent-amber:       #E89060;
+  --accent-amber-soft:  rgba(232,144,96,0.35);
+  --accent-purple:      #2DD4BF;
+  --accent-purple-soft: rgba(45,212,191,0.35);
   --accent-ok:          #3FB950;
   --accent-alert:       #FF5C46;
-  --accent-cloud:       #A78BFA;
+  --accent-cloud:       #2DD4BF;
 
   /* Backwards-compatibility aliases for existing template classes / svg_charts output */
   --bg-primary:    var(--bg-base);
@@ -36,11 +36,11 @@
   --accent-blue:   var(--accent-purple);
 
   /* Gradients — used sparingly, always trace back to the mascot.
-     ONE amber→purple gradient token. The 3-stop (with the #FFD66B waypoint)
+     ONE orange→teal gradient token. The 3-stop (with the #F4A672 waypoint)
      is canonical; mascot arms, hero numeral, and kanban hero numeral all use it. */
-  --gradient-spark:      linear-gradient(135deg, #F0B429 0%, #FFD66B 35%, #C084FC 100%);
-  --amber-glow:          radial-gradient(ellipse 800px 400px at 20% 0%, rgba(240,180,41,0.10), transparent 60%),
-                         radial-gradient(ellipse 600px 400px at 80% 40%, rgba(192,132,252,0.08), transparent 60%);
+  --gradient-spark:      linear-gradient(135deg, #E89060 0%, #F4A672 40%, #2DD4BF 100%);
+  --amber-glow:          radial-gradient(ellipse 800px 400px at 20% 0%, rgba(232,144,96,0.10), transparent 60%),
+                         radial-gradient(ellipse 600px 400px at 80% 40%, rgba(45,212,191,0.08), transparent 60%);
 
   /* Type */
   --font-display: 'Sora', 'SF Pro', system-ui, sans-serif;
@@ -66,13 +66,13 @@
 
   /* Elevation — three-layer recipe (highlight + ring + drop) */
   --shadow-panel: 0 1px 0 rgba(244,239,230,0.04) inset,
-                  0 0 0 1px rgba(192,132,252,0.08),
+                  0 0 0 1px rgba(45,212,191,0.08),
                   0 8px 24px -12px rgba(0,0,0,0.6);
   --shadow-hero:  0 1px 0 rgba(244,239,230,0.06) inset,
-                  0 0 0 1px rgba(192,132,252,0.12),
-                  0 40px 80px -40px rgba(240,180,41,0.25);
+                  0 0 0 1px rgba(45,212,191,0.12),
+                  0 40px 80px -40px rgba(232,144,96,0.25);
   --shadow-hover: 0 1px 0 rgba(244,239,230,0.06) inset,
-                  0 0 0 1px rgba(240,180,41,0.20),
+                  0 0 0 1px rgba(232,144,96,0.20),
                   0 12px 32px -12px rgba(0,0,0,0.7);
 
   /* Motion */
@@ -98,7 +98,7 @@ body {
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  /* Subtle ambient amber+purple wash, fixed so it doesn't scroll */
+  /* Subtle ambient orange+teal wash, fixed so it doesn't scroll */
   background-image: var(--amber-glow);
   background-attachment: fixed;
   background-repeat: no-repeat;
@@ -442,11 +442,11 @@ a:hover { color: var(--accent-purple); }
   font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 600;
-  background: rgba(192,132,252,0.12);
+  background: rgba(45,212,191,0.12);
   color: var(--accent-purple);
   padding: 3px 8px;
   border-radius: var(--radius-sm);
-  border: 1px solid rgba(192,132,252,0.24);
+  border: 1px solid rgba(45,212,191,0.24);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -480,8 +480,8 @@ a:hover { color: var(--accent-purple); }
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 600px 300px at 15% 0%, rgba(240,180,41,0.12), transparent 60%),
-    radial-gradient(ellipse 500px 400px at 90% 100%, rgba(192,132,252,0.10), transparent 60%);
+    radial-gradient(ellipse 600px 300px at 15% 0%, rgba(232,144,96,0.12), transparent 60%),
+    radial-gradient(ellipse 500px 400px at 90% 100%, rgba(45,212,191,0.10), transparent 60%);
   pointer-events: none;
   opacity: 0.9;
 }
@@ -502,7 +502,7 @@ a:hover { color: var(--accent-purple); }
   -webkit-text-fill-color: transparent;
   color: transparent;
   display: inline-block;
-  filter: drop-shadow(0 0 24px rgba(240,180,41,0.35));
+  filter: drop-shadow(0 0 24px rgba(232,144,96,0.35));
   font-variant-numeric: tabular-nums;
 }
 .hero-display .label {
@@ -513,6 +513,12 @@ a:hover { color: var(--accent-purple); }
   text-transform: uppercase;
   margin-left: var(--space-3);
   vertical-align: 0.45em;
+}
+.hero-display--incident .num {
+  background: none;
+  -webkit-text-fill-color: var(--accent-alert);
+  color: var(--accent-alert);
+  filter: drop-shadow(0 0 24px rgba(255,92,70,0.4));
 }
 .hero-prose {
   font-family: var(--font-display);
@@ -560,8 +566,8 @@ a:hover { color: var(--accent-purple); }
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 500px 250px at 15% 0%, rgba(240,180,41,0.10), transparent 60%),
-    radial-gradient(ellipse 400px 320px at 90% 100%, rgba(192,132,252,0.08), transparent 60%);
+    radial-gradient(ellipse 500px 250px at 15% 0%, rgba(232,144,96,0.10), transparent 60%),
+    radial-gradient(ellipse 400px 320px at 90% 100%, rgba(45,212,191,0.08), transparent 60%);
   pointer-events: none;
   opacity: 0.9;
 }
@@ -582,7 +588,7 @@ a:hover { color: var(--accent-purple); }
   -webkit-text-fill-color: transparent;
   color: transparent;
   display: inline-block;
-  filter: drop-shadow(0 0 18px rgba(240,180,41,0.30));
+  filter: drop-shadow(0 0 18px rgba(232,144,96,0.30));
   font-variant-numeric: tabular-nums;
 }
 .kanban-hero-display .label {
@@ -639,14 +645,15 @@ a:hover { color: var(--accent-purple); }
   position: relative;
   height: 14px;
   background: linear-gradient(90deg,
-    rgba(192,132,252,0.04) 0%,
-    rgba(192,132,252,0.06) 50%,
-    rgba(192,132,252,0.04) 100%);
+    rgba(45,212,191,0.04) 0%,
+    rgba(45,212,191,0.06) 50%,
+    rgba(45,212,191,0.04) 100%);
   border-radius: var(--radius-sm);
   border: 1px solid var(--hairline);
 }
 .timeline-dot {
   position: absolute;
+  width: 8px;
   top: 50%;
   transform: translate(-50%, -50%);
   height: 8px;
@@ -673,57 +680,15 @@ a:hover { color: var(--accent-purple); }
   letter-spacing: 0.04em;
 }
 
-/* ───── Asterisk Spark mascot — colors locked, animations preserved ───── */
-@keyframes m-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-@keyframes m-blink {
-  0%, 88%, 100% { transform: scaleY(1); }
-  91%, 95% { transform: scaleY(0.08); }
-}
-@keyframes spark-pulse-healthy {
-  0%, 100% { box-shadow: 0 0 16px rgba(240,180,41,0.4), 0 0 0 1px var(--accent-amber); }
-  50%      { box-shadow: 0 0 28px rgba(240,180,41,0.7), 0 0 0 1px var(--accent-amber); }
-}
-@keyframes spark-pulse-degraded {
-  0%, 100% { box-shadow: 0 0 16px rgba(192,132,252,0.4), 0 0 0 1px var(--accent-purple); }
-  50%      { box-shadow: 0 0 24px rgba(192,132,252,0.7), 0 0 0 1px var(--accent-purple); }
-}
-@keyframes spark-pulse-down {
-  0%, 100% { box-shadow: 0 0 16px rgba(255,92,70,0.5), 0 0 0 1px var(--accent-alert); }
-  50%      { box-shadow: 0 0 28px rgba(255,92,70,0.9), 0 0 0 1px var(--accent-alert); }
-}
-.spark {
-  width: 32px; height: 32px; position: relative;
-  display: inline-flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.spark .arms { position: absolute; width: 100%; height: 100%; animation: m-spin 12s linear infinite; }
-.spark .arm {
-  position: absolute;
-  background: var(--gradient-spark);
-  border-radius: 1px;
-}
-.spark .arm-v  { width: 2px; height: 100%; left: 50%; transform: translateX(-50%); }
-.spark .arm-h  { width: 100%; height: 2px; top: 50%; transform: translateY(-50%); }
-.spark .arm-d1 { width: 2px; height: 90%; left: 50%; top: 5%; transform: translateX(-50%) rotate(45deg); opacity: 0.6; }
-.spark .arm-d2 { width: 2px; height: 90%; left: 50%; top: 5%; transform: translateX(-50%) rotate(-45deg); opacity: 0.6; }
-.spark .core {
-  width: 14px; height: 14px;
-  background: var(--bg-base);
-  border-radius: 50%; position: relative; z-index: 2;
-  border: 1px solid var(--accent-amber);
-  animation: spark-pulse-healthy 2.4s var(--ease-in-out) infinite;
-}
-.spark[data-state="degraded"] .core { animation-name: spark-pulse-degraded; border-color: var(--accent-purple); }
-.spark[data-state="down"] .core { animation-name: spark-pulse-down; border-color: var(--accent-alert); }
-.spark .eye {
-  position: absolute; width: 1.8px; height: 2.2px;
-  background: var(--accent-amber); border-radius: 0.5px; top: 4px;
-  animation: m-blink 5.5s infinite; transform-origin: center;
-}
-.spark[data-state="degraded"] .eye { background: var(--accent-purple); }
-.spark[data-state="down"] .eye { background: var(--accent-alert); }
-.spark .eye-l { left: 3px; }
-.spark .eye-r { right: 3px; }
+/* ───── Chrome-register mark — sharp frame + status dot, static ───── */
+.mark { width: 32px; height: 32px; display: inline-flex; flex-shrink: 0; }
+.mark svg { display: block; }
+.mark .mark-frame { stroke: var(--accent-purple); }
+.mark .mark-dot { fill: var(--accent-purple); }
+.mark[data-state="degraded"] .mark-frame,
+.mark[data-state="degraded"] .mark-dot { stroke: var(--accent-amber); fill: var(--accent-amber); }
+.mark[data-state="down"] .mark-frame,
+.mark[data-state="down"] .mark-dot { stroke: var(--accent-alert); fill: var(--accent-alert); }
 
 /* ───── Kanban ───── */
 .kanban-filters { display: flex; gap: var(--space-2); flex-wrap: wrap; margin-bottom: var(--space-4); }
@@ -896,7 +861,7 @@ table thead tr {
 table th { padding: var(--space-2); font-weight: 500; letter-spacing: 0.04em; }
 table td { padding: var(--space-2); }
 table tbody tr { border-top: 1px solid var(--hairline); }
-table tbody tr:hover { background: rgba(192,132,252,0.03); }
+table tbody tr:hover { background: rgba(45,212,191,0.03); }
 
 /* ───── Buttons + interactive ───── */
 button, .button {
@@ -949,7 +914,7 @@ button:active, .button:active { transform: scale(0.97); }
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: drop-shadow(0 0 24px rgba(240,180,41,0.15));
+  filter: drop-shadow(0 0 24px rgba(232,144,96,0.15));
 }
 .mix-legend {
   list-style: none;
@@ -991,7 +956,7 @@ button:active, .button:active { transform: scale(0.97); }
 }
 .eval-case {
   display: grid;
-  grid-template-columns: 10px 18px 80px 1fr auto;
+  grid-template-columns: 10px 18px 80px minmax(0, 1fr) auto;
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-3) var(--space-3);
@@ -1023,7 +988,7 @@ button:active, .button:active { transform: scale(0.97); }
 .eval-case--failed  .eval-marker { color: var(--accent-alert); }
 .eval-case--skipped .eval-marker { color: var(--accent-amber); }
 .eval-id { color: var(--text-primary); font-weight: 500; letter-spacing: 0.02em; }
-.eval-category { color: var(--text-secondary); font-size: 10px; }
+.eval-category { color: var(--text-secondary); font-size: 10px; min-width: 0; overflow-wrap: anywhere; }
 .eval-status-pill {
   font-size: 9px;
   text-transform: uppercase;
@@ -1033,10 +998,12 @@ button:active, .button:active { transform: scale(0.97); }
   background: var(--bg-raised);
   color: var(--text-secondary);
   border: 1px solid var(--hairline);
+  white-space: nowrap;
+  justify-self: end;
 }
 .eval-case--passed  .eval-status-pill { color: var(--accent-ok);    border-color: rgba(63,185,80,0.3); }
 .eval-case--failed  .eval-status-pill { color: var(--accent-alert); border-color: rgba(255,92,70,0.3); }
-.eval-case--skipped .eval-status-pill { color: var(--accent-amber); border-color: rgba(240,180,41,0.3); }
+.eval-case--skipped .eval-status-pill { color: var(--accent-amber); border-color: rgba(232,144,96,0.3); }
 
 /* Empty state — Sean voice */
 .empty-state {
@@ -1066,9 +1033,6 @@ button:active, .button:active { transform: scale(0.97); }
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  .spark .arms,
-  .spark .core,
-  .spark .eye { animation: none !important; }
   .pulse-dot { animation: none !important; }
   [data-stagger] > * { opacity: 1; transform: none; }
   .hero-band-wipe { clip-path: inset(0 0 0 0); }

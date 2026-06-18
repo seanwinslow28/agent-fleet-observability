@@ -1,28 +1,38 @@
-{# Hero — the editorial moment. Spark Console.
-   Vars: hero_svg (rendered string), regression_window {start, end, nights}, end_date #}
-{% set nights = regression_window.nights or 0 %}
-{% set has_regression = nights >= 3 %}
+{# Hero — incident-aware streak. Spark Console.
+   Vars: hero_svg (rendered string), clean_streak {nights_clean, last_regression_end,
+         active_incident, incident_nights}, regression_window {start,end,nights}, end_date #}
+{% set cs = clean_streak %}
 <section class="hero-plate" aria-labelledby="hero-headline">
   <div class="eyebrow">Vault Synthesizer · concepts written per night · 60 nights</div>
 
-  {% if has_regression %}
-    <h1 class="hero-display" id="hero-headline">
-      <span class="num" data-countup="{{ nights }}" aria-label="{{ nights }}">{{ nights }}</span>
-      <span class="label">consecutive nights</span>
+  {% if cs.active_incident %}
+    <h1 class="hero-display hero-display--incident" id="hero-headline">
+      <span class="num" data-countup="{{ cs.incident_nights }}" aria-label="{{ cs.incident_nights }}">{{ cs.incident_nights }}</span>
+      <span class="label">nights dark</span>
     </h1>
     <p class="hero-prose">
-      The synthesizer wrote <strong>zero concepts</strong> for {{ nights }} nights running.
-      The vault-synthesizer <strong>eval suite</strong> caught it on day {{ nights + 1 }}.
-      Recovered {{ regression_window.end }}. The dashboard preserves the incident as proof of operational maturity.
+      The synthesizer has written <strong>zero concepts</strong> for {{ cs.incident_nights }} nights running.
+      The vault-synthesizer <strong>eval suite</strong> flagged it. This banner stays red until the
+      synthesizer recovers, so the dashboard surfaces the regression instead of hiding it.
+    </p>
+  {% elif cs.last_regression_end %}
+    <h1 class="hero-display" id="hero-headline">
+      <span class="num" data-countup="{{ cs.nights_clean }}" aria-label="{{ cs.nights_clean }}">{{ cs.nights_clean }}{% if cs.nights_clean >= 60 %}+{% endif %}</span>
+      <span class="label">nights clean</span>
+    </h1>
+    <p class="hero-prose">
+      The synthesizer has written every night since the last dark night on {{ cs.last_regression_end }}.
+      The <strong>eval suite</strong> runs each morning and the fleet stays inside its governors. The
+      worst regression it has caught is preserved on the chart below.
     </p>
   {% else %}
     <h1 class="hero-display" id="hero-headline">
-      <span class="num">8</span>
-      <span class="label">agents running cleanly</span>
+      <span class="num" data-countup="{{ cs.nights_clean }}" aria-label="{{ cs.nights_clean }}">{{ cs.nights_clean }}{% if cs.nights_clean >= 60 %}+{% endif %}</span>
+      <span class="label">nights clean</span>
     </h1>
     <p class="hero-prose">
-      No regression window in the last 60 nights. The eval suite ran every morning,
-      the synthesizer wrote, the fleet stayed inside its governors.
+      No regression in the last 60 nights. The eval suite ran every morning, the synthesizer wrote,
+      and the fleet stayed inside its governors.
     </p>
   {% endif %}
 

@@ -5,8 +5,8 @@ the SVG — colors are inlined so markup is self-contained when copy-pasted
 into Substack or screenshotted.
 
 Token rule (locked in DESIGN.md): four working colors total.
-- AMBER  primary signal · local-first · healthy series
-- PURPLE secondary · cloud spend · regression annotation
+- AMBER  primary signal · local-first · healthy series (warm orange)
+- PURPLE secondary · cloud spend · regression annotation (teal)
 - ALERT  failures only
 - OK     legacy "healthy" status dot — kept for fleet status semantics
 
@@ -19,19 +19,19 @@ import math
 from datetime import date
 
 # Spark palette — DESIGN.md is the source of truth, this mirrors it
-AMBER = "#F0B429"
-AMBER_SOFT = "rgba(240,180,41,0.35)"
-PURPLE = "#C084FC"
-PURPLE_SOFT = "rgba(192,132,252,0.35)"
+AMBER = "#E89060"
+AMBER_SOFT = "rgba(232,144,96,0.35)"
+PURPLE = "#2DD4BF"
+PURPLE_SOFT = "rgba(45,212,191,0.35)"
 ALERT = "#FF5C46"
 OK = "#3FB950"
 
 # Surfaces / text — match DESIGN.md
 TEXT = "#F4EFE6"
-SECONDARY = "#A89FB0"
-TERTIARY = "#6B6478"
-PANEL = "#0A0810"          # recessed plate (deeper than raised — charts sit inside)
-GRID = "rgba(192,132,252,0.06)"
+SECONDARY = "#A0AEAB"
+TERTIARY = "#66736F"
+PANEL = "#080B0A"          # recessed plate (deeper than raised — charts sit inside)
+GRID = "rgba(45,212,191,0.06)"
 
 # Backwards-compatibility aliases — old code/templates may still import these.
 # All collapse to the four working colors per DESIGN.md.
@@ -483,7 +483,7 @@ def kpi_fill_bar(current: float, cap: float, color: str = AMBER) -> str:
     width = 120.0
     height = 6.0
     radius = height / 2
-    track_fill = "rgba(192,132,252,0.10)"  # var(--hairline)-ish, recessed track
+    track_fill = "rgba(45,212,191,0.10)"  # var(--hairline)-ish, recessed track
     if cap <= 0:
         ratio = 0.0
     else:

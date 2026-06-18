@@ -3,6 +3,16 @@ from datetime import date
 from lib import svg_charts
 
 
+def test_palette_is_teal_and_ember():
+    assert svg_charts.AMBER == "#E89060"
+    assert svg_charts.PURPLE == "#2DD4BF"
+    assert svg_charts.AMBER_SOFT == "rgba(232,144,96,0.35)"
+    assert svg_charts.PURPLE_SOFT == "rgba(45,212,191,0.35)"
+    # status colors are data-encoded and must NOT change
+    assert svg_charts.OK == "#3FB950"
+    assert svg_charts.ALERT == "#FF5C46"
+
+
 def test_line_chart_returns_svg_string():
     series = [
         {"date": date(2026, 5, d), "value": v}
@@ -68,8 +78,8 @@ def test_donut_small_wedge_renders_as_single_path():
     Plus the always-present background ring <circle>. No more, no less.
     """
     segments = [
-        {"label": "a", "value": 92.7, "color": "#F0B429"},
-        {"label": "b", "value": 7.3, "color": "#C084FC"},
+        {"label": "a", "value": 92.7, "color": "#E89060"},
+        {"label": "b", "value": 7.3, "color": "#2DD4BF"},
     ]
     svg = svg_charts.donut(segments, size=160, stroke=18)
     # Exactly one <path> per wedge (2 paths for 2 wedges).
@@ -85,8 +95,8 @@ def test_donut_small_wedge_renders_as_single_path():
 def test_donut_three_wedges_renders_three_paths():
     """Three small wedges (each <180°) → exactly three <path> elements."""
     segments = [
-        {"value": 50, "color": "#F0B429"},
-        {"value": 30, "color": "#C084FC"},
+        {"value": 50, "color": "#E89060"},
+        {"value": 30, "color": "#2DD4BF"},
         {"value": 20, "color": "#FF5C46"},
     ]
     svg = svg_charts.donut(segments, size=120, stroke=14)
@@ -196,7 +206,7 @@ def test_kpi_donut_clamps_out_of_range_local_pct():
 
 def test_donut_accepts_css_class_and_aria_hidden_kwargs():
     """donut() stamps the root <svg> with caller-supplied class + a11y attrs."""
-    segments = [{"value": 70, "color": "#F0B429"}, {"value": 30, "color": "#C084FC"}]
+    segments = [{"value": 70, "color": "#E89060"}, {"value": 30, "color": "#2DD4BF"}]
     svg = svg_charts.donut(segments, size=40, stroke=6, css_class="my-cls", aria_hidden=True)
     assert 'class="my-cls"' in svg
     assert 'aria-hidden="true"' in svg
