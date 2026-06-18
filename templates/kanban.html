@@ -6,5 +6,5 @@
 {% block scripts %}
   {# Kanban filter behavior is handled by assets/motion.js (single source of truth).
      It uses .filtered-out (blur+desaturate) to preserve spatial memory per DESIGN.md. #}
-  <script src="assets/kanban-modal.js" defer></script>
+  <script src="assets/kanban-modal.js?v={{ asset_versions.kanban_modal_js }}" defer></script>
 {% endblock %}

@@ -7,6 +7,7 @@ one anonymize.public_pass() call before public render.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 from datetime import UTC, datetime
 from pathlib import Path
@@ -17,6 +18,27 @@ from lib import activity_timeline, anonymize, kanban, svg_charts
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR = REPO_ROOT / "templates"
+ASSETS_DIR = REPO_ROOT / "assets"
+# Assets are served immutable+long-lived (vercel.json). Their URLs are
+# fingerprinted with a content hash so a byte change busts the cache cleanly.
+_ASSET_FILES = ["styles.css", "motion.js", "kanban-modal.js"]
+
+
+def _asset_versions() -> dict[str, str]:
+    """Short content hash per asset → cache-busting ?v= token.
+
+    Keyed by sanitized filename (styles.css → styles_css). A missing file
+    yields an empty token (unversioned ref) rather than crashing the build.
+    """
+    versions: dict[str, str] = {}
+    for name in _ASSET_FILES:
+        key = name.replace(".", "_").replace("-", "_")
+        try:
+            digest = hashlib.sha1((ASSETS_DIR / name).read_bytes()).hexdigest()[:8]
+        except OSError:
+            digest = ""
+        versions[key] = digest
+    return versions
 
 
 _ENV = Environment(
@@ -204,6 +226,7 @@ def _common_context(agg: dict, *, is_private: bool, snapshot_ts: str | None = No
     return {
         "snapshot_ts": ts,
         "is_private": is_private,
+        "asset_versions": _asset_versions(),
         "active_route": "fleet",
         "fleet_health_label": fleet_health_label,
         "mascot_state": mascot_state,
