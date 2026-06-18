@@ -647,6 +647,7 @@ a:hover { color: var(--accent-purple); }
 }
 .timeline-dot {
   position: absolute;
+  width: 8px;
   top: 50%;
   transform: translate(-50%, -50%);
   height: 8px;
@@ -991,7 +992,7 @@ button:active, .button:active { transform: scale(0.97); }
 }
 .eval-case {
   display: grid;
-  grid-template-columns: 10px 18px 80px 1fr auto;
+  grid-template-columns: 10px 18px 80px minmax(0, 1fr) auto;
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-3) var(--space-3);
@@ -1023,7 +1024,7 @@ button:active, .button:active { transform: scale(0.97); }
 .eval-case--failed  .eval-marker { color: var(--accent-alert); }
 .eval-case--skipped .eval-marker { color: var(--accent-amber); }
 .eval-id { color: var(--text-primary); font-weight: 500; letter-spacing: 0.02em; }
-.eval-category { color: var(--text-secondary); font-size: 10px; }
+.eval-category { color: var(--text-secondary); font-size: 10px; min-width: 0; overflow-wrap: anywhere; }
 .eval-status-pill {
   font-size: 9px;
   text-transform: uppercase;
@@ -1033,6 +1034,8 @@ button:active, .button:active { transform: scale(0.97); }
   background: var(--bg-raised);
   color: var(--text-secondary);
   border: 1px solid var(--hairline);
+  white-space: nowrap;
+  justify-self: end;
 }
 .eval-case--passed  .eval-status-pill { color: var(--accent-ok);    border-color: rgba(63,185,80,0.3); }
 .eval-case--failed  .eval-status-pill { color: var(--accent-alert); border-color: rgba(255,92,70,0.3); }
