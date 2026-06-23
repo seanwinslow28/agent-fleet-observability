@@ -8,22 +8,22 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css?v=8d0f3db7">
+  <link rel="stylesheet" href="assets/styles.css?v=6db4b395">
 </head>
 <body>
 <div class="topbar">
-<div class="mark" data-state="degraded" aria-hidden="true">
+<div class="mark" data-state="healthy" aria-hidden="true">
   <svg viewBox="0 0 32 32" width="32" height="32" fill="none">
     <path class="mark-frame" d="M3 9V3h6M23 3h6v6M29 23v6h-6M9 29H3v-6"
-          stroke="var(--accent-teal)" stroke-width="2" stroke-linecap="square"/>
+          stroke="var(--accent-purple)" stroke-width="2" stroke-linecap="square"/>
     <rect class="mark-dot" x="13" y="13" width="6" height="6" rx="1"/>
   </svg>
 </div>  <div class="brand">
     <span class="brand-url mono">fleet.seanwinslow.com</span>
     <span class="brand-wordmark">Agent Fleet Observability</span>
   </div>
-  <span class="status-pill mono"><span class="status-pill-dot" data-state="degraded" aria-hidden="true">●</span> 5/8 HEALTHY</span>
-  <span class="subtitle" style="margin-left: auto;">2026-06-18 20:31 UTC</span>
+  <span class="status-pill mono"><span class="status-pill-dot" data-state="healthy" aria-hidden="true">●</span> 7/8 HEALTHY</span>
+  <span class="subtitle" style="margin-left: auto;">2026-06-23 21:13 UTC</span>
   <nav style="display: flex; gap: 4px;">
     <a class="nav-link " href="./index.html">/fleet</a>
     <a class="nav-link active" href="./kanban.html">/kanban</a>
@@ -34,8 +34,8 @@
 
     <h1 class="kanban-hero-display" id="kanban-hero-headline">
       <span class="num"
-            data-countup="93"
-            aria-label="93">93</span>
+            data-countup="118"
+            aria-label="118">118</span>
       <span class="label">tickets this week</span>
     </h1>
     <p class="kanban-hero-prose">
@@ -45,7 +45,7 @@
     </p>
 
   <div class="kanban-hero-breakdown">
-      20 lint · 1 eval · 72 manual
+      20 lint · 1 eval · 97 manual
   </div>
 </section>
 <div class="kanban-filters">
@@ -56,7 +56,7 @@
     <button class="filter-chip eval" data-source="eval" data-active="true" aria-pressed="true">
       ● Eval 1    </button>
     <button class="filter-chip manual" data-source="manual" data-active="true" aria-pressed="true">
-      ● Manual 72    </button>
+      ● Manual 97    </button>
 </div>
 
 <div class="kanban-board">
@@ -379,8 +379,8 @@ knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generatio
     <div class="kanban-column" data-column="todo">
       <div class="kanban-column-header">
         <span class="column-label">ToDo</span>
-        <span class="column-count">69</span>
-          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#FF5C46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,11.0 8.7,1.0 16.3,1.0 24.0,11.0 31.7,11.0 39.3,11.0 47.0,11.0"/></svg></span>
+        <span class="column-count">92</span>
+          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#FF5C46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,11.0 8.7,11.0 16.3,11.0 24.0,11.0 31.7,11.0 39.3,11.0 47.0,11.0"/></svg></span>
       </div>
         <button type="button" class="ticket" data-source="eval"
                 data-id="eval-case-35aaa01e"
@@ -397,6 +397,66 @@ knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generatio
           </div>
         </button>
         <button type="button" class="ticket" data-source="manual"
+                data-id="manual-2f3af8da"
+                data-details=""
+                data-headline="discovery review-sites collector under-yields (Phase-4 follow-up, LOW): the live 2026-06-21 standard+deep runs both returned only 3 review records. Root cause is Brave collapsing the OR&#39;d multi-`site:` query in `_review_query` ([tools/llm-council/council/discovery/gather/reviews.py](tools/llm-council/council/discovery/gather/reviews.py)) — Brave treats `site:` as a single filter hint, not a Boolean. Records that DO return are real + gate-valid (correctness fine); this is yield tuning only. Fix when convenient: fan out to N single-`site:` queries (one per REVIEW_DOMAIN) instead of one OR&#39;d query, or feed query-expansion. Surfaced by the Phase-4 final whole-branch review (M2)."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            discovery review-sites collector under-yields (Phase-4 follow-up, LOW): the live 2026-06-21 standard+deep runs both returned only 3 review records. Root cause is Brave collapsing the OR&#39;d multi-`site:` query in `_review_query` ([tools/llm-council/council/discovery/gather/reviews.py](tools/llm-council/council/discovery/gather/reviews.py)) — Brave treats `site:` as a single filter hint, not a Boolean. Records that DO return are real + gate-valid (correctness fine); this is yield tuning only. Fix when convenient: fan out to N single-`site:` queries (one per REVIEW_DOMAIN) instead of one OR&#39;d query, or feed query-expansion. Surfaced by the Phase-4 final whole-branch review (M2).
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-14505ca2"
+                data-details=""
+                data-headline="✅ CORRECTED 2026-06-21 (close-out) — STALE TICKET, NOT a HIGH blocker: the bug is already fixed (Phase 3 shipped `_decode_payload` SSE-strip + `FusionError.cost` + failure-path `record_spend`) AND validated documented-correct by OpenRouter research (`: OPENROUTER PROCESSING` is a documented SSE keep-alive comment; ignoring `:`-prefixed lines is the spec-correct handling `_strip_sse_padding` already does). The &#34;two runs failed&#34; were Phase-2, pre-fix. Residual is confidence only (a few live runs incl. deep). See council/docs/2026-06-21-fusion-discovery-council-phase5-field-report.md §7a. ORIGINAL (stale) — discovery Fusion response robustness (Phase-3, HIGH — live discovery intermittently fails today): two live `quick`-tier e2e runs on 2026-06-20 both failed at the Fusion parse step — run 1 `FusionError` &#34;did not return parseable&#34;, run 2 bare `JSONDecodeError: Expecting value: line 181 column 1 (char 990)`. Root cause: OpenRouter streams `: OPENROUTER PROCESSING` SSE keep-alive comment lines as padding on slow Fusion calls (panel + web tool calls), so `fuse()`&#39;s unguarded `payload = resp.json()` in [tools/llm-council/council/discovery/fusion.py](tools/llm-council/council/discovery/fusion.py) chokes on the non-JSON prefix. Intermittent (Phase 1 run #2 succeeded when fast). Fix: strip leading `: ` comment lines / extract the first balanced `{…}` before json.loads, harden `_parse`. ALSO: failed Fusion calls bill OpenRouter but record $0 locally (`record_spend` is post-success only in [__main__.py](tools/llm-council/council/discovery/__main__.py)) — record usage.cost on failure too. Full write-up: council/docs/2026-06-20-fusion-discovery-council-phase2-field-report.md §5/§6."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            ✅ CORRECTED 2026-06-21 (close-out) — STALE TICKET, NOT a HIGH blocker: the bug is already fixed (Phase 3 shipped `_decode_payload` SSE-strip + `FusionError.cost` + failure-path `record_spend`) AND validated documented-correct by OpenRouter research (`: OPENROUTER PROCESSING` is a documented SSE keep-alive comment; ignoring `:`-prefixed lines is the spec-correct handling `_strip_sse_padding` already does). The &#34;two runs failed&#34; were Phase-2, pre-fix. Residual is confidence only (a few live runs incl. deep). See council/docs/2026-06-21-fusion-discovery-council-phase5-field-report.md §7a. ORIGINAL (stale) — discovery Fusion response robustness (Phase-3, HIGH — live discovery intermittently fails today): two live `quick`-tier e2e runs on 2026-06-20 both failed at the Fusion parse step — run 1 `FusionError` &#34;did not return parseable&#34;, run 2 bare `JSONDecodeError: Expecting value: line 181 column 1 (char 990)`. Root cause: OpenRouter streams `: OPENROUTER PROCESSING` SSE keep-alive comment lines as padding on slow Fusion calls (panel + web tool calls), so `fuse()`&#39;s unguarded `payload = resp.json()` in [tools/llm-council/council/discovery/fusion.py](tools/llm-council/council/discovery/fusion.py) chokes on the non-JSON prefix. Intermittent (Phase 1 run #2 succeeded when fast). Fix: strip leading `: ` comment lines / extract the first balanced `{…}` before json.loads, harden `_parse`. ALSO: failed Fusion calls bill OpenRouter but record $0 locally (`record_spend` is post-success only in [__main__.py](tools/llm-council/council/discovery/__main__.py)) — record usage.cost on failure too. Full write-up: council/docs/2026-06-20-fusion-discovery-council-phase2-field-report.md §5/§6.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-441c651d"
+                data-details=""
+                data-headline="✅ RESOLVED 2026-06-21 (close-out, commit 85b1a63) — fixed durably in our repo: `gather/last30.py`&#39;s `_last30_env()` forces `INCLUDE_SOURCES=reddit,hackernews` (keyless) in the subprocess env, which wins in the plugin&#39;s `os.environ`-first loader. Live-verified: crash gone, reddit yields records. (HN errored under `--no-native-web` — degrades safely; LOW follow-up below.) ORIGINAL — discovery last30 live-blocked by upstream plugin bug: `~/.claude/plugins/marketplaces/last30days-skill/scripts/last30days.py` crashes before emitting JSON — `config.get(&#39;INCLUDE_SOURCES&#39;, &#39;&#39;).split(&#39;,&#39;)` raises `AttributeError: &#39;NoneType&#39; object has no attribute &#39;split&#39;` because `INCLUDE_SOURCES` is set to an explicit null. Our fusion-discovery-council collector ([tools/llm-council/council/discovery/gather/last30.py](tools/llm-council/council/discovery/gather/last30.py)) degrades safely to `[]`, so the pipeline never crashes, but last30 contributes zero live evidence until fixed. Fix is config/upstream: set a non-null `INCLUDE_SOURCES` in `~/.config/last30days/.env` (e.g. `reddit,hackernews`) or patch/report the plugin. Surfaced during fusion-discovery-council Phase 2 (see council/docs/2026-06-20-fusion-discovery-council-phase2-field-report.md §4)."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            ✅ RESOLVED 2026-06-21 (close-out, commit 85b1a63) — fixed durably in our repo: `gather/last30.py`&#39;s `_last30_env()` forces `INCLUDE_SOURCES=reddit,hackernews` (keyless) in the subprocess env, which wins in the plugin&#39;s `os.environ`-first loader. Live-verified: crash gone, reddit yields records. (HN errored under `--no-native-web` — degrades safely; LOW follow-up below.) ORIGINAL — discovery last30 live-blocked by upstream plugin bug: `~/.claude/plugins/marketplaces/last30days-skill/scripts/last30days.py` crashes before emitting JSON — `config.get(&#39;INCLUDE_SOURCES&#39;, &#39;&#39;).split(&#39;,&#39;)` raises `AttributeError: &#39;NoneType&#39; object has no attribute &#39;split&#39;` because `INCLUDE_SOURCES` is set to an explicit null. Our fusion-discovery-council collector ([tools/llm-council/council/discovery/gather/last30.py](tools/llm-council/council/discovery/gather/last30.py)) degrades safely to `[]`, so the pipeline never crashes, but last30 contributes zero live evidence until fixed. Fix is config/upstream: set a non-null `INCLUDE_SOURCES` in `~/.config/last30days/.env` (e.g. `reddit,hackernews`) or patch/report the plugin. Surfaced during fusion-discovery-council Phase 2 (see council/docs/2026-06-20-fusion-discovery-council-phase2-field-report.md §4).
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-ac62f082"
+                data-details=""
+                data-headline="llm-council transcript render crashes when any council model returns null content: `_render_markdown` appends `r[&#34;content&#34;]` (None) to `lines`, so `&#34;\n&#34;.join(lines)` raises `TypeError: sequence item N: expected str instance, NoneType found` and the whole transcript fails to write even though the run + spend succeeded (hit 2026-06-16 on the 16BitFit 4Q run, gemini-pro returned null; recovered by reconstructing the .md from the session JSON archive). One-line fix at [tools/llm-council/council/cli.py](tools/llm-council/council/cli.py) line 40: change `lines.append(r[&#34;content&#34;])` to `lines.append(r[&#34;content&#34;] or &#34;_(no response: model returned null)_&#34;)`. Optional follow-on: guard chairman content (line 52) + ranking reasoning (line 47) the same way."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            llm-council transcript render crashes when any council model returns null content: `_render_markdown` appends `r[&#34;content&#34;]` (None) to `lines`, so `&#34;\n&#34;.join(lines)` raises `TypeError: sequence item N: expected str instance, NoneType found` and the whole transcript fails to write even though the run + spend succeeded (hit 2026-06-16 on the 16BitFit 4Q run, gemini-pro returned null; recovered by reconstructing the .md from the session JSON archive). One-line fix at [tools/llm-council/council/cli.py](tools/llm-council/council/cli.py) line 40: change `lines.append(r[&#34;content&#34;])` to `lines.append(r[&#34;content&#34;] or &#34;_(no response: model returned null)_&#34;)`. Optional follow-on: guard chairman content (line 52) + ranking reasoning (line 47) the same way.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
                 data-id="manual-e210ecbb"
                 data-details=""
                 data-headline="voice-pass program COMPLETE 2026-06-11 (Cowork): the LinkedIn drafts, Loom scripts, pinned-repo READMEs, and the 5 highest-traffic 4Q EXPLANATIONs referenced by the publishing tickets below (vault-knowledge Loom+LinkedIn, judge Steps 8-9, MCP security, Discovery PRD, Control Architecture, AP Agent Spec) are all drafted and run through writing-voice-modes → writing-critique → writing-humanity-pass at recruiter dials. Paste-ready before→after docs in job-hunt-2026-roadmap/2026-06-11-{linkedin-posts,loom-scripts,readmes,explanations}-voice-final.md + the sequenced publish-sprint playbook 2026-06-11-publish-sprint-playbook.md. REMAINING is execution-only (commit / record / post — Sean checks off as he goes) plus 6 more EXPLANATIONs queued (System Card, Data Readiness, Vault Scorecard, Phase D, Phase 6, vault-synth eval) and reconciling the duplicate Phase-D / knowledge-loop 4Q files. Next-priority menu in 2026-06-11-continuation-prompt.md"
@@ -404,6 +464,36 @@ knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generatio
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             voice-pass program COMPLETE 2026-06-11 (Cowork): the LinkedIn drafts, Loom scripts, pinned-repo READMEs, and the 5 highest-traffic 4Q EXPLANATIONs referenced by the publishing tickets below (vault-knowledge Loom+LinkedIn, judge Steps 8-9, MCP security, Discovery PRD, Control Architecture, AP Agent Spec) are all drafted and run through writing-voice-modes → writing-critique → writing-humanity-pass at recruiter dials. Paste-ready before→after docs in job-hunt-2026-roadmap/2026-06-11-{linkedin-posts,loom-scripts,readmes,explanations}-voice-final.md + the sequenced publish-sprint playbook 2026-06-11-publish-sprint-playbook.md. REMAINING is execution-only (commit / record / post — Sean checks off as he goes) plus 6 more EXPLANATIONs queued (System Card, Data Readiness, Vault Scorecard, Phase D, Phase 6, vault-synth eval) and reconciling the duplicate Phase-D / knowledge-loop 4Q files. Next-priority menu in 2026-06-11-continuation-prompt.md
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-ff6cbae7"
+                data-details=""
+                data-headline="substack-post-6: build the Agent-or-Automation Advisor MCP (sibling to intent-engineering; `advise_task` + `audit_fleet`; deterministic rubric + pass^k reliability engine; local/no-key; npm + registry under `com.seanwinslow/*`). Spec ready: `[redacted]`. Build in a fresh Claude Code session (a weekend) before drafting Post 6 (due Thu 6/25)"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            substack-post-6: build the Agent-or-Automation Advisor MCP (sibling to intent-engineering; `advise_task` + `audit_fleet`; deterministic rubric + pass^k reliability engine; local/no-key; npm + registry under `com.seanwinslow/*`). Spec ready: `[redacted]`. Build in a fresh Claude Code session (a weekend) before drafting Post 6 (due Thu 6/25)
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-8dcd4b80"
+                data-details=""
+                data-headline="substack-post-6 proof: run `audit_fleet` on the real 14-agent fleet, capture the results table (= the post&#39;s self-dogfood proof + the relead opening)"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            substack-post-6 proof: run `audit_fleet` on the real 14-agent fleet, capture the results table (= the post&#39;s self-dogfood proof + the relead opening)
           </div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
@@ -1191,13 +1281,13 @@ knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generatio
           </div>
         </button>
         <button type="button" class="ticket" data-source="manual"
-                data-id="manual-a6a49987"
+                data-id="manual-b333cca6"
                 data-details=""
-                data-headline="VoicePrint: real-human dogfood before public launch — run 2-3 non-Sean people through the full pipeline per [`creative-studio/voiceprint/docs/dogfood-runbook.md`](creative-studio/voiceprint/docs/dogfood-runbook.md); confirm each bundle sounds like them (not a template), `/voiceprint-proof` lands `closer_to: reader`, and no bundle leaks another person&#39;s content. The in-session dogfood was a simulated persona (Priya) — this is the real gate before opening it publicly"
+                data-headline="VoicePrint: real-human dogfood before public launch — run 2-3 non-Sean people through the full pipeline per [`creative-studio/voiceprint/docs/dogfood-runbook.md`](creative-studio/voiceprint/docs/dogfood-runbook.md); confirm each bundle sounds like them (not a template), `/voiceprint-proof` lands `closer_to: reader`, and no bundle leaks another person&#39;s content. The in-session dogfood was a simulated persona (Priya). DECISION 2026-06-11: Sean shipped the public install with Post 2 AHEAD of this, so it is now a high-priority FAST-FOLLOW (run ASAP post-launch), not a pre-launch gate. RUN-LOCATION CAVEAT (2026-06-11): run the dogfood in a folder OUTSIDE ~/Code-Brain (no CLAUDE.md, no .claude/skills in the directory tree) — launching Claude Code inside Code-Brain loads Sean&#39;s canonical writing-voice-modes/cheese-bank/reference-universe skills into scope, which can contaminate the leakage test (a stranger&#39;s bundle looks right while quietly borrowing Sean&#39;s calibration). Only the plugin&#39;s de-Sean&#39;d bundled skills should be in play"
                 data-subheadline=""
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            VoicePrint: real-human dogfood before public launch — run 2-3 non-Sean people through the full pipeline per [`creative-studio/voiceprint/docs/dogfood-runbook.md`](creative-studio/voiceprint/docs/dogfood-runbook.md); confirm each bundle sounds like them (not a template), `/voiceprint-proof` lands `closer_to: reader`, and no bundle leaks another person&#39;s content. The in-session dogfood was a simulated persona (Priya) — this is the real gate before opening it publicly
+            VoicePrint: real-human dogfood before public launch — run 2-3 non-Sean people through the full pipeline per [`creative-studio/voiceprint/docs/dogfood-runbook.md`](creative-studio/voiceprint/docs/dogfood-runbook.md); confirm each bundle sounds like them (not a template), `/voiceprint-proof` lands `closer_to: reader`, and no bundle leaks another person&#39;s content. The in-session dogfood was a simulated persona (Priya). DECISION 2026-06-11: Sean shipped the public install with Post 2 AHEAD of this, so it is now a high-priority FAST-FOLLOW (run ASAP post-launch), not a pre-launch gate. RUN-LOCATION CAVEAT (2026-06-11): run the dogfood in a folder OUTSIDE ~/Code-Brain (no CLAUDE.md, no .claude/skills in the directory tree) — launching Claude Code inside Code-Brain loads Sean&#39;s canonical writing-voice-modes/cheese-bank/reference-universe skills into scope, which can contaminate the leakage test (a stranger&#39;s bundle looks right while quietly borrowing Sean&#39;s calibration). Only the plugin&#39;s de-Sean&#39;d bundled skills should be in play
           </div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
@@ -1221,13 +1311,13 @@ knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generatio
           </div>
         </button>
         <button type="button" class="ticket" data-source="manual"
-                data-id="manual-9d3c5817"
+                data-id="manual-22e9a06e"
                 data-details=""
-                data-headline="VoicePrint: Post 2 launch (the &#34;Raising Claude&#34; flagship) — write the Substack post leading with the differentiation the research validated (reject-based gauntlet + works-with-no-corpus + honest hours-not-one-shot loop + local/free), NOT &#34;interview&#34; or &#34;build a skill&#34; (Grill Me + Skill Creator own those). Include a one-screen before/after demo (the format that wins per the research) + the copy-paste install command. Use the verbatim demand vocabulary (&#34;AI slop&#34;, &#34;taste&#34;, &#34;sound like you&#34;) from `market-read.md` §5"
+                data-headline="[SHIPPED 2026-06-15 · https://seanpwins.substack.com/p/i-built-a-machine-to-sound-like-you] VoicePrint: Post 2 launch (the &#34;Raising Claude&#34; flagship) — write the Substack post leading with the differentiation the research validated (reject-based gauntlet + works-with-no-corpus + honest hours-not-one-shot loop + local/free), NOT &#34;interview&#34; or &#34;build a skill&#34; (Grill Me + Skill Creator own those). Include a one-screen before/after demo (the format that wins per the research) + the copy-paste install command. Use the verbatim demand vocabulary (&#34;AI slop&#34;, &#34;taste&#34;, &#34;sound like you&#34;) from `market-read.md` §5"
                 data-subheadline=""
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            VoicePrint: Post 2 launch (the &#34;Raising Claude&#34; flagship) — write the Substack post leading with the differentiation the research validated (reject-based gauntlet + works-with-no-corpus + honest hours-not-one-shot loop + local/free), NOT &#34;interview&#34; or &#34;build a skill&#34; (Grill Me + Skill Creator own those). Include a one-screen before/after demo (the format that wins per the research) + the copy-paste install command. Use the verbatim demand vocabulary (&#34;AI slop&#34;, &#34;taste&#34;, &#34;sound like you&#34;) from `market-read.md` §5
+            [SHIPPED 2026-06-15 · https://seanpwins.substack.com/p/i-built-a-machine-to-sound-like-you] VoicePrint: Post 2 launch (the &#34;Raising Claude&#34; flagship) — write the Substack post leading with the differentiation the research validated (reject-based gauntlet + works-with-no-corpus + honest hours-not-one-shot loop + local/free), NOT &#34;interview&#34; or &#34;build a skill&#34; (Grill Me + Skill Creator own those). Include a one-screen before/after demo (the format that wins per the research) + the copy-paste install command. Use the verbatim demand vocabulary (&#34;AI slop&#34;, &#34;taste&#34;, &#34;sound like you&#34;) from `market-read.md` §5
           </div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
@@ -1415,6 +1505,261 @@ knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generatio
               · <span class="agent-dot agent-dot--unknown"></span>@Sean
           </div>
         </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-ecf4d8df"
+                data-details=""
+                data-headline="Substack image house style v2 (2026-06-10): replaced the deprecated Steadman/voice-mode image design with the pencil-test portfolio look (cream paper, graphite, ONE accent color, blob-baby characters + amber thread, minimal watercolor bloom behind the linework). Spec: docs/substack-image-generation-design-2026-05-23.md (v2). Drop the 3 ChatGPT portfolio illustrations (desk-kid, spear-warrior, trader) into substack-drafts/_assets/style-anchors/ on the Mac so they&#39;re reusable reference anchors — they didn&#39;t transfer as files in the Cowork session"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Substack image house style v2 (2026-06-10): replaced the deprecated Steadman/voice-mode image design with the pencil-test portfolio look (cream paper, graphite, ONE accent color, blob-baby characters + amber thread, minimal watercolor bloom behind the linework). Spec: docs/substack-image-generation-design-2026-05-23.md (v2). Drop the 3 ChatGPT portfolio illustrations (desk-kid, spear-warrior, trader) into substack-drafts/_assets/style-anchors/ on the Mac so they&#39;re reusable reference anchors — they didn&#39;t transfer as files in the Cowork session
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-133f0fd2"
+                data-details=""
+                data-headline="Substack heroes — regenerate all in the v2 pencil-test style (Post 1 first, then 2/4/5/6) via the openai-image-gen skill (GPT Image 2, OPENAI_API_KEY in code-brain/.env; pass a style anchor with --reference, --quality high, --aspect-ratio 16:9) or ChatGPT, per the v2 doc&#39;s master recipe. Accent per post: amber for human posts (1/2/5/bonus), teal for technical (3/4/6/7). Post 1&#39;s pencil-test prompt is ready at 01-cant-prompt-taste/images/hero-prompt.txt (the &#34;confident stranger rising from the laptop&#34; concept). The grotesque NB2 path is retired"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Substack heroes — regenerate all in the v2 pencil-test style (Post 1 first, then 2/4/5/6) via the openai-image-gen skill (GPT Image 2, OPENAI_API_KEY in code-brain/.env; pass a style anchor with --reference, --quality high, --aspect-ratio 16:9) or ChatGPT, per the v2 doc&#39;s master recipe. Accent per post: amber for human posts (1/2/5/bonus), teal for technical (3/4/6/7). Post 1&#39;s pencil-test prompt is ready at 01-cant-prompt-taste/images/hero-prompt.txt (the &#34;confident stranger rising from the laptop&#34; concept). The grotesque NB2 path is retired
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-0af88e13"
+                data-details=""
+                data-headline="anima Flo (Phase 5) — self-hosted FLUX + Shakker sketch-LoRA for pencil in-betweens (the $0-ongoing future). Flo-B (2026-06-10) disqualified both fal.ai in-between candidates: Seedream morphs faces through the tween (the Reve failure DINOv2 misses), Qwen-plus reframes/degrades. In-betweens pivoted to NB2 (winner) / NB Pro (backup). API edit models hope-and-pray on grain+identity; self-hosted FLUX + sketch-LoRA controls the aesthetic at generation time. Re-evaluate by dropping FLUX in as a variant in the retained re-runnable bake-off (evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/, run the full 4×14). NOTE: this ticket was claimed-filed in the Flo-B field report + CLAUDE.md but never actually landed here until the 2026-06-10 Cowork verification caught the gap. Until then NB2/NB Pro own in-betweens"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            anima Flo (Phase 5) — self-hosted FLUX + Shakker sketch-LoRA for pencil in-betweens (the $0-ongoing future). Flo-B (2026-06-10) disqualified both fal.ai in-between candidates: Seedream morphs faces through the tween (the Reve failure DINOv2 misses), Qwen-plus reframes/degrades. In-betweens pivoted to NB2 (winner) / NB Pro (backup). API edit models hope-and-pray on grain+identity; self-hosted FLUX + sketch-LoRA controls the aesthetic at generation time. Re-evaluate by dropping FLUX in as a variant in the retained re-runnable bake-off (evals/bakeoffs/2026-06-10-flo-inbetween-pencil-pilot/, run the full 4×14). NOTE: this ticket was claimed-filed in the Flo-B field report + CLAUDE.md but never actually landed here until the 2026-06-10 Cowork verification caught the gap. Until then NB2/NB Pro own in-betweens
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-763300b8"
+                data-details=""
+                data-headline="anima Flo (Phase 5) — NB Pro routes render SQUARE, fail HF01 (pre-flight before any end-to-end run). The nb2/standard path (pipeline/generate.py generate_frame) passes --aspect-ratio 16:9, but the nb_pro path (invoke_image_edit / nb_pro_runner) passes NO aspect ratio → renders 1024²/2048² square, which fails the HF01 16:9 gate (audit.py, 2% tolerance). So Flo&#39;s hero_keyframe + in_between_mid routes (both nb_pro) currently produce HF01-failing frames. Never surfaced in the pencil-test (Act 1 used the 16:9 skill path); will bite the first end-to-end run that routes a hero frame to NB Pro. Fix: plumb aspect_ratio through invoke_image_edit (or have frame_router&#39;s nb_pro branch request 16:9). Surfaced 2026-06-10 (Flo-B field report flagged it as a &#34;framing confound&#34;; it&#39;s a production gap) — assigned: Sean- anima Em CC01 (seam #10, EVAL-GATED): Em&#39;s absolute left/right stylus-hand verdict is noisy in a screen-right profile — in the first integrated run it PASSED F01 then FAILED F02/F04/F05 on the identical near-hand-draws config. CC01 is better judged frame-to-frame than per-frame-absolute (continuity_audit.py already has CC01-CC08). Fix = a frame-to-frame continuity check, NOT a per-frame-absolute verdict. EVAL-GATED: any change to Em&#39;s verdicts requires re-running the vision_critic baseline + re-ratifying — must NOT touch evals/vision_critic/ (md5 2af75906502f1caf8857e18828ceb2e4) without a deliberate re-baseline. Field report: anima docs/anima-test-runs/2026-06-11-first-integrated-run.md seam #10"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            anima Flo (Phase 5) — NB Pro routes render SQUARE, fail HF01 (pre-flight before any end-to-end run). The nb2/standard path (pipeline/generate.py generate_frame) passes --aspect-ratio 16:9, but the nb_pro path (invoke_image_edit / nb_pro_runner) passes NO aspect ratio → renders 1024²/2048² square, which fails the HF01 16:9 gate (audit.py, 2% tolerance). So Flo&#39;s hero_keyframe + in_between_mid routes (both nb_pro) currently produce HF01-failing frames. Never surfaced in the pencil-test (Act 1 used the 16:9 skill path); will bite the first end-to-end run that routes a hero frame to NB Pro. Fix: plumb aspect_ratio through invoke_image_edit (or have frame_router&#39;s nb_pro branch request 16:9). Surfaced 2026-06-10 (Flo-B field report flagged it as a &#34;framing confound&#34;; it&#39;s a production gap) — assigned: Sean- anima Em CC01 (seam #10, EVAL-GATED): Em&#39;s absolute left/right stylus-hand verdict is noisy in a screen-right profile — in the first integrated run it PASSED F01 then FAILED F02/F04/F05 on the identical near-hand-draws config. CC01 is better judged frame-to-frame than per-frame-absolute (continuity_audit.py already has CC01-CC08). Fix = a frame-to-frame continuity check, NOT a per-frame-absolute verdict. EVAL-GATED: any change to Em&#39;s verdicts requires re-running the vision_critic baseline + re-ratifying — must NOT touch evals/vision_critic/ (md5 2af75906502f1caf8857e18828ceb2e4) without a deliberate re-baseline. Field report: anima docs/anima-test-runs/2026-06-11-first-integrated-run.md seam #10
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-c90b7912"
+                data-details=""
+                data-headline="anima museum #14 / Slice 3: the seam-#12 JPEG-as-PNG fix is forward-looking — it normalizes future candidates at FloNode generation time, but the already-shipped &#34;Spark, Shared&#34; frames in runs/2026-06-11-spark-shared-first-integrated/approved/ are still JPEG-data-as-.png (they assembled fine via the hand path). When museum capture (#14) copies those existing frames as thumbnails, run pipeline/agents/image_utils.normalize_to_png on them first or the museum inherits the mislabel. Fold into the Slice 3 museum-capture build"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            anima museum #14 / Slice 3: the seam-#12 JPEG-as-PNG fix is forward-looking — it normalizes future candidates at FloNode generation time, but the already-shipped &#34;Spark, Shared&#34; frames in runs/2026-06-11-spark-shared-first-integrated/approved/ are still JPEG-data-as-.png (they assembled fine via the hand path). When museum capture (#14) copies those existing frames as thumbnails, run pipeline/agents/image_utils.normalize_to_png on them first or the museum inherits the mislabel. Fold into the Slice 3 museum-capture build
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-64125e7a"
+                data-details=""
+                data-headline="anima FLEET HARDENING CAMPAIGN — before the costed run / production use, each agent needs more tests/evals/hardening passes to be ROCK-SOLID. Current eval coverage (uneven): Em has a full scored suite (the ratified 0.97/1.00/0.00 verdict baseline + Gate-2/Gate-3 axes); Maya + Cy have evals/{agent}/cases.yaml + pytest runners; Flo, Mo, T3 council, and the orchestrator have NO scored eval suite yet; Sam + Bea aren&#39;t built. Per the eval handbook (anima docs/research/2026-05-31-ai-evals-best-practices-and-anima-eval-strategy.md) per-agent matrix, build error-analysis-first / binary / ships-red eval suites + targeted hardening per agent. Rough priority once the fleet is complete: (a) orchestrator drift + restart/retry-rate eval over N real runs (deterministic state/JSON discipline, promote to Opus if restart &gt;10%); (b) Flo route-correctness + the self-hosted-FLUX in-between future; (c) T3 panel-value-add (PoLL κ-delta) + chairman-synthesis fidelity (Sage-tier bake-off #2); (d) Mo never-invent fidelity. SEQUENCE: after Sam + Bea land (complete the fleet first), then a hardening sweep."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            anima FLEET HARDENING CAMPAIGN — before the costed run / production use, each agent needs more tests/evals/hardening passes to be ROCK-SOLID. Current eval coverage (uneven): Em has a full scored suite (the ratified 0.97/1.00/0.00 verdict baseline + Gate-2/Gate-3 axes); Maya + Cy have evals/{agent}/cases.yaml + pytest runners; Flo, Mo, T3 council, and the orchestrator have NO scored eval suite yet; Sam + Bea aren&#39;t built. Per the eval handbook (anima docs/research/2026-05-31-ai-evals-best-practices-and-anima-eval-strategy.md) per-agent matrix, build error-analysis-first / binary / ships-red eval suites + targeted hardening per agent. Rough priority once the fleet is complete: (a) orchestrator drift + restart/retry-rate eval over N real runs (deterministic state/JSON discipline, promote to Opus if restart &gt;10%); (b) Flo route-correctness + the self-hosted-FLUX in-between future; (c) T3 panel-value-add (PoLL κ-delta) + chairman-synthesis fidelity (Sage-tier bake-off #2); (d) Mo never-invent fidelity. SEQUENCE: after Sam + Bea land (complete the fleet first), then a hardening sweep.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-5814b972"
+                data-details=""
+                data-headline="anima orchestrator COSTED VALIDATION RUN (HELD by Sean 2026-06-11) — the first real end-to-end CLI run. Pre-flight: `python -m pipeline.run --brief briefs/2026-06-10-spark-shared --stub` (now $0, ANIMA_FORCE_STUB-gated, walks to DONE — Cowork-verified 2026-06-12) to confirm the chain; THEN drop --stub for the real ~$0.66 run from a PLAIN TERMINAL (not inside a Claude Code session — nested-SDK throttle, seam #4), under fleet-ops §0. The 5-frame shots.yaml reproduces the 5-key cut; the shipped 6-key SS_F03b grin-peak insert stays a hand edit to sequence.txt. The Slice 2.1 brief snapshot means the run won&#39;t dirty the committed brief."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            anima orchestrator COSTED VALIDATION RUN (HELD by Sean 2026-06-11) — the first real end-to-end CLI run. Pre-flight: `python -m pipeline.run --brief briefs/2026-06-10-spark-shared --stub` (now $0, ANIMA_FORCE_STUB-gated, walks to DONE — Cowork-verified 2026-06-12) to confirm the chain; THEN drop --stub for the real ~$0.66 run from a PLAIN TERMINAL (not inside a Claude Code session — nested-SDK throttle, seam #4), under fleet-ops §0. The 5-frame shots.yaml reproduces the 5-key cut; the shipped 6-key SS_F03b grin-peak insert stays a hand edit to sequence.txt. The Slice 2.1 brief snapshot means the run won&#39;t dirty the committed brief.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-65724f95"
+                data-details=""
+                data-headline="animation-pipeline upgrade — feed the Miyazaki/visual findings from the screenplay-modes calibration into the `animation-pipeline` skill (the calibration flagged these for both skills). Carry over: object-economy / Room-as-Biography / the Loaded Object, Haptic Visuality, and Metaphor-Compression-in-an-empty-frame as Sean&#39;s door into wordless *ache* (the feeling lands on a symbolic object in an empty frame AFTER the character leaves — never a held close-up on a grieving face). Load-bearing coaching note: Sean CANNOT sit in a contemplative hold — he converts stillness into a goal/errand (installs a ticking clock + a deadline that weren&#39;t asked for), so the Miyazaki Micro-Ma / contemplative stillness must be a deliberately-coached muscle, not assumed; his wordless muscle is visual-narrative (objects/rooms), not contemplative. Sources: `.claude/skills/screenwriting-modes/references/screenplay-calibration-notes.md` §2 (Miyazaki SPLIT), §3 (wordless = visual-narrative muscle), and the script-mining report §2 (room-as-biography exemplars). This is also the Sam↔Bea handoff surface in anima (Sam writes the loaded object; Bea boards it)."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            animation-pipeline upgrade — feed the Miyazaki/visual findings from the screenplay-modes calibration into the `animation-pipeline` skill (the calibration flagged these for both skills). Carry over: object-economy / Room-as-Biography / the Loaded Object, Haptic Visuality, and Metaphor-Compression-in-an-empty-frame as Sean&#39;s door into wordless *ache* (the feeling lands on a symbolic object in an empty frame AFTER the character leaves — never a held close-up on a grieving face). Load-bearing coaching note: Sean CANNOT sit in a contemplative hold — he converts stillness into a goal/errand (installs a ticking clock + a deadline that weren&#39;t asked for), so the Miyazaki Micro-Ma / contemplative stillness must be a deliberately-coached muscle, not assumed; his wordless muscle is visual-narrative (objects/rooms), not contemplative. Sources: `.claude/skills/screenwriting-modes/references/screenplay-calibration-notes.md` §2 (Miyazaki SPLIT), §3 (wordless = visual-narrative muscle), and the script-mining report §2 (room-as-biography exemplars). This is also the Sam↔Bea handoff surface in anima (Sam writes the loaded object; Bea boards it).
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-e667211a"
+                data-details=""
+                data-headline="intent-engineering MCP Workstream B / Intent Card — brainstorm DONE 2026-06-18; decided build-brief at sw-mcp-intent-engineering/docs/2026-06-18-intent-card-build-brief.md (grounded by docs/2026-06-18-brief-quality-research.md, a 5-agent deep-research synthesis of creative-brief craft). LOCKED: one product (brief mode = optional `mode` field on the existing 3 tools, NOT 6 tools / separate server), self-contained v1 (brand assets deferred to the On-Brand Gate), a research-validated 10-section brief rubric + focus / anti-bloat / completeness≠correctness cross-cutting checks + a documented-failure-cited anti-pattern catalog (the rational proposition + insight stay OPTIONAL = a deliberate contested stance to own in the README). OPEN: (1) `mode` default explicit-vs-auto-detect; (2) Q2 canonical dogfood brief + stand-in brand (candidate: Sean&#39;s own Substack brand); (3) Q5 naming — Intent Card vs `audit_intent_spec` in the post/README. BUILD = #2 after the Advisor, NOT started; §9 CHANGELOG approval gates the `mode` schema change before code"
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            intent-engineering MCP Workstream B / Intent Card — brainstorm DONE 2026-06-18; decided build-brief at sw-mcp-intent-engineering/docs/2026-06-18-intent-card-build-brief.md (grounded by docs/2026-06-18-brief-quality-research.md, a 5-agent deep-research synthesis of creative-brief craft). LOCKED: one product (brief mode = optional `mode` field on the existing 3 tools, NOT 6 tools / separate server), self-contained v1 (brand assets deferred to the On-Brand Gate), a research-validated 10-section brief rubric + focus / anti-bloat / completeness≠correctness cross-cutting checks + a documented-failure-cited anti-pattern catalog (the rational proposition + insight stay OPTIONAL = a deliberate contested stance to own in the README). OPEN: (1) `mode` default explicit-vs-auto-detect; (2) Q2 canonical dogfood brief + stand-in brand (candidate: Sean&#39;s own Substack brand); (3) Q5 naming — Intent Card vs `audit_intent_spec` in the post/README. BUILD = #2 after the Advisor, NOT started; §9 CHANGELOG approval gates the `mode` schema change before code
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-74a3b6c7"
+                data-details=""
+                data-headline="discovery GATHER-stage spend invariant (Phase-3 review follow-up, LOW): the new `except DiscoveryFailed` cost-recording path in [tools/llm-council/council/discovery/__main__.py](tools/llm-council/council/discovery/__main__.py) only covers FUSE-stage spend; the generic `except Exception` after it assumes &#34;no spend incurred pre-fuse.&#34; That holds today because FUSE (OpenRouter) is the only billable stage, but GATHER calls Perplexity Sonar + web search — if a Sonar/web call is ever instrumented to bill (or already incurs cost not surfaced as an exception attribute), a gather-stage failure would silently record $0, re-opening the exact cost-integrity bug Phase 3 closed one stage upstream. Flagged by the Task-3 code-quality review. Fix when GATHER billing is confirmed: thread gather-stage incurred cost into a typed failure the same way `FusionError.cost` → `DiscoveryFailed.cost_usd` does. Until then it&#39;s a documented invariant, not a live bug."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            discovery GATHER-stage spend invariant (Phase-3 review follow-up, LOW): the new `except DiscoveryFailed` cost-recording path in [tools/llm-council/council/discovery/__main__.py](tools/llm-council/council/discovery/__main__.py) only covers FUSE-stage spend; the generic `except Exception` after it assumes &#34;no spend incurred pre-fuse.&#34; That holds today because FUSE (OpenRouter) is the only billable stage, but GATHER calls Perplexity Sonar + web search — if a Sonar/web call is ever instrumented to bill (or already incurs cost not surfaced as an exception attribute), a gather-stage failure would silently record $0, re-opening the exact cost-integrity bug Phase 3 closed one stage upstream. Flagged by the Task-3 code-quality review. Fix when GATHER billing is confirmed: thread gather-stage incurred cost into a typed failure the same way `FusionError.cost` → `DiscoveryFailed.cost_usd` does. Until then it&#39;s a documented invariant, not a live bug.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-679d2263"
+                data-details=""
+                data-headline="discovery `--segment` free-text into operator-bearing queries (Phase-5 follow-up, LOW): the Phase-5 `--segment` qualifier composes raw free text into the github (`f&#34;{subject} in:title,body is:issue&#34;`, [tools/llm-council/council/discovery/gather/github.py](tools/llm-council/council/discovery/gather/github.py)) and reviews (`({weak}) ({sites})` grouping, [tools/llm-council/council/discovery/gather/reviews.py](tools/llm-council/council/discovery/gather/reviews.py)) queries unescaped. A `--segment` carrying operator tokens (`is:pr`, an unbalanced `)`, `site:foo`) alters query semantics rather than just narrowing the audience — a self-inflicted yield bug, NOT a security/fabrication issue (read-only public search APIs; the VERIFY gate still governs every record downstream). Surfaced by the Phase-5 final whole-branch review. Fix if `--segment` ever becomes non-interactive/automated input: strip query-operator chars (`:`, parens) + collapse whitespace via a single `segment = segment.strip()` normalization at the CLI/pipeline boundary (also closes the whitespace-only-segment edge in the sonar prompt), and/or tighten the `--segment` help to &#34;plain keywords only.&#34; Until then it&#39;s Sean&#39;s own arg against read-only APIs."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            discovery `--segment` free-text into operator-bearing queries (Phase-5 follow-up, LOW): the Phase-5 `--segment` qualifier composes raw free text into the github (`f&#34;{subject} in:title,body is:issue&#34;`, [tools/llm-council/council/discovery/gather/github.py](tools/llm-council/council/discovery/gather/github.py)) and reviews (`({weak}) ({sites})` grouping, [tools/llm-council/council/discovery/gather/reviews.py](tools/llm-council/council/discovery/gather/reviews.py)) queries unescaped. A `--segment` carrying operator tokens (`is:pr`, an unbalanced `)`, `site:foo`) alters query semantics rather than just narrowing the audience — a self-inflicted yield bug, NOT a security/fabrication issue (read-only public search APIs; the VERIFY gate still governs every record downstream). Surfaced by the Phase-5 final whole-branch review. Fix if `--segment` ever becomes non-interactive/automated input: strip query-operator chars (`:`, parens) + collapse whitespace via a single `segment = segment.strip()` normalization at the CLI/pipeline boundary (also closes the whitespace-only-segment edge in the sonar prompt), and/or tighten the `--segment` help to &#34;plain keywords only.&#34; Until then it&#39;s Sean&#39;s own arg against read-only APIs.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-57ea435b"
+                data-details=""
+                data-headline="discovery Fusion request-shape compatibility watch (Phase-5 close-out research, LOW): `_build_body` in [tools/llm-council/council/discovery/fusion.py](tools/llm-council/council/discovery/fusion.py) sends the Fusion config as a TOP-LEVEL `&#34;fusion&#34;` block + top-level `model`, but current OpenRouter docs (https://openrouter.ai/docs/guides/features/server-tools/fusion) show it nested under `tools[0].parameters` with the judge as `model` inside. Ours is live-verified working (FUSION_SCHEMA.md), and no test would catch a regression if OpenRouter ever drops the top-level form. Fix-if-it-breaks: move config into `tools[0].parameters`. Add a periodic live re-verify (e.g., a quick run after any OpenRouter Fusion changelog). Surfaced by the 2026-06-21 close-out research dig."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            discovery Fusion request-shape compatibility watch (Phase-5 close-out research, LOW): `_build_body` in [tools/llm-council/council/discovery/fusion.py](tools/llm-council/council/discovery/fusion.py) sends the Fusion config as a TOP-LEVEL `&#34;fusion&#34;` block + top-level `model`, but current OpenRouter docs (https://openrouter.ai/docs/guides/features/server-tools/fusion) show it nested under `tools[0].parameters` with the judge as `model` inside. Ours is live-verified working (FUSION_SCHEMA.md), and no test would catch a regression if OpenRouter ever drops the top-level form. Fix-if-it-breaks: move config into `tools[0].parameters`. Add a periodic live re-verify (e.g., a quick run after any OpenRouter Fusion changelog). Surfaced by the 2026-06-21 close-out research dig.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-036626cc"
+                data-details=""
+                data-headline="discovery surface Fusion typed failure_reason (Phase-5 close-out research, LOW diagnosability): the Fusion server tool hard-fails with `status:&#34;error&#34;` + a typed `failure_reason` (all_panels_failed / insufficient_credits / rate_limited / fusion_invocation_capped / unexpected_error). Because `fuse()` reads the outer judge&#39;s `message.content` rather than the raw tool result, those reach us as a vague &#34;did not return parseable&#34; + one retry → `FusionError`. Safe (degrades correctly) but loses the real reason. Enhancement: detect `status`/`failure_reason` in the response (if exposed at our layer) and surface it in the FusionError message for diagnosability. Surfaced by the 2026-06-21 close-out research."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            discovery surface Fusion typed failure_reason (Phase-5 close-out research, LOW diagnosability): the Fusion server tool hard-fails with `status:&#34;error&#34;` + a typed `failure_reason` (all_panels_failed / insufficient_credits / rate_limited / fusion_invocation_capped / unexpected_error). Because `fuse()` reads the outer judge&#39;s `message.content` rather than the raw tool result, those reach us as a vague &#34;did not return parseable&#34; + one retry → `FusionError`. Safe (degrades correctly) but loses the real reason. Enhancement: detect `status`/`failure_reason` in the response (if exposed at our layer) and surface it in the FusionError message for diagnosability. Surfaced by the 2026-06-21 close-out research.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-c65ae2d7"
+                data-details=""
+                data-headline="discovery last30 HackerNews errors under --no-native-web (Phase-5 close-out, LOW): the 2026-06-21 last30 verification run yielded reddit (3 records) but HN emitted a `hackernews_error` field (0 HN records). Likely the `--no-native-web` flag our collector passes ([tools/llm-council/council/discovery/gather/last30.py](tools/llm-council/council/discovery/gather/last30.py) `_subprocess_runner`) disables a path HN needs. Degrades safely (parser handles the empty hackernews list). Investigate when convenient: try dropping `--no-native-web` for HN, or confirm HN needs native web; weigh against latency/cost. reddit alone already restores meaningful social evidence."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            discovery last30 HackerNews errors under --no-native-web (Phase-5 close-out, LOW): the 2026-06-21 last30 verification run yielded reddit (3 records) but HN emitted a `hackernews_error` field (0 HN records). Likely the `--no-native-web` flag our collector passes ([tools/llm-council/council/discovery/gather/last30.py](tools/llm-council/council/discovery/gather/last30.py) `_subprocess_runner`) disables a path HN needs. Degrades safely (parser handles the empty hackernews list). Investigate when convenient: try dropping `--no-native-web` for HN, or confirm HN needs native web; weigh against latency/cost. reddit alone already restores meaningful social evidence.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-400dd574"
+                data-details=""
+                data-headline="discovery per-run cost cap can be exceeded by actual spend (Phase-5 close-out live finding, MEDIUM): the per-run cap is enforced ONLY on the pre-flight ESTIMATE (`estimated = max_cost_per_run * 0.6`) in [tools/llm-council/council/discovery/__main__.py](tools/llm-council/council/discovery/__main__.py), never against the actual `usage.cost`. A 2026-06-21 standard run on &#34;Claude plugins and skills for 2D animation pipelines&#34; cost $2.74 vs the $1.50 standard cap (1.8x over); cost is web-tool-call-dominated and high-variance by topic (a deep run the same day was only $0.99). The daily cap ($10) IS checked against actual accumulated spend and remains the real guardrail (close-out testing hit $7.31/$10). Not a correctness/fabrication issue — a budget-predictability one. Options if tighter per-run control is wanted: (a) raise the estimate factor (0.6 → ~1.0) so the pre-flight gate is less optimistic; (b) print a post-run warning when actual &gt; per_run_cap; (c) bound evidence-bundle size / `max_tool_calls` more aggressively per tier; (d) accept it and lean on the daily cap (current design). Surfaced by the close-out confidence runs."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            discovery per-run cost cap can be exceeded by actual spend (Phase-5 close-out live finding, MEDIUM): the per-run cap is enforced ONLY on the pre-flight ESTIMATE (`estimated = max_cost_per_run * 0.6`) in [tools/llm-council/council/discovery/__main__.py](tools/llm-council/council/discovery/__main__.py), never against the actual `usage.cost`. A 2026-06-21 standard run on &#34;Claude plugins and skills for 2D animation pipelines&#34; cost $2.74 vs the $1.50 standard cap (1.8x over); cost is web-tool-call-dominated and high-variance by topic (a deep run the same day was only $0.99). The daily cap ($10) IS checked against actual accumulated spend and remains the real guardrail (close-out testing hit $7.31/$10). Not a correctness/fabrication issue — a budget-predictability one. Options if tighter per-run control is wanted: (a) raise the estimate factor (0.6 → ~1.0) so the pre-flight gate is less optimistic; (b) print a post-run warning when actual &gt; per_run_cap; (c) bound evidence-bundle size / `max_tool_calls` more aggressively per tier; (d) accept it and lean on the daily cap (current design). Surfaced by the close-out confidence runs.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-0248d9f5"
+                data-details=""
+                data-headline="substack-studio (migrated 2026-06-22): decide whether it becomes the LIVING drafting home or stays a curated public snapshot. Today `substack_drafter.py:529` + `agents-sdk/config.toml:556` still write to the gitignored source under `prj-job-hunt-2026/onwards-and-upwards-5-4-26/substack-drafts/`, so new drafts do NOT land in substack-studio. Do NOT repoint `output_dir` to the public folder until a scrub-gate exists — raw drafter output can carry un-suppressed Do-Not-Promote framing that would leak into the public path. See [redacted] §Path-coupling."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            substack-studio (migrated 2026-06-22): decide whether it becomes the LIVING drafting home or stays a curated public snapshot. Today `substack_drafter.py:529` + `agents-sdk/config.toml:556` still write to the gitignored source under `prj-job-hunt-2026/onwards-and-upwards-5-4-26/substack-drafts/`, so new drafts do NOT land in substack-studio. Do NOT repoint `output_dir` to the public folder until a scrub-gate exists — raw drafter output can carry un-suppressed Do-Not-Promote framing that would leak into the public path. See [redacted] §Path-coupling.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-ddaf6872"
+                data-details=""
+                data-headline="⚠️ pre-existing public leak (NOT from the substack-studio migration): the already-tracked `[redacted]:106` still contains an un-scrubbed Do-Not-Promote illustrative example (the &#34;ask lands sideways&#34; sample sentence) in the PUBLIC repo today (the substack-studio copy was scrubbed). Recommend a source-side scrub. Also LOW: the two `[redacted]*-last30days.md` reports carry mild hiring-signal framing that&#39;s already public — decide whether to neutralize at source."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            ⚠️ pre-existing public leak (NOT from the substack-studio migration): the already-tracked `[redacted]:106` still contains an un-scrubbed Do-Not-Promote illustrative example (the &#34;ask lands sideways&#34; sample sentence) in the PUBLIC repo today (the substack-studio copy was scrubbed). Recommend a source-side scrub. Also LOW: the two `[redacted]*-last30days.md` reports carry mild hiring-signal framing that&#39;s already public — decide whether to neutralize at source.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
     </div>
     <div class="kanban-column" data-column="in_progress">
       <div class="kanban-column-header">
@@ -1434,9 +1779,39 @@ knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generatio
     <div class="kanban-column" data-column="done">
       <div class="kanban-column-header">
         <span class="column-label">Done</span>
-        <span class="column-count">4</span>
-          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#5FBC76" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,11.0 8.7,11.0 16.3,11.0 24.0,11.0 31.7,1.0 39.3,11.0 47.0,1.0"/></svg></span>
+        <span class="column-count">6</span>
+          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#3FB950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,11.0 8.7,1.0 16.3,11.0 24.0,6.0 31.7,6.0 39.3,1.0 47.0,6.0"/></svg></span>
       </div>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-8e2691f8"
+                data-details=""
+                data-headline="[closed 2026-06-18] intent-engineering MCP Workstream A — SHIPPED v0.2.0 (A1 heading-vocab mapper + A2 schema-drift snapshot + A3 pagination test), merged to main, npm publish + MCP registry both DONE (Sean confirmed published + registered 6/18). This is the MCP Post 3 ships on. Only Workstream B (Intent Card) remains — parked/spec&#39;d, build #2 after the Advisor, no deadline."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            [closed 2026-06-18] intent-engineering MCP Workstream A — SHIPPED v0.2.0 (A1 heading-vocab mapper + A2 schema-drift snapshot + A3 pagination test), merged to main, npm publish + MCP registry both DONE (Sean confirmed published + registered 6/18). This is the MCP Post 3 ships on. Only Workstream B (Intent Card) remains — parked/spec&#39;d, build #2 after the Advisor, no deadline.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-51e79fd6"
+                data-details=""
+                data-headline="[closed 2026-06-18] Publish &#34;Raising Claude&#34; Post 3 (Correct Was Never Defined) — PUBLISHED 6/18: https://seanpwins.substack.com/p/correct-was-never-defined. Live render QA&#39;d clean (title / subtitle / hero / repo link / social card all correct); npm package name hyperlinked to npmjs by Sean. post.md frontmatter → status: published + publish_date 2026-06-18 + live_url; substack README queue row marked published. Ships with the shipped intent-engineering MCP @swins/intent-engineering-mcp (v0.2.0)."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            [closed 2026-06-18] Publish &#34;Raising Claude&#34; Post 3 (Correct Was Never Defined) — PUBLISHED 6/18: https://seanpwins.substack.com/p/correct-was-never-defined. Live render QA&#39;d clean (title / subtitle / hero / repo link / social card all correct); npm package name hyperlinked to npmjs by Sean. post.md frontmatter → status: published + publish_date 2026-06-18 + live_url; substack README queue row marked published. Ships with the shipped intent-engineering MCP @swins/intent-engineering-mcp (v0.2.0).
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
         <button type="button" class="ticket" data-source="manual"
                 data-id="manual-2c4f6d8b"
                 data-details=""
@@ -1512,7 +1887,7 @@ knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generatio
   <strong>Built by Sean Winslow</strong>.
   Multi-agent fleet on macOS launchd, 99% local-first inference.
   <a href="https://github.com/seanwinslow28/agent-fleet-observability">View source</a>
-  · last build 2026-06-18 20:31 UTC
+  · last build 2026-06-23 21:13 UTC
 </footer>  <script src="assets/motion.js?v=fecca888" defer></script>
   <script src="assets/kanban-modal.js?v=45838d0f" defer></script>
 </body>
