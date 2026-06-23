@@ -79,6 +79,32 @@ def _has_public_changes() -> bool:
     return result.returncode != 0  # 1 = changes, 0 = no changes
 
 
+def _sync_to_origin() -> None:
+    """Reset the working branch to the latest origin/main before rendering.
+
+    The build commits its rendered snapshot to the same repo it pushes, and
+    GitHub PR merges (e.g. a design change touching the rendered files) advance
+    origin/main between nightly runs. Without syncing first, the post-render
+    push is rejected non-fast-forward and the public dashboard freezes until
+    reconciled by hand (the 2026-06-18 freeze: PR #11 merged, then every push
+    was rejected). Building on a fresh origin/main makes the push a clean
+    fast-forward. Best-effort: a fetch/checkout failure (e.g. offline) is logged
+    and the build proceeds — the push step still rebases as a backstop.
+    """
+    fetch = subprocess.run(
+        ["git", "-C", str(REPO), "fetch", "origin", "main"], check=False,
+    )
+    if fetch.returncode != 0:
+        logger.warning("git fetch origin main failed; building on current HEAD")
+        return
+    checkout = subprocess.run(
+        ["git", "-C", str(REPO), "checkout", "-f", "-B", "main", "origin/main"],
+        check=False,
+    )
+    if checkout.returncode != 0:
+        logger.warning("git checkout origin/main failed; building on current HEAD")
+
+
 def _commit_and_push() -> None:
     ts = datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
     subprocess.run(
@@ -89,6 +115,17 @@ def _commit_and_push() -> None:
         ["git", "-C", str(REPO), "commit", "-m", f"snapshot {ts}"],
         check=True,
     )
+    # Backstop: rebase our snapshot onto the latest origin/main before pushing,
+    # in case a commit landed since _sync_to_origin() (or the sync was skipped
+    # offline). Without this a bare push is rejected non-fast-forward and the
+    # dashboard freezes. Mirrors the portfolio bridge's commit_and_push.
+    rebase = subprocess.run(
+        ["git", "-C", str(REPO), "pull", "--rebase", "--autostash", "origin", "main"],
+        check=False,
+    )
+    if rebase.returncode != 0:
+        subprocess.run(["git", "-C", str(REPO), "rebase", "--abort"], check=False)
+        raise subprocess.CalledProcessError(rebase.returncode, "git pull --rebase origin main")
     subprocess.run(["git", "-C", str(REPO), "push"], check=True)
 
 
@@ -134,6 +171,12 @@ def main(argv: list[str] | None = None) -> int:
                     len(tickets_public), len(tickets_private))
         logger.info("DRY RUN: would write to %s and %s", REPO, PRIVATE_OUT)
         return 0
+
+    # Land on the latest origin/main before rendering so the post-build push is
+    # a clean fast-forward even if a PR merged since the last run. Skipped for
+    # --no-push local/dev builds so they never disturb the working branch.
+    if not args.no_push:
+        _sync_to_origin()
 
     # Public pass — repo root
     render.render_public(agg, tickets_public, REPO)
