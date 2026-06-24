@@ -23,7 +23,7 @@
     <span class="brand-wordmark">Agent Fleet Observability</span>
   </div>
   <span class="status-pill mono"><span class="status-pill-dot" data-state="healthy" aria-hidden="true">●</span> 7/8 HEALTHY</span>
-  <span class="subtitle" style="margin-left: auto;">2026-06-23 21:13 UTC</span>
+  <span class="subtitle" style="margin-left: auto;">2026-06-24 10:00 UTC</span>
   <nav style="display: flex; gap: 4px;">
     <a class="nav-link " href="./index.html">/fleet</a>
     <a class="nav-link active" href="./kanban.html">/kanban</a>
@@ -34,8 +34,8 @@
 
     <h1 class="kanban-hero-display" id="kanban-hero-headline">
       <span class="num"
-            data-countup="118"
-            aria-label="118">118</span>
+            data-countup="119"
+            aria-label="119">119</span>
       <span class="label">tickets this week</span>
     </h1>
     <p class="kanban-hero-prose">
@@ -45,7 +45,7 @@
     </p>
 
   <div class="kanban-hero-breakdown">
-      20 lint · 1 eval · 97 manual
+      20 lint · 1 eval · 98 manual
   </div>
 </section>
 <div class="kanban-filters">
@@ -56,7 +56,7 @@
     <button class="filter-chip eval" data-source="eval" data-active="true" aria-pressed="true">
       ● Eval 1    </button>
     <button class="filter-chip manual" data-source="manual" data-active="true" aria-pressed="true">
-      ● Manual 97    </button>
+      ● Manual 98    </button>
 </div>
 
 <div class="kanban-board">
@@ -379,7 +379,7 @@ knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generatio
     <div class="kanban-column" data-column="todo">
       <div class="kanban-column-header">
         <span class="column-label">ToDo</span>
-        <span class="column-count">92</span>
+        <span class="column-count">93</span>
           <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#FF5C46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,11.0 8.7,11.0 16.3,11.0 24.0,11.0 31.7,11.0 39.3,11.0 47.0,11.0"/></svg></span>
       </div>
         <button type="button" class="ticket" data-source="eval"
@@ -1760,6 +1760,21 @@ knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generatio
               · <span class="agent-dot agent-dot--unknown"></span>@Sean
           </div>
         </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-132add32"
+                data-details=""
+                data-headline="agent-fleet-observability test suite (LOW, surfaced 2026-06-23 during the dashboard-freeze fix): 2 time-bomb fixture tests in `tests/test_aggregations.py` (`test_compute_kpis_eval_pass_and_spend`, `test_compute_fleet_status_health_per_agent`) fail on origin/main because their fixtures hard-code 2026-05-12/13/16 dates and assume &#34;now&#34; is inside the 7d/30d rolling windows; past mid-June they age out (e.g. `fleet_spend_30d_usd` computes 0 vs expected 0.3812). Pre-existing, harmless to production (the live dashboard reads real telemetry, not fixtures), but leaves the suite red (2 failed / 165 passed). Fix: parametrize the fixtures against a relative `today`/`end` anchor instead of absolute May dates."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            agent-fleet-observability test suite (LOW, surfaced 2026-06-23 during the dashboard-freeze fix): 2 time-bomb fixture tests in `tests/test_aggregations.py` (`test_compute_kpis_eval_pass_and_spend`, `test_compute_fleet_status_health_per_agent`) fail on origin/main because their fixtures hard-code 2026-05-12/13/16 dates and assume &#34;now&#34; is inside the 7d/30d rolling windows; past mid-June they age out (e.g. `fleet_spend_30d_usd` computes 0 vs expected 0.3812). Pre-existing, harmless to production (the live dashboard reads real telemetry, not fixtures), but leaves the suite red (2 failed / 165 passed). Fix: parametrize the fixtures against a relative `today`/`end` anchor instead of absolute May dates.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
     </div>
     <div class="kanban-column" data-column="in_progress">
       <div class="kanban-column-header">
@@ -1780,7 +1795,7 @@ knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generatio
       <div class="kanban-column-header">
         <span class="column-label">Done</span>
         <span class="column-count">6</span>
-          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#3FB950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,11.0 8.7,1.0 16.3,11.0 24.0,6.0 31.7,6.0 39.3,1.0 47.0,6.0"/></svg></span>
+          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#3FB950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,2.4 8.7,2.4 16.3,2.4 24.0,2.4 31.7,1.0 39.3,2.4 47.0,11.0"/></svg></span>
       </div>
         <button type="button" class="ticket" data-source="manual"
                 data-id="manual-8e2691f8"
@@ -1887,7 +1902,7 @@ knowledge/concepts/cross-domain-bridging.md — contradicts daily-note-generatio
   <strong>Built by Sean Winslow</strong>.
   Multi-agent fleet on macOS launchd, 99% local-first inference.
   <a href="https://github.com/seanwinslow28/agent-fleet-observability">View source</a>
-  · last build 2026-06-23 21:13 UTC
+  · last build 2026-06-24 10:00 UTC
 </footer>  <script src="assets/motion.js?v=fecca888" defer></script>
   <script src="assets/kanban-modal.js?v=45838d0f" defer></script>
 </body>
