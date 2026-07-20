@@ -23,7 +23,7 @@
     <span class="brand-wordmark">Agent Fleet Observability</span>
   </div>
   <span class="status-pill mono"><span class="status-pill-dot" data-state="healthy" aria-hidden="true">●</span> 7/8 HEALTHY</span>
-  <span class="subtitle" style="margin-left: auto;">2026-07-19 10:00 UTC</span>
+  <span class="subtitle" style="margin-left: auto;">2026-07-20 10:00 UTC</span>
   <nav style="display: flex; gap: 4px;">
     <a class="nav-link " href="./index.html">/fleet</a>
     <a class="nav-link active" href="./kanban.html">/kanban</a>
@@ -71,12 +71,12 @@
 knowledge/concepts/accountability-gap.md — contradicts automation-routines (source=sql)
 knowledge/concepts/accountability-gap.md — contradicts supervision-as-the-new-ai-edge (source=sql)"
                 data-headline="contradiction · Accountability gap · 3 edges"
-                data-subheadline="2026-07-12"
+                data-subheadline="2026-07-19"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Accountability gap · 3 edges
           </div>
-            <div class="ticket-subheadline">2026-07-12</div>
+            <div class="ticket-subheadline">2026-07-19</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -86,14 +86,14 @@ knowledge/concepts/accountability-gap.md — contradicts supervision-as-the-new-
                 data-id="lint-b45d09c1"
                 data-details="knowledge/concepts/agent-health.md — contradicts context-management-as-a-bottleneck (source=sql)
 knowledge/concepts/agent-health.md — contradicts daily-note-generation (source=sql)
-knowledge/concepts/agent-health.md — These articles define agent health primarily through technical metrics (uptime, exit codes, process status) and note that &#39;a running process does not guarantee a useful result.&#39; This contradicts the operational reality described in the SOUL context where &#39;silent failures&#39; and &#39;stale context&#39; are the primary risks. Specifically, `agent-health-and-daily-routine-automation.md` and `automation-failure-and-daily-note-disruption.md` highlight that health checks often fail to capture semantic integrity or data freshness, creating a gap where systems appear healthy but are functionally broken. The concept articles treat &#39;health&#39; as a technical state, whereas the SOUL context treats &#39;health&#39; as a functional/semantic state (i.e., if the output is stale/useless, the agent is unhealthy regardless of uptime)."
+knowledge/concepts/agent-health.md — The concept `agent-health.md` defines health as &#39;successful execution of scheduled tasks and the absence of silent failures,&#39; implying that a running process with empty output is a latent failure. However, `agent-health-monitoring.md` argues that monitoring must verify the data plane accessed dependencies, not just that the control plane issued a command. While not a direct logical contradiction, there is a tension in definition: one defines health by *output integrity* (which may be empty/stale if the process ran but failed to write), while the other defines it by *dependency access*. If an agent accesses dependencies successfully (healthy per monitoring.md) but writes nothing (unhealthy per health.md), the definitions diverge on whether the agent is &#39;healthy&#39; or &#39;failing silently.&#39;"
                 data-headline="contradiction · Agent health · 3 edges"
-                data-subheadline="2026-07-12"
+                data-subheadline="2026-07-19"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Agent health · 3 edges
           </div>
-            <div class="ticket-subheadline">2026-07-12</div>
+            <div class="ticket-subheadline">2026-07-19</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -103,18 +103,19 @@ knowledge/concepts/agent-health.md — These articles define agent health primar
                 data-id="lint-8ebd396a"
                 data-details="knowledge/concepts/agent-health-monitoring.md — contradicts infrastructure-status (source=sql)
 knowledge/concepts/agent-health-monitoring.md — contradicts infrastructure-status-and-agent-failure (source=sql)
+knowledge/concepts/agent-health-monitoring.md — contradicts operational-visibility-vs-semantic-value-in-agent-fleets (source=sql)
 knowledge/concepts/agent-health-monitoring.md — contradicts resilience-engineering-work-as-imagined-vs-work-as-done (source=sql)
 knowledge/concepts/agent-health-monitoring.md — contradicts silent-failure-propagation-in-agent-fleets (source=sql)
 knowledge/concepts/agent-health-monitoring.md — contradicts synthesizer-fix (source=sql)
 knowledge/concepts/agent-health-monitoring.md — contradicts the-illusion-of-competence-in-automated-systems (source=sql)
 knowledge/concepts/agent-health-monitoring.md — contradicts the-illusion-of-health-in-autonomous-systems (source=sql)"
-                data-headline="contradiction · Agent health monitoring · 7 edges"
-                data-subheadline="2026-07-12"
+                data-headline="contradiction · Agent health monitoring · 8 edges"
+                data-subheadline="2026-07-19"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            contradiction · Agent health monitoring · 7 edges
+            contradiction · Agent health monitoring · 8 edges
           </div>
-            <div class="ticket-subheadline">2026-07-12</div>
+            <div class="ticket-subheadline">2026-07-19</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -124,12 +125,12 @@ knowledge/concepts/agent-health-monitoring.md — contradicts the-illusion-of-he
                 data-id="lint-6bbf4825"
                 data-details="knowledge/concepts/agentic-engineering.md — contradicts boundary-object-theory (source=sql)"
                 data-headline="contradiction · Agentic engineering"
-                data-subheadline="2026-07-12"
+                data-subheadline="2026-07-19"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Agentic engineering
           </div>
-            <div class="ticket-subheadline">2026-07-12</div>
+            <div class="ticket-subheadline">2026-07-19</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -139,12 +140,12 @@ knowledge/concepts/agent-health-monitoring.md — contradicts the-illusion-of-he
                 data-id="lint-2fc0477c"
                 data-details="knowledge/concepts/ai-fluency.md — contradicts context-management-as-a-bottleneck (source=sql)"
                 data-headline="contradiction · AI fluency"
-                data-subheadline="2026-07-12"
+                data-subheadline="2026-07-19"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · AI fluency
           </div>
-            <div class="ticket-subheadline">2026-07-12</div>
+            <div class="ticket-subheadline">2026-07-19</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -154,12 +155,12 @@ knowledge/concepts/agent-health-monitoring.md — contradicts the-illusion-of-he
                 data-id="lint-743a6c16"
                 data-details="knowledge/concepts/automation-pipeline.md — contradicts agent-health-monitoring (source=sql)"
                 data-headline="contradiction · Automation pipeline"
-                data-subheadline="2026-07-12"
+                data-subheadline="2026-07-19"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Automation pipeline
           </div>
-            <div class="ticket-subheadline">2026-07-12</div>
+            <div class="ticket-subheadline">2026-07-19</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -172,12 +173,12 @@ knowledge/concepts/automation-reliability.md — contradicts cost-capped-agentic
 knowledge/concepts/automation-reliability.md — contradicts eval-vocabulary (source=sql)
 knowledge/concepts/automation-reliability.md — contradicts supervision-as-the-new-ai-edge (source=sql)"
                 data-headline="contradiction · Automation reliability · 4 edges"
-                data-subheadline="2026-07-12"
+                data-subheadline="2026-07-19"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Automation reliability · 4 edges
           </div>
-            <div class="ticket-subheadline">2026-07-12</div>
+            <div class="ticket-subheadline">2026-07-19</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -188,12 +189,12 @@ knowledge/concepts/automation-reliability.md — contradicts supervision-as-the-
                 data-details="knowledge/concepts/automation-routines.md — contradicts accountability-gap (source=sql)
 knowledge/concepts/automation-routines.md — contradicts writing-voice-modes (source=sql)"
                 data-headline="contradiction · Automation routines · 2 edges"
-                data-subheadline="2026-07-12"
+                data-subheadline="2026-07-19"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Automation routines · 2 edges
           </div>
-            <div class="ticket-subheadline">2026-07-12</div>
+            <div class="ticket-subheadline">2026-07-19</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -207,12 +208,12 @@ knowledge/concepts/benchmarking-artifact.md — contradicts context-management-a
 knowledge/concepts/benchmarking-artifact.md — contradicts convivial-automation (source=sql)
 knowledge/concepts/benchmarking-artifact.md — contradicts infrastructure-status (source=sql)"
                 data-headline="contradiction · Benchmarking artifact · 5 edges"
-                data-subheadline="2026-07-12"
+                data-subheadline="2026-07-19"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Benchmarking artifact · 5 edges
           </div>
-            <div class="ticket-subheadline">2026-07-12</div>
+            <div class="ticket-subheadline">2026-07-19</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -222,12 +223,12 @@ knowledge/concepts/benchmarking-artifact.md — contradicts infrastructure-statu
                 data-id="lint-68a3a50d"
                 data-details="knowledge/concepts/boundary-object-theory.md — contradicts confluence-overhaul-plan (source=sql)"
                 data-headline="contradiction · Boundary object theory"
-                data-subheadline="2026-07-12"
+                data-subheadline="2026-07-19"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Boundary object theory
           </div>
-            <div class="ticket-subheadline">2026-07-12</div>
+            <div class="ticket-subheadline">2026-07-19</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -237,12 +238,12 @@ knowledge/concepts/benchmarking-artifact.md — contradicts infrastructure-statu
                 data-id="lint-472624e7"
                 data-details="knowledge/concepts/comprehension-audit.md — contradicts automation-reliability (source=sql)"
                 data-headline="contradiction · Comprehension audit"
-                data-subheadline="2026-07-12"
+                data-subheadline="2026-07-19"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Comprehension audit
           </div>
-            <div class="ticket-subheadline">2026-07-12</div>
+            <div class="ticket-subheadline">2026-07-19</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -252,12 +253,12 @@ knowledge/concepts/benchmarking-artifact.md — contradicts infrastructure-statu
                 data-id="lint-9257b0db"
                 data-details="knowledge/concepts/constraint-first-automation-vs-general-efficiency.md — contradicts the-taste-fidelity-decoupling-in-creative-production (source=sql)"
                 data-headline="contradiction · Constraint first automation vs general efficiency"
-                data-subheadline="2026-07-12"
+                data-subheadline="2026-07-19"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Constraint first automation vs general efficiency
           </div>
-            <div class="ticket-subheadline">2026-07-12</div>
+            <div class="ticket-subheadline">2026-07-19</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -270,12 +271,12 @@ knowledge/concepts/context-compounding.md — contradicts slop-as-a-trust-defici
 knowledge/concepts/context-compounding.md — contradicts throughput-vs-taste-memory-tension (source=sql)
 knowledge/concepts/context-compounding.md — contradicts token-waste (source=sql)"
                 data-headline="contradiction · Context compounding · 4 edges"
-                data-subheadline="2026-07-12"
+                data-subheadline="2026-07-19"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Context compounding · 4 edges
           </div>
-            <div class="ticket-subheadline">2026-07-12</div>
+            <div class="ticket-subheadline">2026-07-19</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -288,12 +289,12 @@ knowledge/concepts/context-management-as-a-bottleneck.md — contradicts intent-
 knowledge/concepts/context-management-as-a-bottleneck.md — contradicts supervision-as-the-new-ai-edge (source=sql)
 knowledge/concepts/context-management-as-a-bottleneck.md — contradicts the-governance-building-bifurcation (source=sql)"
                 data-headline="contradiction · Context management as a bottleneck · 4 edges"
-                data-subheadline="2026-07-12"
+                data-subheadline="2026-07-19"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Context management as a bottleneck · 4 edges
           </div>
-            <div class="ticket-subheadline">2026-07-12</div>
+            <div class="ticket-subheadline">2026-07-19</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -304,12 +305,12 @@ knowledge/concepts/context-management-as-a-bottleneck.md — contradicts the-gov
                 data-details="knowledge/concepts/control-architecture-as-evangelism.md — contradicts humor-and-status-dynamics (source=sql)
 knowledge/concepts/control-architecture-as-evangelism.md — contradicts tacit-knowledge-erosion-vs-automation-scale (source=sql)"
                 data-headline="contradiction · Control architecture as evangelism · 2 edges"
-                data-subheadline="2026-07-12"
+                data-subheadline="2026-07-19"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Control architecture as evangelism · 2 edges
           </div>
-            <div class="ticket-subheadline">2026-07-12</div>
+            <div class="ticket-subheadline">2026-07-19</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -319,12 +320,12 @@ knowledge/concepts/control-architecture-as-evangelism.md — contradicts tacit-k
                 data-id="lint-6f4643ab"
                 data-details="knowledge/concepts/corroboration-depth-as-a-gradient-signal.md — contradicts slop-as-a-trust-deficit (source=sql)"
                 data-headline="contradiction · Corroboration depth as a gradient signal"
-                data-subheadline="2026-07-12"
+                data-subheadline="2026-07-19"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Corroboration depth as a gradient signal
           </div>
-            <div class="ticket-subheadline">2026-07-12</div>
+            <div class="ticket-subheadline">2026-07-19</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -337,12 +338,12 @@ knowledge/concepts/cost-capped-agentic-workflows.md — contradicts automation-r
 knowledge/concepts/cost-capped-agentic-workflows.md — contradicts provider-fallback-mechanism (source=sql)
 knowledge/concepts/cost-capped-agentic-workflows.md — contradicts vault-maintenance (source=sql)"
                 data-headline="contradiction · Cost capped agentic workflows · 4 edges"
-                data-subheadline="2026-07-12"
+                data-subheadline="2026-07-19"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Cost capped agentic workflows · 4 edges
           </div>
-            <div class="ticket-subheadline">2026-07-12</div>
+            <div class="ticket-subheadline">2026-07-19</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -352,12 +353,12 @@ knowledge/concepts/cost-capped-agentic-workflows.md — contradicts vault-mainte
                 data-id="lint-6f0afead"
                 data-details="knowledge/concepts/craft-in-product-design.md — contradicts supervision-as-the-new-ai-edge (source=sql)"
                 data-headline="contradiction · Craft in product design"
-                data-subheadline="2026-07-12"
+                data-subheadline="2026-07-19"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Craft in product design
           </div>
-            <div class="ticket-subheadline">2026-07-12</div>
+            <div class="ticket-subheadline">2026-07-19</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -367,12 +368,12 @@ knowledge/concepts/cost-capped-agentic-workflows.md — contradicts vault-mainte
                 data-id="lint-807d685e"
                 data-details="knowledge/concepts/creative-studio-workflows.md — contradicts automation-failure-and-daily-note-disruption (source=sql)"
                 data-headline="contradiction · Creative studio workflows"
-                data-subheadline="2026-07-12"
+                data-subheadline="2026-07-19"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Creative studio workflows
           </div>
-            <div class="ticket-subheadline">2026-07-12</div>
+            <div class="ticket-subheadline">2026-07-19</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -382,12 +383,12 @@ knowledge/concepts/cost-capped-agentic-workflows.md — contradicts vault-mainte
                 data-id="lint-ea6bc71b"
                 data-details="knowledge/concepts/credential-rotency-vs-infrastructure-stability.md — contradicts silent-failure-propagation-in-agent-fleets (source=sql)"
                 data-headline="contradiction · Credential rotency vs infrastructure stability"
-                data-subheadline="2026-07-12"
+                data-subheadline="2026-07-19"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Credential rotency vs infrastructure stability
           </div>
-            <div class="ticket-subheadline">2026-07-12</div>
+            <div class="ticket-subheadline">2026-07-19</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -401,15 +402,15 @@ knowledge/concepts/cost-capped-agentic-workflows.md — contradicts vault-mainte
           <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#FF5C46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,11.0 8.7,11.0 16.3,11.0 24.0,11.0 31.7,11.0 39.3,11.0 47.0,11.0"/></svg></span>
       </div>
         <button type="button" class="ticket" data-source="eval"
-                data-id="eval-9ae6b091"
-                data-details="status=error articles=0 codex_fail=5 ag_fail=0"
+                data-id="eval-a8df10ef"
+                data-details="status=error articles=0 codex_fail=8 ag_fail=0"
                 data-headline="vault-critic failed: error"
-                data-subheadline="2026-07-19"
+                data-subheadline="2026-07-20"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             vault-critic failed: error
           </div>
-            <div class="ticket-subheadline">2026-07-19</div>
+            <div class="ticket-subheadline">2026-07-20</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="eval" aria-hidden="true"></span>
             eval
@@ -2144,7 +2145,7 @@ knowledge/concepts/cost-capped-agentic-workflows.md — contradicts vault-mainte
       <div class="kanban-column-header">
         <span class="column-label">Done</span>
         <span class="column-count">7</span>
-          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#3FB950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,1.0 8.7,2.4 16.3,2.4 24.0,3.9 31.7,3.9 39.3,3.9 47.0,11.0"/></svg></span>
+          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#3FB950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,1.0 8.7,1.0 16.3,3.5 24.0,3.5 31.7,3.5 39.3,3.5 47.0,11.0"/></svg></span>
       </div>
         <button type="button" class="ticket" data-source="manual"
                 data-id="manual-c31d6ae5"
@@ -2266,7 +2267,7 @@ knowledge/concepts/cost-capped-agentic-workflows.md — contradicts vault-mainte
   <strong>Built by Sean Winslow</strong>.
   Multi-agent fleet on macOS launchd, 99% local-first inference.
   <a href="https://github.com/seanwinslow28/agent-fleet-observability">View source</a>
-  · last build 2026-07-19 10:00 UTC
+  · last build 2026-07-20 10:00 UTC
 </footer>  <script src="assets/motion.js?v=fecca888" defer></script>
   <script src="assets/kanban-modal.js?v=45838d0f" defer></script>
 </body>
