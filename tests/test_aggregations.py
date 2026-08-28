@@ -2,9 +2,9 @@
 
 Date-window note: fixtures use 2026-05-12 and 2026-05-13 dates.
 compute_fleet_status uses a 7-day window; compute_kpis uses a 30-day window.
-Both functions call datetime.now(UTC) internally. These tests are correct as
-long as they run within 7 days of 2026-05-16 (fleet status) and within 30 days
-(kpis). Task 10 will establish the end-parameter pattern for proper date injection.
+Both windows are anchored by an injected `now` (FROZEN_NOW, 2026-05-16) — the
+end-parameter pattern the original docstring deferred to Task 10 — so these
+tests no longer expire as the fixtures age.
 """
 from datetime import UTC, date, datetime, timedelta
 
@@ -20,19 +20,22 @@ AGENT_NAMES = [
 ]
 
 
+FROZEN_NOW = datetime(2026, 5, 16, tzinfo=UTC)
+
+
 def _runs():
     return readers.read_run_history(FIXTURES / "sample-run-history.csv")
 
 
 def test_compute_fleet_status_returns_eight_tiles():
-    status = aggregations.compute_fleet_status(_runs(), AGENT_NAMES)
+    status = aggregations.compute_fleet_status(_runs(), AGENT_NAMES, now=FROZEN_NOW)
     assert len(status) == 8
     names = [s["agent"] for s in status]
     assert set(names) == set(AGENT_NAMES)
 
 
 def test_compute_fleet_status_health_per_agent():
-    status = aggregations.compute_fleet_status(_runs(), AGENT_NAMES)
+    status = aggregations.compute_fleet_status(_runs(), AGENT_NAMES, now=FROZEN_NOW)
     by_name = {s["agent"]: s for s in status}
     # synthesizer has one error + one ok + one skipped → degraded (amber)
     assert by_name["vault_synthesizer"]["health"] == "degraded"
@@ -43,7 +46,8 @@ def test_compute_fleet_status_health_per_agent():
 def test_compute_kpis_eval_pass_and_spend():
     runs = _runs()
     eval_run = readers.read_eval_last_run(FIXTURES / "sample-eval-last-run.md")
-    kpis = aggregations.compute_kpis(runs, eval_run, gemini_total=8.40, council_total=0.41)
+    kpis = aggregations.compute_kpis(
+        runs, eval_run, gemini_total=8.40, council_total=0.41, now=FROZEN_NOW)
     assert kpis["eval_pass"] == "7 / 10"
     assert kpis["fleet_spend_30d_usd"] == pytest.approx(0.3812)
     assert 0 < kpis["local_only_share_pct"] <= 100

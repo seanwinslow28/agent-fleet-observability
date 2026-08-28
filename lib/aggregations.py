@@ -3,11 +3,11 @@
 All public functions consume plain dicts from lib/readers and return plain dicts.
 No domain models. Aggregation results feed Jinja2 templates via build.py.
 
-Date-window assumption: compute_fleet_status uses a 7-day window from now()
-and compute_kpis uses a 30-day window from now(). Fixtures have dates from
-2026-05-12 and 2026-05-13; tests pass when run within 7 days of 2026-05-16.
-Task 10 will introduce an `end` parameter for date injection in the time-series
-functions, establishing the pattern. Task 11 will propagate it to compute_all.
+Date-window assumption: compute_fleet_status uses a 7-day window and
+compute_kpis a 30-day window, both anchored by an optional injected `now`
+(defaulting to datetime.now(UTC)) — the same end-parameter pattern
+compute_synth_series uses. Tests inject a frozen now so fixtures never age out.
+Production (compute_all) passes nothing and gets real time.
 """
 from __future__ import annotations
 
@@ -31,7 +31,9 @@ def _norm_agent(name: str) -> str:
     return (name or "").lower().replace("-", "_").strip()
 
 
-def compute_fleet_status(runs: list[dict], agent_names: list[str]) -> list[dict]:
+def compute_fleet_status(
+    runs: list[dict], agent_names: list[str], now: datetime | None = None
+) -> list[dict]:
     """One tile per agent. Health derived from the last 7 days of runs.
 
     Health values:
@@ -42,8 +44,11 @@ def compute_fleet_status(runs: list[dict], agent_names: list[str]) -> list[dict]
 
     Agent names normalized dash↔underscore so the CSV's `vault-indexer` matches
     the canonical `vault_indexer` in AGENT_NAMES.
+
+    `now` anchors the 7-day window; tests inject a fixed datetime so fixtures
+    never age out (the end-parameter pattern, same as compute_synth_series).
     """
-    now = datetime.now(UTC)
+    now = now or datetime.now(UTC)
     cutoff = now - timedelta(days=7)
     by_agent: dict[str, list[dict]] = {_norm_agent(n): [] for n in agent_names}
     for r in runs:
@@ -149,6 +154,7 @@ def compute_kpis(
     eval_run: dict,
     gemini_total: float,
     council_total: float,
+    now: datetime | None = None,
 ) -> dict:
     """Top-level KPI block for the dashboard header row.
 
@@ -157,10 +163,12 @@ def compute_kpis(
         eval_run:      parsed eval result from read_eval_last_run
         gemini_total:  cumulative Gemini spend this month in USD
         council_total: cumulative LLM Council spend this month in USD
+        now:           anchor for the 30-day window; tests inject a fixed
+                       datetime so fixtures never age out
 
     Returns a flat dict with 10 keys consumed by the KPI row template.
     """
-    cutoff = datetime.now(UTC) - timedelta(days=30)
+    cutoff = (now or datetime.now(UTC)) - timedelta(days=30)
     last_30 = [r for r in runs if r["ts"] >= cutoff]
     spend_30d = sum(r["cost_usd"] for r in last_30)
     local_runs = [r for r in last_30 if _is_local(r.get("model")) and r["cost_usd"] == 0.0]

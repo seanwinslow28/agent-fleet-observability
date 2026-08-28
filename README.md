@@ -35,7 +35,8 @@ Mac Mini cron (06:00 ET)
               └─ private → ~/Sites/agent-fleet-private/ (gitignored)
 ```
 
-- **Backend:** Python 3.12 stdlib + Jinja2 + PyYAML, no framework, ~1,200 lines including tests.
+- **Backend:** Python 3.12 stdlib + Jinja2 + PyYAML, no framework, ~5,200 lines including tests
+  (measured 2026-08-28: `wc -l build.py lib/*.py tests/*.py` → 5,204).
 - **Frontend:** Jinja2 templates + inline SVG charts (no Chart.js), ~14 KB stylesheet.
 - **Auth:** none. Public read-only. Privacy is structural — the public render
   pass never reads `vault/.job-feed.db` or job-hunt trackers, period.
@@ -64,7 +65,7 @@ Mac Mini cron (06:00 ET)
 - [`lib/svg_charts.py`](lib/svg_charts.py) — inline SVG helpers (line, sparkline, donut, stacked area).
 - [`lib/kanban.py`](lib/kanban.py) — ticket composer + column membership rules.
 - [`lib/render.py`](lib/render.py) — public + private render orchestrators (one module, two functions).
-- [`tests/`](tests/) — pytest suite (55 tests; `make test` to run).
+- [`tests/`](tests/) — pytest suite (167 tests, all passing as of 2026-08-28; `make test` to run).
 
 ### Local dev
 
