@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="topbar">
-<div class="mark" data-state="degraded" aria-hidden="true">
+<div class="mark" data-state="healthy" aria-hidden="true">
   <svg viewBox="0 0 32 32" width="32" height="32" fill="none">
     <path class="mark-frame" d="M3 9V3h6M23 3h6v6M29 23v6h-6M9 29H3v-6"
           stroke="var(--accent-purple)" stroke-width="2" stroke-linecap="square"/>
@@ -22,8 +22,8 @@
     <span class="brand-url mono">fleet.seanwinslow.com</span>
     <span class="brand-wordmark">Agent Fleet Observability</span>
   </div>
-  <span class="status-pill mono"><span class="status-pill-dot" data-state="degraded" aria-hidden="true">●</span> 6/8 HEALTHY</span>
-  <span class="subtitle" style="margin-left: auto;">2026-08-30 10:00 UTC</span>
+  <span class="status-pill mono"><span class="status-pill-dot" data-state="healthy" aria-hidden="true">●</span> 7/8 HEALTHY</span>
+  <span class="subtitle" style="margin-left: auto;">2026-08-31 10:00 UTC</span>
   <nav style="display: flex; gap: 4px;">
     <a class="nav-link " href="./index.html">/fleet</a>
     <a class="nav-link active" href="./kanban.html">/kanban</a>
@@ -34,8 +34,8 @@
 
     <h1 class="kanban-hero-display" id="kanban-hero-headline">
       <span class="num"
-            data-countup="285"
-            aria-label="285">285</span>
+            data-countup="304"
+            aria-label="304">304</span>
       <span class="label">tickets this week</span>
     </h1>
     <p class="kanban-hero-prose">
@@ -45,7 +45,7 @@
     </p>
 
   <div class="kanban-hero-breakdown">
-      20 lint · 1 eval · 264 manual
+      20 lint · 1 eval · 283 manual
   </div>
 </section>
 <div class="kanban-filters">
@@ -56,7 +56,7 @@
     <button class="filter-chip eval" data-source="eval" data-active="true" aria-pressed="true">
       ● Eval 1    </button>
     <button class="filter-chip manual" data-source="manual" data-active="true" aria-pressed="true">
-      ● Manual 264    </button>
+      ● Manual 283    </button>
 </div>
 
 <div class="kanban-board">
@@ -69,12 +69,12 @@
                 data-id="lint-67188c27"
                 data-details="knowledge/concepts/access-vs-meaning.md — contradicts the-illusion-of-competence-in-automated-systems (source=sql)"
                 data-headline="contradiction · Access vs meaning"
-                data-subheadline="2026-08-23"
+                data-subheadline="2026-08-30"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Access vs meaning
           </div>
-            <div class="ticket-subheadline">2026-08-23</div>
+            <div class="ticket-subheadline">2026-08-30</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -86,12 +86,12 @@
 knowledge/concepts/accountability-gap.md — contradicts automation-routines (source=sql)
 knowledge/concepts/accountability-gap.md — contradicts supervision-as-the-new-ai-edge (source=sql)"
                 data-headline="contradiction · Accountability gap · 3 edges"
-                data-subheadline="2026-08-23"
+                data-subheadline="2026-08-30"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Accountability gap · 3 edges
           </div>
-            <div class="ticket-subheadline">2026-08-23</div>
+            <div class="ticket-subheadline">2026-08-30</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -101,14 +101,14 @@ knowledge/concepts/accountability-gap.md — contradicts supervision-as-the-new-
                 data-id="lint-b45d09c1"
                 data-details="knowledge/concepts/agent-health.md — contradicts context-management-as-a-bottleneck (source=sql)
 knowledge/concepts/agent-health.md — contradicts daily-note-generation (source=sql)
-knowledge/concepts/agent-health.md — These articles define agent health as a metric of operational continuity where &#39;running processes&#39; can be healthy while producing empty/stale outputs (latent failure). This contradicts the concept `agent-fleet-observability-dashboard` which establishes a strict &#39;freshness invariant&#39; requiring that a synthesizer must never read an index older than the flush it consumed, implying that stale data is a systemic error condition rather than just a latent failure mode. Furthermore, `agent-health-monitoring` argues that silent failures are more dangerous than loud ones and require explicit instrumentation to detect semantic decay, whereas `agent-health.md` suggests that process completion (even with bad output) is the primary metric of health, creating a tension between &#39;process health&#39; and &#39;semantic integrity&#39;."
+knowledge/concepts/agent-health.md — These articles define &#39;agent health&#39; as a metric of operational continuity where an agent can be &#39;healthy&#39; (running) while producing empty, stale, or semantically decayed outputs. This contradicts the implicit definition in `knowledge/concepts/automation-reliability.md` and `knowledge/concepts/control-room-observability.md`, which argue that system health must be verified by output alignment with intent and provenance, not just process execution. The former set normalizes a &#39;silent failure&#39; state as &#39;healthy,&#39; while the latter sets define health strictly by the validity of the output."
                 data-headline="contradiction · Agent health · 3 edges"
-                data-subheadline="2026-08-23"
+                data-subheadline="2026-08-30"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Agent health · 3 edges
           </div>
-            <div class="ticket-subheadline">2026-08-23</div>
+            <div class="ticket-subheadline">2026-08-30</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -126,12 +126,12 @@ knowledge/concepts/agent-health-monitoring.md — contradicts synthesizer-fix (s
 knowledge/concepts/agent-health-monitoring.md — contradicts the-illusion-of-competence-in-automated-systems (source=sql)
 knowledge/concepts/agent-health-monitoring.md — contradicts the-illusion-of-health-in-autonomous-systems (source=sql)"
                 data-headline="contradiction · Agent health monitoring · 9 edges"
-                data-subheadline="2026-08-23"
+                data-subheadline="2026-08-30"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Agent health monitoring · 9 edges
           </div>
-            <div class="ticket-subheadline">2026-08-23</div>
+            <div class="ticket-subheadline">2026-08-30</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -141,12 +141,12 @@ knowledge/concepts/agent-health-monitoring.md — contradicts the-illusion-of-he
                 data-id="lint-6bbf4825"
                 data-details="knowledge/concepts/agentic-engineering.md — contradicts boundary-object-theory (source=sql)"
                 data-headline="contradiction · Agentic engineering"
-                data-subheadline="2026-08-23"
+                data-subheadline="2026-08-30"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Agentic engineering
           </div>
-            <div class="ticket-subheadline">2026-08-23</div>
+            <div class="ticket-subheadline">2026-08-30</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -156,12 +156,12 @@ knowledge/concepts/agent-health-monitoring.md — contradicts the-illusion-of-he
                 data-id="lint-2fc0477c"
                 data-details="knowledge/concepts/ai-fluency.md — contradicts context-management-as-a-bottleneck (source=sql)"
                 data-headline="contradiction · AI fluency"
-                data-subheadline="2026-08-23"
+                data-subheadline="2026-08-30"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · AI fluency
           </div>
-            <div class="ticket-subheadline">2026-08-23</div>
+            <div class="ticket-subheadline">2026-08-30</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -171,12 +171,12 @@ knowledge/concepts/agent-health-monitoring.md — contradicts the-illusion-of-he
                 data-id="lint-64be9594"
                 data-details="knowledge/concepts/audience-capture-via-alignment-loops.md — contradicts market-positioning (source=sql)"
                 data-headline="contradiction · Audience capture via alignment loops"
-                data-subheadline="2026-08-23"
+                data-subheadline="2026-08-30"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Audience capture via alignment loops
           </div>
-            <div class="ticket-subheadline">2026-08-23</div>
+            <div class="ticket-subheadline">2026-08-30</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -186,12 +186,12 @@ knowledge/concepts/agent-health-monitoring.md — contradicts the-illusion-of-he
                 data-id="lint-743a6c16"
                 data-details="knowledge/concepts/automation-pipeline.md — contradicts agent-health-monitoring (source=sql)"
                 data-headline="contradiction · Automation pipeline"
-                data-subheadline="2026-08-23"
+                data-subheadline="2026-08-30"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Automation pipeline
           </div>
-            <div class="ticket-subheadline">2026-08-23</div>
+            <div class="ticket-subheadline">2026-08-30</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -199,17 +199,18 @@ knowledge/concepts/agent-health-monitoring.md — contradicts the-illusion-of-he
         </button>
         <button type="button" class="ticket" data-source="lint"
                 data-id="lint-9a427b3e"
-                data-details="knowledge/concepts/automation-reliability.md — contradicts automation-failure-and-daily-note-disruption (source=sql)
+                data-details="knowledge/concepts/automation-reliability.md — contradicts accountability-gap (source=sql)
+knowledge/concepts/automation-reliability.md — contradicts automation-failure-and-daily-note-disruption (source=sql)
 knowledge/concepts/automation-reliability.md — contradicts cost-capped-agentic-workflows (source=sql)
 knowledge/concepts/automation-reliability.md — contradicts eval-vocabulary (source=sql)
 knowledge/concepts/automation-reliability.md — contradicts supervision-as-the-new-ai-edge (source=sql)"
-                data-headline="contradiction · Automation reliability · 4 edges"
-                data-subheadline="2026-08-23"
+                data-headline="contradiction · Automation reliability · 5 edges"
+                data-subheadline="2026-08-30"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            contradiction · Automation reliability · 4 edges
+            contradiction · Automation reliability · 5 edges
           </div>
-            <div class="ticket-subheadline">2026-08-23</div>
+            <div class="ticket-subheadline">2026-08-30</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -220,12 +221,12 @@ knowledge/concepts/automation-reliability.md — contradicts supervision-as-the-
                 data-details="knowledge/concepts/automation-routines.md — contradicts accountability-gap (source=sql)
 knowledge/concepts/automation-routines.md — contradicts writing-voice-modes (source=sql)"
                 data-headline="contradiction · Automation routines · 2 edges"
-                data-subheadline="2026-08-23"
+                data-subheadline="2026-08-30"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Automation routines · 2 edges
           </div>
-            <div class="ticket-subheadline">2026-08-23</div>
+            <div class="ticket-subheadline">2026-08-30</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -239,12 +240,12 @@ knowledge/concepts/benchmarking-artifact.md — contradicts context-management-a
 knowledge/concepts/benchmarking-artifact.md — contradicts convivial-automation (source=sql)
 knowledge/concepts/benchmarking-artifact.md — contradicts infrastructure-status (source=sql)"
                 data-headline="contradiction · Benchmarking artifact · 5 edges"
-                data-subheadline="2026-08-23"
+                data-subheadline="2026-08-30"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Benchmarking artifact · 5 edges
           </div>
-            <div class="ticket-subheadline">2026-08-23</div>
+            <div class="ticket-subheadline">2026-08-30</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -254,12 +255,12 @@ knowledge/concepts/benchmarking-artifact.md — contradicts infrastructure-statu
                 data-id="lint-68a3a50d"
                 data-details="knowledge/concepts/boundary-object-theory.md — contradicts confluence-overhaul-plan (source=sql)"
                 data-headline="contradiction · Boundary object theory"
-                data-subheadline="2026-08-23"
+                data-subheadline="2026-08-30"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Boundary object theory
           </div>
-            <div class="ticket-subheadline">2026-08-23</div>
+            <div class="ticket-subheadline">2026-08-30</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -269,12 +270,12 @@ knowledge/concepts/benchmarking-artifact.md — contradicts infrastructure-statu
                 data-id="lint-472624e7"
                 data-details="knowledge/concepts/comprehension-audit.md — contradicts automation-reliability (source=sql)"
                 data-headline="contradiction · Comprehension audit"
-                data-subheadline="2026-08-23"
+                data-subheadline="2026-08-30"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Comprehension audit
           </div>
-            <div class="ticket-subheadline">2026-08-23</div>
+            <div class="ticket-subheadline">2026-08-30</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -284,12 +285,12 @@ knowledge/concepts/benchmarking-artifact.md — contradicts infrastructure-statu
                 data-id="lint-9257b0db"
                 data-details="knowledge/concepts/constraint-first-automation-vs-general-efficiency.md — contradicts the-taste-fidelity-decoupling-in-creative-production (source=sql)"
                 data-headline="contradiction · Constraint first automation vs general efficiency"
-                data-subheadline="2026-08-23"
+                data-subheadline="2026-08-30"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Constraint first automation vs general efficiency
           </div>
-            <div class="ticket-subheadline">2026-08-23</div>
+            <div class="ticket-subheadline">2026-08-30</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -302,12 +303,12 @@ knowledge/concepts/context-compounding.md — contradicts slop-as-a-trust-defici
 knowledge/concepts/context-compounding.md — contradicts throughput-vs-taste-memory-tension (source=sql)
 knowledge/concepts/context-compounding.md — contradicts token-waste (source=sql)"
                 data-headline="contradiction · Context compounding · 4 edges"
-                data-subheadline="2026-08-23"
+                data-subheadline="2026-08-30"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Context compounding · 4 edges
           </div>
-            <div class="ticket-subheadline">2026-08-23</div>
+            <div class="ticket-subheadline">2026-08-30</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -320,12 +321,12 @@ knowledge/concepts/context-management-as-a-bottleneck.md — contradicts intent-
 knowledge/concepts/context-management-as-a-bottleneck.md — contradicts supervision-as-the-new-ai-edge (source=sql)
 knowledge/concepts/context-management-as-a-bottleneck.md — contradicts the-governance-building-bifurcation (source=sql)"
                 data-headline="contradiction · Context management as a bottleneck · 4 edges"
-                data-subheadline="2026-08-23"
+                data-subheadline="2026-08-30"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Context management as a bottleneck · 4 edges
           </div>
-            <div class="ticket-subheadline">2026-08-23</div>
+            <div class="ticket-subheadline">2026-08-30</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -336,12 +337,12 @@ knowledge/concepts/context-management-as-a-bottleneck.md — contradicts the-gov
                 data-details="knowledge/concepts/control-architecture-as-evangelism.md — contradicts humor-and-status-dynamics (source=sql)
 knowledge/concepts/control-architecture-as-evangelism.md — contradicts tacit-knowledge-erosion-vs-automation-scale (source=sql)"
                 data-headline="contradiction · Control architecture as evangelism · 2 edges"
-                data-subheadline="2026-08-23"
+                data-subheadline="2026-08-30"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Control architecture as evangelism · 2 edges
           </div>
-            <div class="ticket-subheadline">2026-08-23</div>
+            <div class="ticket-subheadline">2026-08-30</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -352,12 +353,12 @@ knowledge/concepts/control-architecture-as-evangelism.md — contradicts tacit-k
                 data-details="knowledge/concepts/corroboration-depth-as-a-gradient-signal.md — contradicts slop-as-a-trust-deficit (source=sql)
 knowledge/concepts/corroboration-depth-as-a-gradient-signal.md — contradicts the-illusion-of-competence-in-automated-systems (source=sql)"
                 data-headline="contradiction · Corroboration depth as a gradient signal · 2 edges"
-                data-subheadline="2026-08-23"
+                data-subheadline="2026-08-30"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Corroboration depth as a gradient signal · 2 edges
           </div>
-            <div class="ticket-subheadline">2026-08-23</div>
+            <div class="ticket-subheadline">2026-08-30</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -368,14 +369,15 @@ knowledge/concepts/corroboration-depth-as-a-gradient-signal.md — contradicts t
                 data-details="knowledge/concepts/cost-capped-agentic-workflows.md — contradicts agent-health-monitoring (source=sql)
 knowledge/concepts/cost-capped-agentic-workflows.md — contradicts automation-reliability (source=sql)
 knowledge/concepts/cost-capped-agentic-workflows.md — contradicts provider-fallback-mechanism (source=sql)
+knowledge/concepts/cost-capped-agentic-workflows.md — contradicts the-efficiency-quality-inversion-in-automated-synthesis (source=sql)
 knowledge/concepts/cost-capped-agentic-workflows.md — contradicts vault-maintenance (source=sql)"
-                data-headline="contradiction · Cost capped agentic workflows · 4 edges"
-                data-subheadline="2026-08-23"
+                data-headline="contradiction · Cost capped agentic workflows · 5 edges"
+                data-subheadline="2026-08-30"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            contradiction · Cost capped agentic workflows · 4 edges
+            contradiction · Cost capped agentic workflows · 5 edges
           </div>
-            <div class="ticket-subheadline">2026-08-23</div>
+            <div class="ticket-subheadline">2026-08-30</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -385,12 +387,12 @@ knowledge/concepts/cost-capped-agentic-workflows.md — contradicts vault-mainte
                 data-id="lint-6f0afead"
                 data-details="knowledge/concepts/craft-in-product-design.md — contradicts supervision-as-the-new-ai-edge (source=sql)"
                 data-headline="contradiction · Craft in product design"
-                data-subheadline="2026-08-23"
+                data-subheadline="2026-08-30"
                 aria-haspopup="dialog">
           <div class="ticket-headline">
             contradiction · Craft in product design
           </div>
-            <div class="ticket-subheadline">2026-08-23</div>
+            <div class="ticket-subheadline">2026-08-30</div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="lint" aria-hidden="true"></span>
             lint
@@ -400,8 +402,8 @@ knowledge/concepts/cost-capped-agentic-workflows.md — contradicts vault-mainte
     <div class="kanban-column" data-column="todo">
       <div class="kanban-column-header">
         <span class="column-label">ToDo</span>
-        <span class="column-count">246</span>
-          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#FF5C46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,1.0 8.7,11.0 16.3,11.0 24.0,11.0 31.7,11.0 39.3,11.0 47.0,11.0"/></svg></span>
+        <span class="column-count">264</span>
+          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#FF5C46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,11.0 8.7,11.0 16.3,11.0 24.0,11.0 31.7,11.0 39.3,11.0 47.0,11.0"/></svg></span>
       </div>
         <button type="button" class="ticket" data-source="eval"
                 data-id="eval-case-35aaa01e"
@@ -415,6 +417,290 @@ knowledge/concepts/cost-capped-agentic-workflows.md — contradicts vault-mainte
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="eval" aria-hidden="true"></span>
             eval
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-2bb4acc7"
+                data-details=""
+                data-headline="B8 step 2 is answered: nothing was lost, and the branch list is now empty except `main` (audited 2026-08-30). The open ticket above asks whether the vanished `ad77bc5` deploy cost us anything. It did not, and the proof is now a tag rather than a branch: `archive/mini-pre-b8-2026-08-28` (pushed, points at `bcc9ceae`). Content audit of that snapshot against `main` — 24 of its 27 commits are `vault: auto-commit` noise from the Obsidian-Git owner retired 2026-07-05; the 3 real commits are all on `main` (`da4856fb`&#39;s 2026-08-11 production repairs are present verbatim — vault_critic&#39;s non-zero exit on STATUS_ERROR, `DESCRIPTION_MAX_CHARS = 20_000`, the flush timeout fix, the meta-agent agent list; `38c8efd7` landed via PR #131; `bcc9ceae`&#39;s `[redacted]` gitignore rule is on `main`); and of the 65 files unique to it, 64 are byte-identical blobs on `main`**, relocated to `substack-studio/_archive/back-catalog/` by the 2026-08-05 revamp. The 65th, `writing-critique/references/baseline-corpus.md`, was deliberately deleted by `25a70d81` as a contaminated analyzer baseline (#177) — an intentional withdrawal, not a loss. Also cleared: `chore/hook-followups-2026-08-28` (tree hash `c1af4102`, byte-identical to `990058ff` on `main` via squash-merge #203) and `research/book-to-skill-evaluation` (merged as #217 after sitting unmerged since 2026-08-22). Fleet working tree landed as #216. `origin` now carries `main` alone."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            B8 step 2 is answered: nothing was lost, and the branch list is now empty except `main` (audited 2026-08-30). The open ticket above asks whether the vanished `ad77bc5` deploy cost us anything. It did not, and the proof is now a tag rather than a branch: `archive/mini-pre-b8-2026-08-28` (pushed, points at `bcc9ceae`). Content audit of that snapshot against `main` — 24 of its 27 commits are `vault: auto-commit` noise from the Obsidian-Git owner retired 2026-07-05; the 3 real commits are all on `main` (`da4856fb`&#39;s 2026-08-11 production repairs are present verbatim — vault_critic&#39;s non-zero exit on STATUS_ERROR, `DESCRIPTION_MAX_CHARS = 20_000`, the flush timeout fix, the meta-agent agent list; `38c8efd7` landed via PR #131; `bcc9ceae`&#39;s `[redacted]` gitignore rule is on `main`); and of the 65 files unique to it, 64 are byte-identical blobs on `main`**, relocated to `substack-studio/_archive/back-catalog/` by the 2026-08-05 revamp. The 65th, `writing-critique/references/baseline-corpus.md`, was deliberately deleted by `25a70d81` as a contaminated analyzer baseline (#177) — an intentional withdrawal, not a loss. Also cleared: `chore/hook-followups-2026-08-28` (tree hash `c1af4102`, byte-identical to `990058ff` on `main` via squash-merge #203) and `research/book-to-skill-evaluation` (merged as #217 after sitting unmerged since 2026-08-22). Fleet working tree landed as #216. `origin` now carries `main` alone.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-b256bdbb"
+                data-details=""
+                data-headline="The Mini will silently drop off the tailnet after a reboot — `TailscaleStartOnLogin = 0` (found 2026-08-30 while closing B11&#39;s first half). `defaults read io.tailscale.ipn.macsys TailscaleStartOnLogin` returns `0` on the machine that runs the fleet, so Tailscale is up right now only because it was launched by hand at 11:32. This is the same shape as the standing `RunAtLoad` gap in the fleet plists: a reliability mechanism that is installed but not durable, and whose failure is silent — after a power cut or an OS update the Mini leaves the tailnet, and ADR-02&#39;s answer page becomes unreachable with nothing announcing it. Fix is one checkbox** (Tailscale → Settings → run on login), but it is a config change on a production host and was deliberately left for Sean rather than flipped by an agent. Worth deciding at the same time whether reachability deserves its own health check, since nothing currently notices the Mini being off the tailnet."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            The Mini will silently drop off the tailnet after a reboot — `TailscaleStartOnLogin = 0` (found 2026-08-30 while closing B11&#39;s first half). `defaults read io.tailscale.ipn.macsys TailscaleStartOnLogin` returns `0` on the machine that runs the fleet, so Tailscale is up right now only because it was launched by hand at 11:32. This is the same shape as the standing `RunAtLoad` gap in the fleet plists: a reliability mechanism that is installed but not durable, and whose failure is silent — after a power cut or an OS update the Mini leaves the tailnet, and ADR-02&#39;s answer page becomes unreachable with nothing announcing it. Fix is one checkbox** (Tailscale → Settings → run on login), but it is a config change on a production host and was deliberately left for Sean rather than flipped by an agent. Worth deciding at the same time whether reachability deserves its own health check, since nothing currently notices the Mini being off the tailnet.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-9843c14c"
+                data-details=""
+                data-headline="Tailscale&#39;s macOS GUI cannot add an account on the Mini — `Unable to add a new user. Please try again.` (found 2026-08-30). Clicking *Sign in to your network* and *Sign up* in the desktop app did nothing; the Accounts pane errored. Everything underneath was provably healthy, so this is a bug in the app&#39;s OAuth handoff and not an install or network fault: the system extension read `[activated enabled]` (`io.tailscale.ipn.macsys.network-extension 1.102.3`), the daemon answered `Logged out.`, `login.tailscale.com` returned 302 with 27ms DNS and `derpmap/default` returned 200. Workaround that worked, worth keeping** — bypass the GUI entirely with `/Applications/Tailscale.app/Contents/MacOS/Tailscale up --hostname=seans-mac-mini`, which prints an auth URL and returned `Success.` Reach for this again on the next device rather than re-fighting the dialog. Not worth chasing upstream unless it recurs."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Tailscale&#39;s macOS GUI cannot add an account on the Mini — `Unable to add a new user. Please try again.` (found 2026-08-30). Clicking *Sign in to your network* and *Sign up* in the desktop app did nothing; the Accounts pane errored. Everything underneath was provably healthy, so this is a bug in the app&#39;s OAuth handoff and not an install or network fault: the system extension read `[activated enabled]` (`io.tailscale.ipn.macsys.network-extension 1.102.3`), the daemon answered `Logged out.`, `login.tailscale.com` returned 302 with 27ms DNS and `derpmap/default` returned 200. Workaround that worked, worth keeping** — bypass the GUI entirely with `/Applications/Tailscale.app/Contents/MacOS/Tailscale up --hostname=seans-mac-mini`, which prints an auth URL and returned `Success.` Reach for this again on the next device rather than re-fighting the dialog. Not worth chasing upstream unless it recurs.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-03222e47"
+                data-details=""
+                data-headline="B11&#39;s remaining half — build ADR-02&#39;s answer page, then re-run the round-trip proof (2026-08-30). Reachability is done and evidenced (see the eng-002 ticket); what is missing is the thing on the other end. The rehearsal to reproduce once the page exists: bind it to the Mini&#39;s tailnet IP 100.75.47.2 only, never `0.0.0.0`, then load it from the iPhone with Wi-Fi off and cellular on**, and confirm the hit server-side from `100.76.106.44` rather than by asking whether it loaded — the peer&#39;s `CurAddr` should show a carrier address (`2600:1000::/24` for Verizon), which is what actually distinguishes an off-LAN test from a same-network one."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            B11&#39;s remaining half — build ADR-02&#39;s answer page, then re-run the round-trip proof (2026-08-30). Reachability is done and evidenced (see the eng-002 ticket); what is missing is the thing on the other end. The rehearsal to reproduce once the page exists: bind it to the Mini&#39;s tailnet IP 100.75.47.2 only, never `0.0.0.0`, then load it from the iPhone with Wi-Fi off and cellular on**, and confirm the hit server-side from `100.76.106.44` rather than by asking whether it loaded — the peer&#39;s `CurAddr` should show a carrier address (`2600:1000::/24` for Verizon), which is what actually distinguishes an off-LAN test from a same-network one.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-1e801f3f"
+                data-details=""
+                data-headline="B3&#39;s seven-night certification clock is unblocked but NOT started** (2026-08-30). The transport is now proven from the Mini — one live Pushover send was accepted and Sean confirmed phone receipt — which was the stated blocker. Starting the clock, and ruling on what counts as a passing night, is a separate decision that was explicitly held back. Note the measurement gap that remains: a healthy night writes `probe: &#34;ok&#34;` from `_probe_fleet_push_credentials`, which sends nothing by design, so seven healthy nights would certify the credential path and not the wire. Decide whether the clock needs a periodic real send (a canary) to mean what it is supposed to mean."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            B3&#39;s seven-night certification clock is unblocked but NOT started** (2026-08-30). The transport is now proven from the Mini — one live Pushover send was accepted and Sean confirmed phone receipt — which was the stated blocker. Starting the clock, and ruling on what counts as a passing night, is a separate decision that was explicitly held back. Note the measurement gap that remains: a healthy night writes `probe: &#34;ok&#34;` from `_probe_fleet_push_credentials`, which sends nothing by design, so seven healthy nights would certify the credential path and not the wire. Decide whether the clock needs a periodic real send (a canary) to mean what it is supposed to mean.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-7d2e1829"
+                data-details=""
+                data-headline="The Mini&#39;s HEAD no longer contains `ad77bc5`, the 2026-08-28 B8-step-1 deploy commit (surfaced 2026-08-30). HEAD is `b69b1617` on `chore/hook-followups-2026-08-28`; the branch the deploy landed on, `[redacted]`, is gone locally, and `git merge-base --is-ancestor ad77bc5 HEAD` says no. Nothing is broken by it — the tree is clean, the Mini is 4 ahead / 0 behind `origin/main` and fully pushed, the only code-path diff vs `origin/main` is the 2-line `d999c50f` hooks fix, and the suite is 997 passed / 0 failed** — so this is bookkeeping rather than drift. But B8 step 2 should confirm deliberately that nothing from that deploy was lost when the branch went away, rather than assuming it. Rollback points both intact: `mini-pre-b8-archive-2026-08-28` = `bcc9cea`, and the 29,388,800-byte DB backup."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            The Mini&#39;s HEAD no longer contains `ad77bc5`, the 2026-08-28 B8-step-1 deploy commit (surfaced 2026-08-30). HEAD is `b69b1617` on `chore/hook-followups-2026-08-28`; the branch the deploy landed on, `[redacted]`, is gone locally, and `git merge-base --is-ancestor ad77bc5 HEAD` says no. Nothing is broken by it — the tree is clean, the Mini is 4 ahead / 0 behind `origin/main` and fully pushed, the only code-path diff vs `origin/main` is the 2-line `d999c50f` hooks fix, and the suite is 997 passed / 0 failed** — so this is bookkeeping rather than drift. But B8 step 2 should confirm deliberately that nothing from that deploy was lost when the branch went away, rather than assuming it. Rollback points both intact: `mini-pre-b8-archive-2026-08-28` = `bcc9cea`, and the 29,388,800-byte DB backup.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-682b0026"
+                data-details=""
+                data-headline="The four-failing-tests ticket above is stale on its numbers but not on its point (verified on the Mini 2026-08-30): `pytest tests/ -q` now returns 997 passed, 0 failed** — the four named failures are gone. The half of that ticket that still stands is the reason they went unnoticed: nothing runs the suite on a schedule and no hook gates a commit on it, so the next four reds will sit just as quietly. Update the numbers or fold it into the gating work."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            The four-failing-tests ticket above is stale on its numbers but not on its point (verified on the Mini 2026-08-30): `pytest tests/ -q` now returns 997 passed, 0 failed** — the four named failures are gone. The half of that ticket that still stands is the reason they went unnoticed: nothing runs the suite on a schedule and no hook gates a commit on it, so the next four reds will sit just as quietly. Update the numbers or fold it into the gating work.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-dffe0b9e"
+                data-details=""
+                data-headline="Four `agents-sdk` tests have been failing and nothing was gating them** (surfaced 2026-08-29 while running the full suite for [#202](https://github.com/seanwinslow28/code-brain/issues/202); confirmed pre-existing by stashing that change and re-running, identical four). `test_doc_to_audio_cli.py::test_main_json_mode_emits_parseable_json` and three in `test_job_db.py` (`test_update_status_cli_end_to_end`, `..._rejects_invalid_status`, `..._rejects_unknown_row_id`). 985 pass, so the suite is overwhelmingly green and that is exactly why four reds sit unnoticed: nothing runs `pytest tests/` on a schedule and no hook gates a commit on it. Same shape as the eval suite sitting unrun across a 192-line change, and the same shape as #202 itself. Decide whether the fix is repairing the four, or wiring the suite into something that fails loudly, or both."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Four `agents-sdk` tests have been failing and nothing was gating them** (surfaced 2026-08-29 while running the full suite for [#202](https://github.com/seanwinslow28/code-brain/issues/202); confirmed pre-existing by stashing that change and re-running, identical four). `test_doc_to_audio_cli.py::test_main_json_mode_emits_parseable_json` and three in `test_job_db.py` (`test_update_status_cli_end_to_end`, `..._rejects_invalid_status`, `..._rejects_unknown_row_id`). 985 pass, so the suite is overwhelmingly green and that is exactly why four reds sit unnoticed: nothing runs `pytest tests/` on a schedule and no hook gates a commit on it. Same shape as the eval suite sitting unrun across a 192-line change, and the same shape as #202 itself. Decide whether the fix is repairing the four, or wiring the suite into something that fails loudly, or both.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-0543fea9"
+                data-details=""
+                data-headline="eng-002 Gate 2 has no live verdict — a fresh changed-seam re-gate is owed before 1A leans on gate status** (surfaced 2026-08-29 by eng-003&#39;s Evals pass, d21; coordinator-verified same day): all six Gate-2 findings files on disk read FAIL, d143&#39;s PASS claim is superseded in part by d147, and d147/d148 repaired the last design contradiction without a fresh gate run. One stateless Codex pass on the changed seam settles it."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            eng-002 Gate 2 has no live verdict — a fresh changed-seam re-gate is owed before 1A leans on gate status** (surfaced 2026-08-29 by eng-003&#39;s Evals pass, d21; coordinator-verified same day): all six Gate-2 findings files on disk read FAIL, d143&#39;s PASS claim is superseded in part by d147, and d147/d148 repaired the last design contradiction without a fresh gate run. One stateless Codex pass on the changed seam settles it.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-1c1ea16c"
+                data-details=""
+                data-headline="eng-003 D+14 outcome record due 2026-09-12** — the studio&#39;s ratified success law (eng-003 d40/d11) needs Sean&#39;s dated dispositions on the Close package by then; this is the first tick of the two-observed-month clock that gates the control-plane build. A miss is the studio&#39;s first FAIL under its own law and freezes new studio scope."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            eng-003 D+14 outcome record due 2026-09-12** — the studio&#39;s ratified success law (eng-003 d40/d11) needs Sean&#39;s dated dispositions on the Close package by then; this is the first tick of the two-observed-month clock that gates the control-plane build. A miss is the studio&#39;s first FAIL under its own law and freezes new studio scope.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-5b002fbf"
+                data-details=""
+                data-headline="Five ungrounded corpus citations found by the eng-003 spot-audit (d22: rows E1-A2, E1-D3, E2-A1, E2-A3, E2-D2)** — real sources cited for claims narrower than attributed (75% of the sample grounded, these five overextended). Repair or annotate each at the next edit of its owning artifact; no dedicated session needed."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Five ungrounded corpus citations found by the eng-003 spot-audit (d22: rows E1-A2, E1-D3, E2-A1, E2-A3, E2-D2)** — real sources cited for claims narrower than attributed (75% of the sample grounded, these five overextended). Repair or annotate each at the next edit of its owning artifact; no dedicated session needed.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-bb3bb53d"
+                data-details=""
+                data-headline="`npm run floors` has been RED on a clean tree, and the map still says GREEN (surfaced 2026-08-29 during wayfinder #199, attribution measured rather than assumed: stashed the session&#39;s only change and re-ran, RED both ways with the same four records). Every failure is the same one, a p95 frame time of 17.5ms against the 16.7ms 60fps budget, and it lands uniformly on the home reel, the judgement band on *both* `/work/code-brain/` and `/work/agent-fleet-observability/`, and the 680-1200ms reveal window, at 1x and 4x throttle alike. A uniform ~5% overage on every measured surface reads more like a loaded machine than a code regression, but that is a hypothesis, not a finding. It matters because [#187](https://github.com/seanwinslow28/code-brain/issues/187) recorded &#34;floors GREEN&#34; three days ago and the portfolio gap-closure map lists floors green as a standing gate on every site commit, so either the gate has been quietly red since then or the machine has changed underneath it. The check&#39;s own text is explicit that this is not mine to absorb: *&#34;Spec 7 STOP: report the measured result to Sean; do not accept or silently simplify the scene panel.&#34;* The same signature also trips the reveal cascade&#39;s beat assertions, which have a ±33ms tolerance and came in 35.2ms late** across the board. That one is cleanly attributable to the machine rather than to any page change: `meta1` is late by exactly the same 35.2ms as `meta2`, and #199&#39;s change adds spans only to `meta2`, which fires *after* meta1. Nothing in the page can make an earlier beat late, so it is a global clock shift. Settle it on a quiet machine, and if it is load, both the frame budget and the ±33ms cascade tolerance need a stated allowance rather than numbers that only pass when nothing else is running."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            `npm run floors` has been RED on a clean tree, and the map still says GREEN (surfaced 2026-08-29 during wayfinder #199, attribution measured rather than assumed: stashed the session&#39;s only change and re-ran, RED both ways with the same four records). Every failure is the same one, a p95 frame time of 17.5ms against the 16.7ms 60fps budget, and it lands uniformly on the home reel, the judgement band on *both* `/work/code-brain/` and `/work/agent-fleet-observability/`, and the 680-1200ms reveal window, at 1x and 4x throttle alike. A uniform ~5% overage on every measured surface reads more like a loaded machine than a code regression, but that is a hypothesis, not a finding. It matters because [#187](https://github.com/seanwinslow28/code-brain/issues/187) recorded &#34;floors GREEN&#34; three days ago and the portfolio gap-closure map lists floors green as a standing gate on every site commit, so either the gate has been quietly red since then or the machine has changed underneath it. The check&#39;s own text is explicit that this is not mine to absorb: *&#34;Spec 7 STOP: report the measured result to Sean; do not accept or silently simplify the scene panel.&#34;* The same signature also trips the reveal cascade&#39;s beat assertions, which have a ±33ms tolerance and came in 35.2ms late** across the board. That one is cleanly attributable to the machine rather than to any page change: `meta1` is late by exactly the same 35.2ms as `meta2`, and #199&#39;s change adds spans only to `meta2`, which fires *after* meta1. Nothing in the page can make an earlier beat late, so it is a global clock shift. Settle it on a quiet machine, and if it is load, both the frame budget and the ±33ms cascade tolerance need a stated allowance rather than numbers that only pass when nothing else is running.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-06312052"
+                data-details=""
+                data-headline="Two project pages have been rendering a 3-line description since #186 and nothing measured it (surfaced 2026-08-29 during wayfinder #199). `.work__foot` is `grid-template-columns: minmax(0, 1fr) auto` with the metas column sized `auto`, so every meta row added narrows the statement&#39;s measure. A deliberate 2026-08-24 work-statement type pass had tuned Code Brain&#39;s description to 2 visual lines at 1280, and #199&#39;s Explanation row put it back to 3. That was accepted on 2026-08-29 (Code Brain simply joins its siblings) and `ROUTE_CASCADE_MANIFEST` in `scripts/intro-cdp-checks.mjs` was updated to match. The part nobody has looked at:** `groundwork` (175-char description) and `eval-suite` (134) carry the same four meta rows with *longer* descriptions and have shipped that way since #186, while `agent-fleet-observability` and `intent-engineering-mcp` carry five rows. The CDP reveal suite only ever measures `/work/code-brain/`, so those four routes have no line-count gate at all. Worth an actual look at 1280 to decide whether the 2026-08-24 type pass survived contact with the Explanation row anywhere, or whether it only ever held on the one page that lacked the row."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Two project pages have been rendering a 3-line description since #186 and nothing measured it (surfaced 2026-08-29 during wayfinder #199). `.work__foot` is `grid-template-columns: minmax(0, 1fr) auto` with the metas column sized `auto`, so every meta row added narrows the statement&#39;s measure. A deliberate 2026-08-24 work-statement type pass had tuned Code Brain&#39;s description to 2 visual lines at 1280, and #199&#39;s Explanation row put it back to 3. That was accepted on 2026-08-29 (Code Brain simply joins its siblings) and `ROUTE_CASCADE_MANIFEST` in `scripts/intro-cdp-checks.mjs` was updated to match. The part nobody has looked at:** `groundwork` (175-char description) and `eval-suite` (134) carry the same four meta rows with *longer* descriptions and have shipped that way since #186, while `agent-fleet-observability` and `intent-engineering-mcp` carry five rows. The CDP reveal suite only ever measures `/work/code-brain/`, so those four routes have no line-count gate at all. Worth an actual look at 1280 to decide whether the 2026-08-24 type pass survived contact with the Explanation row anywhere, or whether it only ever held on the one page that lacked the row.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-b16a0800"
+                data-details=""
+                data-headline="DONE 2026-08-29 (Claude Code): product-agnostic research sprint for the agentic-web startup — both deliverables shipped same evening, $0 spend. (1) Software-factory literature synthesis (delta round) at [[redacted]](../20_projects/research/2026-08-29-software-factory-literature-synthesis.md): builds on the rediscovered 2026-08-08 review rather than duplicating it; 3 parallel web sweeps (31 pieces: Uber/Shopify/Ramp/exe.dev/Stripe + both labs + 12 practitioner posts incl. negative results), 2 NotebookLM cross-corpus cited answers, 14 fulltext transcripts of post-8/08 notebook sources, Codex (GPT-5.6) cross-source synthesis, orchestrator spot-check 4/4 verbatim. Headlines: gate placement is a spectrum not a consensus; only Uber publishes evals as gates AND production monitors; written practitioner agent-counts run ~4x below talk-circuit claims; no source demonstrates a factory at ≤$250/mo. Evidence mirrored in `2026-08-29-software-factory-lit-delta/`. (2) Groundwork fit check at [[redacted]](../20_projects/research/2026-08-29-groundwork-fit-check-agentic-web.md): 131 commits since the 8/08 audit (schema v2 roles roster, evidence floor, since:-demotion now real); fleet-role ontology still the #1 gap; enforcement parity more acute under a mixed-model fleet; notes only, no fixes. Arize hands-on (item 3) untouched — Sean&#39;s own optional track."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            DONE 2026-08-29 (Claude Code): product-agnostic research sprint for the agentic-web startup — both deliverables shipped same evening, $0 spend. (1) Software-factory literature synthesis (delta round) at [[redacted]](../20_projects/research/2026-08-29-software-factory-literature-synthesis.md): builds on the rediscovered 2026-08-08 review rather than duplicating it; 3 parallel web sweeps (31 pieces: Uber/Shopify/Ramp/exe.dev/Stripe + both labs + 12 practitioner posts incl. negative results), 2 NotebookLM cross-corpus cited answers, 14 fulltext transcripts of post-8/08 notebook sources, Codex (GPT-5.6) cross-source synthesis, orchestrator spot-check 4/4 verbatim. Headlines: gate placement is a spectrum not a consensus; only Uber publishes evals as gates AND production monitors; written practitioner agent-counts run ~4x below talk-circuit claims; no source demonstrates a factory at ≤$250/mo. Evidence mirrored in `2026-08-29-software-factory-lit-delta/`. (2) Groundwork fit check at [[redacted]](../20_projects/research/2026-08-29-groundwork-fit-check-agentic-web.md): 131 commits since the 8/08 audit (schema v2 roles roster, evidence floor, since:-demotion now real); fleet-role ontology still the #1 gap; enforcement parity more acute under a mixed-model fleet; notes only, no fixes. Arize hands-on (item 3) untouched — Sean&#39;s own optional track.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-3dc63b61"
+                data-details=""
+                data-headline="Historical-patterns funnel Stages 1–2 pending Sean&#39;s ratification** (Stage 0 shipped 2026-08-29 evening, commit 713cfc09): two Gemini DR prompts (H-A layer-returns/platform-envelopment, H-B measurement-business economics, ~$4–8 total) + a ChatGPT Deep Research brief for Sean to fire manually are drafted in [[redacted]](../20_projects/research/2026-08-29-tech-revolution-patterns-stage0-synthesis.md) §&#34;Stage 1&#34;; after DR: tier-audit both outputs, then council pre-mortem (~$0.29) attacks the synthesis before it feeds Sept-1 scoring."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Historical-patterns funnel Stages 1–2 pending Sean&#39;s ratification** (Stage 0 shipped 2026-08-29 evening, commit 713cfc09): two Gemini DR prompts (H-A layer-returns/platform-envelopment, H-B measurement-business economics, ~$4–8 total) + a ChatGPT Deep Research brief for Sean to fire manually are drafted in [[redacted]](../20_projects/research/2026-08-29-tech-revolution-patterns-stage0-synthesis.md) §&#34;Stage 1&#34;; after DR: tier-audit both outputs, then council pre-mortem (~$0.29) attacks the synthesis before it feeds Sept-1 scoring.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-d7a3e5cf"
+                data-details=""
+                data-headline="Agentic-web lit-review follow-ups (small, non-blocking)** (surfaced 2026-08-29 during the research sprint): (a) Yegge&#39;s &#34;Revenge of the Junior Developer&#34; 403s on every fetch — his widely-cited per-dev token-cost figures stay uncited until read via an interactive browser session; (b) exe.dev&#39;s &#34;Antithesis sandbox for agentic software tests&#34; + &#34;OAuth for Agents&#34; posts unread; (c) tooling: `notebooklm ask` hard-fails at a 52MB client RPC cap on the 57-source notebook regardless of `-s` scoping — use `source fulltext` per source on big notebooks (lesson recorded in the synthesis note)."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Agentic-web lit-review follow-ups (small, non-blocking)** (surfaced 2026-08-29 during the research sprint): (a) Yegge&#39;s &#34;Revenge of the Junior Developer&#34; 403s on every fetch — his widely-cited per-dev token-cost figures stay uncited until read via an interactive browser session; (b) exe.dev&#39;s &#34;Antithesis sandbox for agentic software tests&#34; + &#34;OAuth for Agents&#34; posts unread; (c) tooling: `notebooklm ask` hard-fails at a 52MB client RPC cap on the 57-source notebook regardless of `-s` scoping — use `source fulltext` per source on big notebooks (lesson recorded in the synthesis note).
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-53f56ac3"
+                data-details=""
+                data-headline="Fire the two ratified Sept-1 discovery runs for the agentic-web startup campaign** (locked 2026-08-29, partner session `~/.creative-harness/partner-sessions/2026-08-29-agentic-web-startup.md` [L7]): after the discovery monthly cap resets 2026-09-01, run A compatibility (`standard`, topic &#34;product fitment and compatibility mistakes when buying parts and accessories&#34;, `--segment &#34;ecommerce sellers and DIY shoppers&#34;`) and run B creative-license (`standard`, topic &#34;commercial-use and licensing confusion with AI creative tools&#34;, `--segment &#34;working creatives and studios&#34;`), ~$3 total; keep topic strings SHORT (long ones 422&#39;d the Brave/GitHub collectors on 8/29). Then score both + the backfilled primary ledger on the five-dimension rubric and draft wave-2 prompts for Sean&#39;s ratification."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Fire the two ratified Sept-1 discovery runs for the agentic-web startup campaign** (locked 2026-08-29, partner session `~/.creative-harness/partner-sessions/2026-08-29-agentic-web-startup.md` [L7]): after the discovery monthly cap resets 2026-09-01, run A compatibility (`standard`, topic &#34;product fitment and compatibility mistakes when buying parts and accessories&#34;, `--segment &#34;ecommerce sellers and DIY shoppers&#34;`) and run B creative-license (`standard`, topic &#34;commercial-use and licensing confusion with AI creative tools&#34;, `--segment &#34;working creatives and studios&#34;`), ~$3 total; keep topic strings SHORT (long ones 422&#39;d the Brave/GitHub collectors on 8/29). Then score both + the backfilled primary ledger on the five-dimension rubric and draft wave-2 prompts for Sean&#39;s ratification.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-f1f4f3d0"
+                data-details=""
+                data-headline="`seanwinslow.com` has no git remote — 264 commits exist on this MacBook and nowhere else** (surfaced 2026-08-29 trying to push wayfinder #187&#39;s risk-slot commit). `git config --get-regexp &#39;^remote\.&#39;` returns nothing, `gh repo view seanwinslow28/seanwinslow.com` says the repository does not resolve, and `config.toml`&#39;s `[portfolio] worktree_path = /Users/seanwinslow/Code-Brain/.portfolio-dateline-worktree` does not exist on this machine either. The history runs from 2026-08-12 to today on a single `main` with one branch and no backup. Everything the portfolio gap-closure map has executed (#180–#187, plus the plan docs) is sitting on one un-backed-up local clone. Two things to settle: where the canonical remote actually is (the Mini&#39;s dateline worktree pushes *somewhere* per CLAUDE.md&#39;s push-only Vercel trigger — find that URL and add it as `origin` here), and whether this clone or the Mini&#39;s is ahead. Until then the risk-slot panel and the surfacing work are built but undeployed."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            `seanwinslow.com` has no git remote — 264 commits exist on this MacBook and nowhere else** (surfaced 2026-08-29 trying to push wayfinder #187&#39;s risk-slot commit). `git config --get-regexp &#39;^remote\.&#39;` returns nothing, `gh repo view seanwinslow28/seanwinslow.com` says the repository does not resolve, and `config.toml`&#39;s `[portfolio] worktree_path = /Users/seanwinslow/Code-Brain/.portfolio-dateline-worktree` does not exist on this machine either. The history runs from 2026-08-12 to today on a single `main` with one branch and no backup. Everything the portfolio gap-closure map has executed (#180–#187, plus the plan docs) is sitting on one un-backed-up local clone. Two things to settle: where the canonical remote actually is (the Mini&#39;s dateline worktree pushes *somewhere* per CLAUDE.md&#39;s push-only Vercel trigger — find that URL and add it as `origin` here), and whether this clone or the Mini&#39;s is ahead. Until then the risk-slot panel and the surfacing work are built but undeployed.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-7b819ef9"
+                data-details=""
+                data-headline="Floors page check 15 (route-transition aperture) is flaky by ~5 ms** (surfaced 2026-08-29 during wayfinder #187, four consecutive `npm run floors` runs of identical `seanwinslow.com` code: two fully green, one red on check 15, one red on 15+19). The failure reads &#34;the native pseudo-dim aperture did not land by 1200ms&#34; with `elapsed=1205.2`, `apertureTime=1200`, `active=false` — the probe sampled 5 ms after the view-transition had already finished, so it measured a completed animation as an unlanded one. Nothing to do with the beats band (that leg is green on all seven routes at 1x and 4x). This is a gate that cries wolf: a flaky floor trains you to re-run instead of read, which is exactly how a real red gets waved through. Fix options: (a) sample against `apertureTime &gt;= 1200` rather than requiring the transition still be `active`, (b) widen the window to the frame budget (~1216 ms), or (c) drive the probe off the animation&#39;s `finished` promise instead of a wall-clock sample."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Floors page check 15 (route-transition aperture) is flaky by ~5 ms** (surfaced 2026-08-29 during wayfinder #187, four consecutive `npm run floors` runs of identical `seanwinslow.com` code: two fully green, one red on check 15, one red on 15+19). The failure reads &#34;the native pseudo-dim aperture did not land by 1200ms&#34; with `elapsed=1205.2`, `apertureTime=1200`, `active=false` — the probe sampled 5 ms after the view-transition had already finished, so it measured a completed animation as an unlanded one. Nothing to do with the beats band (that leg is green on all seven routes at 1x and 4x). This is a gate that cries wolf: a flaky floor trains you to re-run instead of read, which is exactly how a real red gets waved through. Fix options: (a) sample against `apertureTime &gt;= 1200` rather than requiring the transition still be `active`, (b) widen the window to the frame budget (~1216 ms), or (c) drive the probe off the animation&#39;s `finished` promise instead of a wall-clock sample.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
           </div>
         </button>
         <button type="button" class="ticket" data-source="manual"
@@ -433,13 +719,13 @@ knowledge/concepts/cost-capped-agentic-workflows.md — contradicts vault-mainte
           </div>
         </button>
         <button type="button" class="ticket" data-source="manual"
-                data-id="manual-4bc15a38"
+                data-id="manual-6de43d39"
                 data-details=""
-                data-headline="Three more local branches are squash-merge zombies** (surfaced 2026-08-28 after clearing the first two): `feat/bt5-phase-c-c3` (426 ahead, last commit 2026-07-05), `vault-sync-2026-07-09` (428 ahead), and `mini-pre-b8-archive-2026-08-28` (27 ahead, deliberate archive — probably keep). Each reports 56/60/1 files &#39;only on branch&#39;, but on the two cleared today that signature turned out to be files deliberately *untracked upstream* (job-feed manifests under the privacy layer, the withdrawn writing-critique baseline), not unmerged work — verify the same before deleting. `delete_branch_on_merge` is now true, so no new ones accumulate."
+                data-headline="Two of the three branch zombies cleared 2026-08-30; one decision left. `feat/bt5-phase-c-c3` and `vault-sync-2026-07-09` are deleted. Verified by blob hash before deleting, not by filename: every file on those branches and absent from `origin/main` was either (a) a job-feed manifest under the privacy layer (60 files, .gitignore:278 — restoring them would re-leak the watchlist that was history-scrubbed 2026-08-11), (b) `writing-critique/references/baseline-corpus.md`, superseded on main by `baseline.json` + `build_baseline.py` in the 2026-08-26 provenance-audited rebuild, or (c) four `[redacted]` web clips that PR #131 deliberately triaged into knowledge references and deleted. Everything else was present on main under a new path (substack-studio posts relocated to `_archive/back-catalog/`) — the &#39;files only on branch&#39; signature was pure rename noise again. Still open:** `mini-pre-b8-archive-2026-08-28` has *zero* files absent from main, so it holds no unique content and is redundant as a safety net; it was kept because it is a deliberate archive marker. Decide whether the marker is worth a permanent local branch."
                 data-subheadline=""
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            Three more local branches are squash-merge zombies** (surfaced 2026-08-28 after clearing the first two): `feat/bt5-phase-c-c3` (426 ahead, last commit 2026-07-05), `vault-sync-2026-07-09` (428 ahead), and `mini-pre-b8-archive-2026-08-28` (27 ahead, deliberate archive — probably keep). Each reports 56/60/1 files &#39;only on branch&#39;, but on the two cleared today that signature turned out to be files deliberately *untracked upstream* (job-feed manifests under the privacy layer, the withdrawn writing-critique baseline), not unmerged work — verify the same before deleting. `delete_branch_on_merge` is now true, so no new ones accumulate.
+            Two of the three branch zombies cleared 2026-08-30; one decision left. `feat/bt5-phase-c-c3` and `vault-sync-2026-07-09` are deleted. Verified by blob hash before deleting, not by filename: every file on those branches and absent from `origin/main` was either (a) a job-feed manifest under the privacy layer (60 files, .gitignore:278 — restoring them would re-leak the watchlist that was history-scrubbed 2026-08-11), (b) `writing-critique/references/baseline-corpus.md`, superseded on main by `baseline.json` + `build_baseline.py` in the 2026-08-26 provenance-audited rebuild, or (c) four `[redacted]` web clips that PR #131 deliberately triaged into knowledge references and deleted. Everything else was present on main under a new path (substack-studio posts relocated to `_archive/back-catalog/`) — the &#39;files only on branch&#39; signature was pure rename noise again. Still open:** `mini-pre-b8-archive-2026-08-28` has *zero* files absent from main, so it holds no unique content and is redundant as a safety net; it was kept because it is a deliberate archive marker. Decide whether the marker is worth a permanent local branch.
           </div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
@@ -463,13 +749,13 @@ knowledge/concepts/cost-capped-agentic-workflows.md — contradicts vault-mainte
           </div>
         </button>
         <button type="button" class="ticket" data-source="manual"
-                data-id="manual-5663b3d6"
+                data-id="manual-4c8288d4"
                 data-details=""
-                data-headline="Meta-agent wrote fleet-state.md as a dry run (2026-08-28 11:05)** — every health row in `[redacted]` reads &#34;Dry run — skipping actual log check&#34; instead of real agent status, overwriting the 08-26 snapshot that had genuine data (indexer chunks, synthesizer `tier2-host-unreachable`, critic `codex_fail=2`). It also reports &#34;9 of 17 active / 8 disabled&#34; vs the prior &#34;9 of 14 / 5&#34;. Committed as-is in PR #178. Check whether an 11:05 manual `--dry-run` invocation clobbered the 08:45 scheduled output, and whether the launchd run fired at all that morning."
+                data-headline="A manual `--dry-run` meta-agent invocation silently overwrites the scheduled fleet-state.md (diagnosed 2026-08-30; supersedes the 08-28 ticket). The launchd run does fire — the 08-30 08:45 run wrote real rows (indexer `chunks=184`, synthesizer `concepts=90 connections=27`, critic `codex_fail=1`), so the 08-28 all-placeholder snapshot was clobbered by the 11:05 manual dry run, not caused by a missed schedule. The diagnosis is closed; the hazard is not fixed**: `--dry-run` still writes to the same production artifact the real run owns, so any manual invocation destroys that morning&#39;s fleet health record. Fix options: write dry-run output to a `-dry-run` suffixed path, refuse to write fleet-state.md at all under `--dry-run`, or refuse to overwrite a same-day file whose rows are non-placeholder. Note the alert-delivery log already took the third approach (dry runs write a self-identifying row rather than nothing) — fleet-state.md should match."
                 data-subheadline=""
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            Meta-agent wrote fleet-state.md as a dry run (2026-08-28 11:05)** — every health row in `[redacted]` reads &#34;Dry run — skipping actual log check&#34; instead of real agent status, overwriting the 08-26 snapshot that had genuine data (indexer chunks, synthesizer `tier2-host-unreachable`, critic `codex_fail=2`). It also reports &#34;9 of 17 active / 8 disabled&#34; vs the prior &#34;9 of 14 / 5&#34;. Committed as-is in PR #178. Check whether an 11:05 manual `--dry-run` invocation clobbered the 08:45 scheduled output, and whether the launchd run fired at all that morning.
+            A manual `--dry-run` meta-agent invocation silently overwrites the scheduled fleet-state.md (diagnosed 2026-08-30; supersedes the 08-28 ticket). The launchd run does fire — the 08-30 08:45 run wrote real rows (indexer `chunks=184`, synthesizer `concepts=90 connections=27`, critic `codex_fail=1`), so the 08-28 all-placeholder snapshot was clobbered by the 11:05 manual dry run, not caused by a missed schedule. The diagnosis is closed; the hazard is not fixed**: `--dry-run` still writes to the same production artifact the real run owns, so any manual invocation destroys that morning&#39;s fleet health record. Fix options: write dry-run output to a `-dry-run` suffixed path, refuse to write fleet-state.md at all under `--dry-run`, or refuse to overwrite a same-day file whose rows are non-placeholder. Note the alert-delivery log already took the third approach (dry runs write a self-identifying row rather than nothing) — fleet-state.md should match.
           </div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
@@ -478,13 +764,13 @@ knowledge/concepts/cost-capped-agentic-workflows.md — contradicts vault-mainte
           </div>
         </button>
         <button type="button" class="ticket" data-source="manual"
-                data-id="manual-86004f04"
+                data-id="manual-8d04c43f"
                 data-details=""
-                data-headline="Portfolio gap-closure wayfinder map is live — work it from GitHub, not here**: [Wayfinder: close the gaps in the five project pages](https://github.com/seanwinslow28/code-brain/issues/179) charted 2026-08-28 with 15 child tickets (#180–#194); carries execution, not just planning. Frontier now: Agent Dash build restart (#180), README true-up (#181), Intent MCP README re-verification (#182), the Risk-slot decision (#183, grilling with Sean), the three EXPLANATION.md files (#185), plus the six unblocked Tier 3/4 tickets. Blocked: surfacing decision #184 ← #183; surfacing execution #186 ← #184+#185; Risk-slot execution #187 ← #183+#185. Driftgate and panel art out of scope by ruling."
+                data-headline="Portfolio gap-closure wayfinder map is live — work it from GitHub, not here: [Wayfinder: close the gaps in the five project pages](https://github.com/seanwinslow28/code-brain/issues/179) charted 2026-08-28; 16 child tickets now (#180–#194, #199); carries execution, not just planning. Both decisions are closed — #183 ruled the accepted risk becomes a sixth peer panel (kicker `risk`, label &#34;What would break&#34;, seated fourth, mandatory on all seven pages); #184 ruled it surfaces via a meta row reading `Explanation` / &#34;Why it&#39;s built this way&#34;, linking out to each artifact&#39;s blob URL on `main`. Also closed: #180, #181, #182, #185. Frontier now is all execution: #186 (surface the five links), #187 (build the risk panel — largest item is `scripts/intro-check.html` hardcoding `panels.length === 5` in two floors checks), #199 (write Code Brain&#39;s missing page-level 4Q artifact), plus #188–#194. Nothing is blocked. Byte constraint, measured:** after #186 and #187 land the five real pages sit at ~4050 of a 4096 grant, about 46 bytes each — they are full, and anything further is a deliberate renegotiation. Driftgate and panel art out of scope by ruling; the panel-art effort grew from ~24 to ~30 cards."
                 data-subheadline=""
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            Portfolio gap-closure wayfinder map is live — work it from GitHub, not here**: [Wayfinder: close the gaps in the five project pages](https://github.com/seanwinslow28/code-brain/issues/179) charted 2026-08-28 with 15 child tickets (#180–#194); carries execution, not just planning. Frontier now: Agent Dash build restart (#180), README true-up (#181), Intent MCP README re-verification (#182), the Risk-slot decision (#183, grilling with Sean), the three EXPLANATION.md files (#185), plus the six unblocked Tier 3/4 tickets. Blocked: surfacing decision #184 ← #183; surfacing execution #186 ← #184+#185; Risk-slot execution #187 ← #183+#185. Driftgate and panel art out of scope by ruling.
+            Portfolio gap-closure wayfinder map is live — work it from GitHub, not here: [Wayfinder: close the gaps in the five project pages](https://github.com/seanwinslow28/code-brain/issues/179) charted 2026-08-28; 16 child tickets now (#180–#194, #199); carries execution, not just planning. Both decisions are closed — #183 ruled the accepted risk becomes a sixth peer panel (kicker `risk`, label &#34;What would break&#34;, seated fourth, mandatory on all seven pages); #184 ruled it surfaces via a meta row reading `Explanation` / &#34;Why it&#39;s built this way&#34;, linking out to each artifact&#39;s blob URL on `main`. Also closed: #180, #181, #182, #185. Frontier now is all execution: #186 (surface the five links), #187 (build the risk panel — largest item is `scripts/intro-check.html` hardcoding `panels.length === 5` in two floors checks), #199 (write Code Brain&#39;s missing page-level 4Q artifact), plus #188–#194. Nothing is blocked. Byte constraint, measured:** after #186 and #187 land the five real pages sit at ~4050 of a 4096 grant, about 46 bytes each — they are full, and anything further is a deliberate renegotiation. Driftgate and panel art out of scope by ruling; the panel-art effort grew from ~24 to ~30 cards.
           </div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
@@ -492,43 +778,27 @@ knowledge/concepts/cost-capped-agentic-workflows.md — contradicts vault-mainte
           </div>
         </button>
         <button type="button" class="ticket" data-source="manual"
-                data-id="manual-503692b4"
+                data-id="manual-be897cbd"
                 data-details=""
-                data-headline="CRITICAL — the fleet&#39;s pager has never worked: place Pushover credentials on the Mac Mini — `pushover_user_key` and `pushover_app_token` resolve on the MacBook Pro (`lib.keychain.get_credential`, service `com.sean.agents.&lt;name&gt;`, 30 chars each) and are absent from the Mini, proven by 369 launchd-context failures in `[redacted]` (`Missing Pushover credentials in Keychain`), most recent 2026-08-28 03:14, with zero successful sends in any Mini log, ever. eng-001.d40&#39;s alert delivery path shipped to production today on the assumption these were already provisioned for job-feed; that assumption is false on the machine that runs the fleet, and `[notifications.push_strong_fits] enabled = true` has been failing silently too. B3&#39;s seven-night clock must not start until a real meta-agent run records a `delivered: true` with a send actually attempted.** Secrets are Sean&#39;s to move — on the Mini: `python3 agents-sdk/lib/keychain.py set pushover_user_key &lt;value&gt;` and the same for `pushover_app_token`. Full record: eng-002.d149."
+                data-headline="DONE 2026-08-29 (Claude Code): d40&#39;s delivery record now distinguishes a quiet night from a dead pager (`meta_agent.deliver_fleet_alert`). The record gained `attempted`, `probe` and `dry_run`; `delivered` is now set only by a send that actually succeeded. A quiet night runs `lib.pushover.ensure_credentials_or_raise()`, which resolves credentials without sending, and records `probe: ok` or `probe: failed`. The comment over `ALERT_DELIVERY_LOG` had said *&#34;a night with nothing to send is not evidence that sending works&#34;* since d40, and the code underneath it wrote `delivered: true` on exactly that night. Also fixed: a dry run used to write no row at all, so a skipped night and a night the agent never ran were identical in the log; it now writes a self-identifying row that carries neither a delivery nor a probe. Probe verified live on this MacBook: PASS, nothing sent. Tests 15 → 23 in `test_phase0_p0_fixes.py`, including one that runs seven quiet nights with credentials and seven without and proves the logs differ. DEPLOYED to the Mini 2026-08-29 20:24 via SSH (`seans-mac-mini.local`). Four code files advanced to `origin/main` without switching the Mini&#39;s branch or touching its 38 modified / 53 untracked vault files; backups at `/tmp/meta_agent.py.bak-20260829-202438` and `/tmp/inject-index.sh.bak-*`. 37 tests pass on the Mini. The probe on the Mini returns FAIL: `Pushover credentials missing from environment + keychain: [&#39;user_key&#39;, &#39;api_token&#39;]` — the CRITICAL ticket below, now visible instead of hidden behind a green row. launchd (`com.sean.agent.meta-agent`, 08:45 daily) runs the exact deployed file, so the first honest row lands at the next morning run."
                 data-subheadline=""
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            CRITICAL — the fleet&#39;s pager has never worked: place Pushover credentials on the Mac Mini — `pushover_user_key` and `pushover_app_token` resolve on the MacBook Pro (`lib.keychain.get_credential`, service `com.sean.agents.&lt;name&gt;`, 30 chars each) and are absent from the Mini, proven by 369 launchd-context failures in `[redacted]` (`Missing Pushover credentials in Keychain`), most recent 2026-08-28 03:14, with zero successful sends in any Mini log, ever. eng-001.d40&#39;s alert delivery path shipped to production today on the assumption these were already provisioned for job-feed; that assumption is false on the machine that runs the fleet, and `[notifications.push_strong_fits] enabled = true` has been failing silently too. B3&#39;s seven-night clock must not start until a real meta-agent run records a `delivered: true` with a send actually attempted.** Secrets are Sean&#39;s to move — on the Mini: `python3 agents-sdk/lib/keychain.py set pushover_user_key &lt;value&gt;` and the same for `pushover_app_token`. Full record: eng-002.d149.
+            DONE 2026-08-29 (Claude Code): d40&#39;s delivery record now distinguishes a quiet night from a dead pager (`meta_agent.deliver_fleet_alert`). The record gained `attempted`, `probe` and `dry_run`; `delivered` is now set only by a send that actually succeeded. A quiet night runs `lib.pushover.ensure_credentials_or_raise()`, which resolves credentials without sending, and records `probe: ok` or `probe: failed`. The comment over `ALERT_DELIVERY_LOG` had said *&#34;a night with nothing to send is not evidence that sending works&#34;* since d40, and the code underneath it wrote `delivered: true` on exactly that night. Also fixed: a dry run used to write no row at all, so a skipped night and a night the agent never ran were identical in the log; it now writes a self-identifying row that carries neither a delivery nor a probe. Probe verified live on this MacBook: PASS, nothing sent. Tests 15 → 23 in `test_phase0_p0_fixes.py`, including one that runs seven quiet nights with credentials and seven without and proves the logs differ. DEPLOYED to the Mini 2026-08-29 20:24 via SSH (`seans-mac-mini.local`). Four code files advanced to `origin/main` without switching the Mini&#39;s branch or touching its 38 modified / 53 untracked vault files; backups at `/tmp/meta_agent.py.bak-20260829-202438` and `/tmp/inject-index.sh.bak-*`. 37 tests pass on the Mini. The probe on the Mini returns FAIL: `Pushover credentials missing from environment + keychain: [&#39;user_key&#39;, &#39;api_token&#39;]` — the CRITICAL ticket below, now visible instead of hidden behind a green row. launchd (`com.sean.agent.meta-agent`, 08:45 daily) runs the exact deployed file, so the first honest row lands at the next morning run.
           </div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
             manual
-              · <span class="agent-dot agent-dot--unknown"></span>@Sean
           </div>
         </button>
         <button type="button" class="ticket" data-source="manual"
-                data-id="manual-fa344104"
+                data-id="manual-a6e5c565"
                 data-details=""
-                data-headline="d40&#39;s delivery record cannot prove delivery on a quiet night** — `deliver_fleet_alert()` writes `delivered: true` when there is nothing to send, without attempting a send. Seven consecutive healthy nights therefore produce seven green rows that prove the decision path ran, never that the transport works — B3&#39;s clock cannot currently distinguish a healthy fleet from a dead pager. Needs either a distinct not-attempted state or a send-free credential probe on quiet nights. Owner: Evals seat, with Architecture on the record shape. Full record: eng-002.d149 (Audit section)."
+                data-headline="B8 step 2 — reconcile the Mini&#39;s vault files and return it to `main` *(2026-08-29, three measurements taken during the delivery-fix deploy that make this cheaper and safer than the note below implies: (a) the Mini&#39;s single &#34;ahead&#34; commit `c5844f38` is already in main as `1d42c92f (#196)`, a squash-merge zombie, so nothing unique is at risk; (b) no code file is locally modified — every dirty path is agent-generated vault content, now 38 modified + 53 untracked; (c) four code files have already been advanced to `origin/main` in the Mini&#39;s index, so they will reconcile clean. The Mini sits on `chore/hook-followups-2026-08-28`, 19 behind / 1 ahead.)* — original note: — step 1 (code-only) is deployed and verified (eng-002.d150); the Mini&#39;s HEAD is deliberately off `main` until this lands, so ADR-03&#39;s &#34;HEAD is off main&#34; tripwire will fire by design. Measured: merge base `95fa3f75`, Mini ahead 27 / main ahead 299, 74 conflicts of which 71 are nightly-generated vault files (47 concepts, 21 connections, `knowledge/index.md`, `fleet-state.md`, `MEMORY_INDEX.md`). ADR-03 class (b) makes production authoritative for fleet-generated vault data, which gives a resolution rule, but it wants Sean&#39;s skim rather than an automatic apply. Rollback points: branch `mini-pre-b8-archive-2026-08-28` (`bcc9cea`) and `~/Code-Brain/backups/job-feed-pre-b8-2026-08-28.db`. STATUS 2026-08-28: the reconcile was APPLIED, not skimmed — PR #178 merged `main` into `[redacted]` and resolved all 71 conflicts to the production (Mini) side per ADR-03 class (b). Verified lossless first: 0 knowledge files on `main` absent from the Mini, 0 `index.md` entries unique to `main` (781 vs 912), and 68 of 68 dated files newer on the Mini (main frozen at 07-21/22). Sean&#39;s skim is still owed before merging #178** — this ticket closes on that skim, not on the merge commit. Revert with `git revert -m 1 c6f84f2` or reset to `96a966b`."
                 data-subheadline=""
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            d40&#39;s delivery record cannot prove delivery on a quiet night** — `deliver_fleet_alert()` writes `delivered: true` when there is nothing to send, without attempting a send. Seven consecutive healthy nights therefore produce seven green rows that prove the decision path ran, never that the transport works — B3&#39;s clock cannot currently distinguish a healthy fleet from a dead pager. Needs either a distinct not-attempted state or a send-free credential probe on quiet nights. Owner: Evals seat, with Architecture on the record shape. Full record: eng-002.d149 (Audit section).
-          </div>
-          <div class="ticket-meta">
-            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
-            manual
-              · <span class="agent-dot agent-dot--unknown"></span>@Sean
-          </div>
-        </button>
-        <button type="button" class="ticket" data-source="manual"
-                data-id="manual-bddb89d6"
-                data-details=""
-                data-headline="B8 step 2 — reconcile the Mini&#39;s 71 vault knowledge files and return it to `main` — step 1 (code-only) is deployed and verified (eng-002.d150); the Mini&#39;s HEAD is deliberately off `main` until this lands, so ADR-03&#39;s &#34;HEAD is off main&#34; tripwire will fire by design. Measured: merge base `95fa3f75`, Mini ahead 27 / main ahead 299, 74 conflicts of which 71 are nightly-generated vault files (47 concepts, 21 connections, `knowledge/index.md`, `fleet-state.md`, `MEMORY_INDEX.md`). ADR-03 class (b) makes production authoritative for fleet-generated vault data, which gives a resolution rule, but it wants Sean&#39;s skim rather than an automatic apply. Rollback points: branch `mini-pre-b8-archive-2026-08-28` (`bcc9cea`) and `~/Code-Brain/backups/job-feed-pre-b8-2026-08-28.db`. STATUS 2026-08-28: the reconcile was APPLIED, not skimmed — PR #178 merged `main` into `[redacted]` and resolved all 71 conflicts to the production (Mini) side per ADR-03 class (b). Verified lossless first: 0 knowledge files on `main` absent from the Mini, 0 `index.md` entries unique to `main` (781 vs 912), and 68 of 68 dated files newer on the Mini (main frozen at 07-21/22). Sean&#39;s skim is still owed before merging #178** — this ticket closes on that skim, not on the merge commit. Revert with `git revert -m 1 c6f84f2` or reset to `96a966b`."
-                data-subheadline=""
-                aria-haspopup="dialog">
-          <div class="ticket-headline">
-            B8 step 2 — reconcile the Mini&#39;s 71 vault knowledge files and return it to `main` — step 1 (code-only) is deployed and verified (eng-002.d150); the Mini&#39;s HEAD is deliberately off `main` until this lands, so ADR-03&#39;s &#34;HEAD is off main&#34; tripwire will fire by design. Measured: merge base `95fa3f75`, Mini ahead 27 / main ahead 299, 74 conflicts of which 71 are nightly-generated vault files (47 concepts, 21 connections, `knowledge/index.md`, `fleet-state.md`, `MEMORY_INDEX.md`). ADR-03 class (b) makes production authoritative for fleet-generated vault data, which gives a resolution rule, but it wants Sean&#39;s skim rather than an automatic apply. Rollback points: branch `mini-pre-b8-archive-2026-08-28` (`bcc9cea`) and `~/Code-Brain/backups/job-feed-pre-b8-2026-08-28.db`. STATUS 2026-08-28: the reconcile was APPLIED, not skimmed — PR #178 merged `main` into `[redacted]` and resolved all 71 conflicts to the production (Mini) side per ADR-03 class (b). Verified lossless first: 0 knowledge files on `main` absent from the Mini, 0 `index.md` entries unique to `main` (781 vs 912), and 68 of 68 dated files newer on the Mini (main frozen at 07-21/22). Sean&#39;s skim is still owed before merging #178** — this ticket closes on that skim, not on the merge commit. Revert with `git revert -m 1 c6f84f2` or reset to `96a966b`.
+            B8 step 2 — reconcile the Mini&#39;s vault files and return it to `main` *(2026-08-29, three measurements taken during the delivery-fix deploy that make this cheaper and safer than the note below implies: (a) the Mini&#39;s single &#34;ahead&#34; commit `c5844f38` is already in main as `1d42c92f (#196)`, a squash-merge zombie, so nothing unique is at risk; (b) no code file is locally modified — every dirty path is agent-generated vault content, now 38 modified + 53 untracked; (c) four code files have already been advanced to `origin/main` in the Mini&#39;s index, so they will reconcile clean. The Mini sits on `chore/hook-followups-2026-08-28`, 19 behind / 1 ahead.)* — original note: — step 1 (code-only) is deployed and verified (eng-002.d150); the Mini&#39;s HEAD is deliberately off `main` until this lands, so ADR-03&#39;s &#34;HEAD is off main&#34; tripwire will fire by design. Measured: merge base `95fa3f75`, Mini ahead 27 / main ahead 299, 74 conflicts of which 71 are nightly-generated vault files (47 concepts, 21 connections, `knowledge/index.md`, `fleet-state.md`, `MEMORY_INDEX.md`). ADR-03 class (b) makes production authoritative for fleet-generated vault data, which gives a resolution rule, but it wants Sean&#39;s skim rather than an automatic apply. Rollback points: branch `mini-pre-b8-archive-2026-08-28` (`bcc9cea`) and `~/Code-Brain/backups/job-feed-pre-b8-2026-08-28.db`. STATUS 2026-08-28: the reconcile was APPLIED, not skimmed — PR #178 merged `main` into `[redacted]` and resolved all 71 conflicts to the production (Mini) side per ADR-03 class (b). Verified lossless first: 0 knowledge files on `main` absent from the Mini, 0 `index.md` entries unique to `main` (781 vs 912), and 68 of 68 dated files newer on the Mini (main frozen at 07-21/22). Sean&#39;s skim is still owed before merging #178** — this ticket closes on that skim, not on the merge commit. Revert with `git revert -m 1 c6f84f2` or reset to `96a966b`.
           </div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
@@ -627,13 +897,13 @@ knowledge/concepts/cost-capped-agentic-workflows.md — contradicts vault-mainte
           </div>
         </button>
         <button type="button" class="ticket" data-source="manual"
-                data-id="manual-2b061e27"
+                data-id="manual-1d72c1ea"
                 data-details=""
-                data-headline="eng-002 fleet→workforce redesign — PAUSED 2026-08-25 20:56, Gate 1 PASSED, 2 seats left: resume from `systemcraft/ledger/engagements/eng-002-fleet-to-workforce-redesign/RESUME.md` (full state, next-action order, verification commands). Gate 1 (PRD sign-off) closed PASS WITH ACCEPTANCES after six stateless Codex rounds (2C/9M → 1C/5M → 1C/4M → 1C/3M → 1C/1M → 0C/1M); all four acceptances signed. PRD ratified; Strategist, Evals co-sign, Architecture (ADR-01..07) and Interaction &amp; Trust all delivered — 65 ledger entries, 11 artifacts, 3 runnable proofs, nothing committed. Next, in order: Evals defect pass (E3/E4/E5 + re-co-sign of the claim-9 split bound and re-snooze clause + the RT6-M1 drift-parser repair Sean ordered for Close) → Architecture defects A1–A4 → Evals eval plan → Ops &amp; Economics (unblocks every threshold in the design; needs two answers from Sean: daily interrupt ceiling + weekly application capacity) → Gate 2 pre-launch → Close. Sean&#39;s binding rulings: two-week 1A concierge; sourcing sentinel adopted; all four Gate-1 acceptances signed (parser repaired, not just manually checked); Tailscale approved (B11 — his install on Mini + iPhone, pre-day-1); escalation cadence one push that week, none during 1A. Verify, never trust: `v5-projection-replay.py` 16/16 · `v3-enumeration.py` 5,400/0 · `check-version-drift.py` exit 0 (mandatory at Close) · `git status --porcelain systemcraft/` empty. Corrected numbers only: 105 roll-ups (not 107); 31 role IDs in ~20 API-accepted batched messages with receipt unmeasured (never &#34;31 pushes delivered&#34;). Codex gate launches need `&lt; /dev/null` or they hang silently. Never run two instances of one seat concurrently — they share the ledger index. Operational, needs Sean&#39;s approval before anything touches it:** the Mini runs the fleet from side branch `[redacted]` — 177 dirty paths, 25 unpushed commits, d10 mDNS fix uncommitted; B8 reconciliation designed in ADR-03/d48."
+                data-headline="eng-002 fleet→workforce redesign — PAUSED 2026-08-25 20:56, Gate 1 PASSED, 2 seats left: resume from `systemcraft/ledger/engagements/eng-002-fleet-to-workforce-redesign/RESUME.md` (full state, next-action order, verification commands). Gate 1 (PRD sign-off) closed PASS WITH ACCEPTANCES after six stateless Codex rounds (2C/9M → 1C/5M → 1C/4M → 1C/3M → 1C/1M → 0C/1M); all four acceptances signed. PRD ratified; Strategist, Evals co-sign, Architecture (ADR-01..07) and Interaction &amp; Trust all delivered — 65 ledger entries, 11 artifacts, 3 runnable proofs, nothing committed. Next, in order: Evals defect pass (E3/E4/E5 + re-co-sign of the claim-9 split bound and re-snooze clause + the RT6-M1 drift-parser repair Sean ordered for Close) → Architecture defects A1–A4 → Evals eval plan → Ops &amp; Economics (unblocks every threshold in the design; needs two answers from Sean: daily interrupt ceiling + weekly application capacity) → Gate 2 pre-launch → Close. Sean&#39;s binding rulings: two-week 1A concierge; sourcing sentinel adopted; all four Gate-1 acceptances signed (parser repaired, not just manually checked); Tailscale approved (B11 — HALF-CLOSED 2026-08-30, still NOT done: Tailscale 1.102.3 installed on the Mac Mini via `brew install --cask tailscale-app`, both devices signed in as `sean.winslow28@gmail.com` on tailnet `tailf92edb.ts.net` — Mini `seans-mac-mini` = 100.75.47.2 / `seans-mac-mini.tailf92edb.ts.net`, iPhone `iphone-13` = 100.76.106.44. Off-LAN reachability VERIFIED, and verified server-side rather than by self-report: a throwaway `python3 -m http.server 8899 --bind 100.75.47.2` logged `100.76.106.44 - - [30/Aug/2026 11:45:54] &#34;GET / HTTP/1.1&#34; 200`, while the same port was refused on the LAN IP 10.0.0.4 (`http=000`), proving the tailnet-only binding the answer page will use. Off-LAN is proven by the peer&#39;s own endpoint, not by trusting that Wi-Fi was off: `CurAddr` was `[2600:1000:b12f:61a3:...]:41641`, Verizon cellular IPv6, not the Mini&#39;s 10.0.0.0/24. Server and its directory torn down; port 8899 has no listener. The half that does NOT close: B11&#39;s criterion is one off-LAN packet open + answer round-trip, and the answer page is ADR-02, unbuilt — so reachability is proven and the round-trip is not, and B11 must not be reported as done. When that page is built it binds the tailnet interface only, never a public port); escalation cadence one push that week, none during 1A. Verify, never trust: `v5-projection-replay.py` 16/16 · `v3-enumeration.py` 5,400/0 · `check-version-drift.py` exit 0 (mandatory at Close) · `git status --porcelain systemcraft/` empty. Corrected numbers only: 105 roll-ups (not 107); 31 role IDs in ~20 API-accepted batched messages with receipt unmeasured (never &#34;31 pushes delivered&#34;). Codex gate launches need `&lt; /dev/null` or they hang silently. Never run two instances of one seat concurrently — they share the ledger index. Operational, needs Sean&#39;s approval before anything touches it: the Mini runs the fleet from side branch `[redacted]` — 177 dirty paths, 25 unpushed commits, d10 mDNS fix uncommitted; B8 reconciliation designed in ADR-03/d48."
                 data-subheadline=""
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            eng-002 fleet→workforce redesign — PAUSED 2026-08-25 20:56, Gate 1 PASSED, 2 seats left: resume from `systemcraft/ledger/engagements/eng-002-fleet-to-workforce-redesign/RESUME.md` (full state, next-action order, verification commands). Gate 1 (PRD sign-off) closed PASS WITH ACCEPTANCES after six stateless Codex rounds (2C/9M → 1C/5M → 1C/4M → 1C/3M → 1C/1M → 0C/1M); all four acceptances signed. PRD ratified; Strategist, Evals co-sign, Architecture (ADR-01..07) and Interaction &amp; Trust all delivered — 65 ledger entries, 11 artifacts, 3 runnable proofs, nothing committed. Next, in order: Evals defect pass (E3/E4/E5 + re-co-sign of the claim-9 split bound and re-snooze clause + the RT6-M1 drift-parser repair Sean ordered for Close) → Architecture defects A1–A4 → Evals eval plan → Ops &amp; Economics (unblocks every threshold in the design; needs two answers from Sean: daily interrupt ceiling + weekly application capacity) → Gate 2 pre-launch → Close. Sean&#39;s binding rulings: two-week 1A concierge; sourcing sentinel adopted; all four Gate-1 acceptances signed (parser repaired, not just manually checked); Tailscale approved (B11 — his install on Mini + iPhone, pre-day-1); escalation cadence one push that week, none during 1A. Verify, never trust: `v5-projection-replay.py` 16/16 · `v3-enumeration.py` 5,400/0 · `check-version-drift.py` exit 0 (mandatory at Close) · `git status --porcelain systemcraft/` empty. Corrected numbers only: 105 roll-ups (not 107); 31 role IDs in ~20 API-accepted batched messages with receipt unmeasured (never &#34;31 pushes delivered&#34;). Codex gate launches need `&lt; /dev/null` or they hang silently. Never run two instances of one seat concurrently — they share the ledger index. Operational, needs Sean&#39;s approval before anything touches it:** the Mini runs the fleet from side branch `[redacted]` — 177 dirty paths, 25 unpushed commits, d10 mDNS fix uncommitted; B8 reconciliation designed in ADR-03/d48.
+            eng-002 fleet→workforce redesign — PAUSED 2026-08-25 20:56, Gate 1 PASSED, 2 seats left: resume from `systemcraft/ledger/engagements/eng-002-fleet-to-workforce-redesign/RESUME.md` (full state, next-action order, verification commands). Gate 1 (PRD sign-off) closed PASS WITH ACCEPTANCES after six stateless Codex rounds (2C/9M → 1C/5M → 1C/4M → 1C/3M → 1C/1M → 0C/1M); all four acceptances signed. PRD ratified; Strategist, Evals co-sign, Architecture (ADR-01..07) and Interaction &amp; Trust all delivered — 65 ledger entries, 11 artifacts, 3 runnable proofs, nothing committed. Next, in order: Evals defect pass (E3/E4/E5 + re-co-sign of the claim-9 split bound and re-snooze clause + the RT6-M1 drift-parser repair Sean ordered for Close) → Architecture defects A1–A4 → Evals eval plan → Ops &amp; Economics (unblocks every threshold in the design; needs two answers from Sean: daily interrupt ceiling + weekly application capacity) → Gate 2 pre-launch → Close. Sean&#39;s binding rulings: two-week 1A concierge; sourcing sentinel adopted; all four Gate-1 acceptances signed (parser repaired, not just manually checked); Tailscale approved (B11 — HALF-CLOSED 2026-08-30, still NOT done: Tailscale 1.102.3 installed on the Mac Mini via `brew install --cask tailscale-app`, both devices signed in as `sean.winslow28@gmail.com` on tailnet `tailf92edb.ts.net` — Mini `seans-mac-mini` = 100.75.47.2 / `seans-mac-mini.tailf92edb.ts.net`, iPhone `iphone-13` = 100.76.106.44. Off-LAN reachability VERIFIED, and verified server-side rather than by self-report: a throwaway `python3 -m http.server 8899 --bind 100.75.47.2` logged `100.76.106.44 - - [30/Aug/2026 11:45:54] &#34;GET / HTTP/1.1&#34; 200`, while the same port was refused on the LAN IP 10.0.0.4 (`http=000`), proving the tailnet-only binding the answer page will use. Off-LAN is proven by the peer&#39;s own endpoint, not by trusting that Wi-Fi was off: `CurAddr` was `[2600:1000:b12f:61a3:...]:41641`, Verizon cellular IPv6, not the Mini&#39;s 10.0.0.0/24. Server and its directory torn down; port 8899 has no listener. The half that does NOT close: B11&#39;s criterion is one off-LAN packet open + answer round-trip, and the answer page is ADR-02, unbuilt — so reachability is proven and the round-trip is not, and B11 must not be reported as done. When that page is built it binds the tailnet interface only, never a public port); escalation cadence one push that week, none during 1A. Verify, never trust: `v5-projection-replay.py` 16/16 · `v3-enumeration.py` 5,400/0 · `check-version-drift.py` exit 0 (mandatory at Close) · `git status --porcelain systemcraft/` empty. Corrected numbers only: 105 roll-ups (not 107); 31 role IDs in ~20 API-accepted batched messages with receipt unmeasured (never &#34;31 pushes delivered&#34;). Codex gate launches need `&lt; /dev/null` or they hang silently. Never run two instances of one seat concurrently — they share the ledger index. Operational, needs Sean&#39;s approval before anything touches it: the Mini runs the fleet from side branch `[redacted]` — 177 dirty paths, 25 unpushed commits, d10 mDNS fix uncommitted; B8 reconciliation designed in ADR-03/d48.
           </div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
@@ -4041,9 +4311,23 @@ knowledge/concepts/cost-capped-agentic-workflows.md — contradicts vault-mainte
     <div class="kanban-column" data-column="done">
       <div class="kanban-column-header">
         <span class="column-label">Done</span>
-        <span class="column-count">19</span>
-          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#3FB950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,5.5 8.7,5.5 16.3,6.5 24.0,5.5 31.7,4.6 39.3,1.0 47.0,11.0"/></svg></span>
+        <span class="column-count">20</span>
+          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#3FB950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,9.3 8.7,11.0 16.3,9.3 24.0,7.7 31.7,1.0 39.3,9.3 47.0,6.0"/></svg></span>
       </div>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-8dac991d"
+                data-details=""
+                data-headline="DONE 2026-08-30 — the fleet&#39;s pager is PROVEN WORKING from the Mac Mini, end to end. Credentials are in place on the Mini: `lib.keychain.get_credential` resolves both `pushover_user_key` and `pushover_app_token` at 30 chars each, matching the MacBook Pro. One live `send_push` fired from the Mini was accepted by Pushover (`{&#39;status&#39;: 1, &#39;request&#39;: &#39;e646f24a-5829-4452-9571-f91e46c1ac36&#39;}`) — that acceptance is machine-verified and reproducible. Sean confirmed in-session on 2026-08-30 that the notification physically arrived on his phone; that half rests on his word, not on a log, and if he did not in fact see it this closure must be reverted, because an API `status: 1` alone is acceptance and not receipt — the exact confusion this ticket existed to break. That is the first successful Pushover send from this machine in its history; the 369 `Missing Pushover credentials` lines in `[redacted]` are now all historical (the 2026-08-30 03:11 synthesizer run finished clean and never needed to page). The d40 quiet-night honesty fix (`8d4ca474`) is deployed here and behaving correctly: a live `agents/meta_agent.py` run at 11:25 wrote `{&#34;alerts&#34;: 0, &#34;attempted&#34;: false, &#34;delivered&#34;: false, &#34;probe&#34;: &#34;ok&#34;, &#34;dry_run&#34;: false}` — honest about a healthy fleet instead of the old `delivered: true`. This does NOT start or satisfy B3&#39;s seven-night clock** — that is a separate ruling. Standing limit to keep in view: a healthy-night row proves only that credentials resolve (`_probe_fleet_push_credentials` sends nothing, by design and by its own docstring); only a genuinely unhealthy night exercises `_send_fleet_push` over the wire. Closed on the Mini by Claude Code."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            DONE 2026-08-30 — the fleet&#39;s pager is PROVEN WORKING from the Mac Mini, end to end. Credentials are in place on the Mini: `lib.keychain.get_credential` resolves both `pushover_user_key` and `pushover_app_token` at 30 chars each, matching the MacBook Pro. One live `send_push` fired from the Mini was accepted by Pushover (`{&#39;status&#39;: 1, &#39;request&#39;: &#39;e646f24a-5829-4452-9571-f91e46c1ac36&#39;}`) — that acceptance is machine-verified and reproducible. Sean confirmed in-session on 2026-08-30 that the notification physically arrived on his phone; that half rests on his word, not on a log, and if he did not in fact see it this closure must be reverted, because an API `status: 1` alone is acceptance and not receipt — the exact confusion this ticket existed to break. That is the first successful Pushover send from this machine in its history; the 369 `Missing Pushover credentials` lines in `[redacted]` are now all historical (the 2026-08-30 03:11 synthesizer run finished clean and never needed to page). The d40 quiet-night honesty fix (`8d4ca474`) is deployed here and behaving correctly: a live `agents/meta_agent.py` run at 11:25 wrote `{&#34;alerts&#34;: 0, &#34;attempted&#34;: false, &#34;delivered&#34;: false, &#34;probe&#34;: &#34;ok&#34;, &#34;dry_run&#34;: false}` — honest about a healthy fleet instead of the old `delivered: true`. This does NOT start or satisfy B3&#39;s seven-night clock** — that is a separate ruling. Standing limit to keep in view: a healthy-night row proves only that credentials resolve (`_probe_fleet_push_credentials` sends nothing, by design and by its own docstring); only a genuinely unhealthy night exercises `_send_fleet_push` over the wire. Closed on the Mini by Claude Code.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+          </div>
+        </button>
         <button type="button" class="ticket" data-source="manual"
                 data-id="manual-f6e1dab0"
                 data-details=""
@@ -4336,7 +4620,7 @@ knowledge/concepts/cost-capped-agentic-workflows.md — contradicts vault-mainte
   <strong>Built by Sean Winslow</strong>.
   Multi-agent fleet on macOS launchd, 99% local-first inference.
   <a href="https://github.com/seanwinslow28/agent-fleet-observability">View source</a>
-  · last build 2026-08-30 10:00 UTC
+  · last build 2026-08-31 10:00 UTC
 </footer>  <script src="assets/motion.js?v=fecca888" defer></script>
   <script src="assets/kanban-modal.js?v=45838d0f" defer></script>
 </body>
