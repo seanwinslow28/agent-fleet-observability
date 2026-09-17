@@ -23,7 +23,7 @@
     <span class="brand-wordmark">Agent Fleet Observability</span>
   </div>
   <span class="status-pill mono"><span class="status-pill-dot" data-state="healthy" aria-hidden="true">●</span> 6/8 HEALTHY</span>
-  <span class="subtitle" style="margin-left: auto;">2026-09-16 10:00 UTC</span>
+  <span class="subtitle" style="margin-left: auto;">2026-09-17 10:00 UTC</span>
   <nav style="display: flex; gap: 4px;">
     <a class="nav-link " href="./index.html">/fleet</a>
     <a class="nav-link active" href="./kanban.html">/kanban</a>
@@ -34,8 +34,8 @@
 
     <h1 class="kanban-hero-display" id="kanban-hero-headline">
       <span class="num"
-            data-countup="361"
-            aria-label="361">361</span>
+            data-countup="363"
+            aria-label="363">363</span>
       <span class="label">tickets this week</span>
     </h1>
     <p class="kanban-hero-prose">
@@ -45,7 +45,7 @@
     </p>
 
   <div class="kanban-hero-breakdown">
-      20 lint · 1 eval · 340 manual
+      20 lint · 1 eval · 342 manual
   </div>
 </section>
 <div class="kanban-filters">
@@ -56,7 +56,7 @@
     <button class="filter-chip eval" data-source="eval" data-active="true" aria-pressed="true">
       ● Eval 1    </button>
     <button class="filter-chip manual" data-source="manual" data-active="true" aria-pressed="true">
-      ● Manual 340    </button>
+      ● Manual 342    </button>
 </div>
 
 <div class="kanban-board">
@@ -402,7 +402,7 @@ knowledge/concepts/cost-capped-agentic-workflows.md — contradicts vault-mainte
     <div class="kanban-column" data-column="todo">
       <div class="kanban-column-header">
         <span class="column-label">ToDo</span>
-        <span class="column-count">320</span>
+        <span class="column-count">322</span>
           <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#FF5C46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,11.0 8.7,11.0 16.3,11.0 24.0,11.0 31.7,11.0 39.3,11.0 47.0,11.0"/></svg></span>
       </div>
         <button type="button" class="ticket" data-source="eval"
@@ -417,6 +417,21 @@ knowledge/concepts/cost-capped-agentic-workflows.md — contradicts vault-mainte
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="eval" aria-hidden="true"></span>
             eval
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-129c89a5"
+                data-details=""
+                data-headline="Clear the stale discovery cap reservation in the council spend file (2026-09-14, noticed after a `fusion-discovery-council` standard run). The run settled at `cost_usd: 0.445` in its session archive, but `[redacted]` still holds only a pre-flight reservation** row of `$4.31` with `status: &#34;unknown&#34;` and no settlement row — so the daily cap reads ~10x the money actually spent and a few more runs would trip a false `Budget rejected`. Check whether `budget.py` is failing to settle or release reservations on a clean exit (and whether the crashed `github` collector&#39;s 422 is implicated), then decide: reconcile this row by hand, or fix the settle path so reservations always resolve. Two other counts in the same run worth a look: the ledger printed `$0.45 estimated` rather than the recorded actual, and the `github` gather collector 422s whenever the topic string is long enough to overflow the GitHub search query limit (it should truncate, not fail)."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Clear the stale discovery cap reservation in the council spend file (2026-09-14, noticed after a `fusion-discovery-council` standard run). The run settled at `cost_usd: 0.445` in its session archive, but `[redacted]` still holds only a pre-flight reservation** row of `$4.31` with `status: &#34;unknown&#34;` and no settlement row — so the daily cap reads ~10x the money actually spent and a few more runs would trip a false `Budget rejected`. Check whether `budget.py` is failing to settle or release reservations on a clean exit (and whether the crashed `github` collector&#39;s 422 is implicated), then decide: reconcile this row by hand, or fix the settle path so reservations always resolve. Two other counts in the same run worth a look: the ledger printed `$0.45 estimated` rather than the recorded actual, and the `github` gather collector 422s whenever the topic string is long enough to overflow the GitHub search query limit (it should truncate, not fail).
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
           </div>
         </button>
         <button type="button" class="ticket" data-source="manual"
@@ -435,13 +450,28 @@ knowledge/concepts/cost-capped-agentic-workflows.md — contradicts vault-mainte
           </div>
         </button>
         <button type="button" class="ticket" data-source="manual"
-                data-id="manual-449023f5"
+                data-id="manual-a7f8e78f"
                 data-details=""
-                data-headline="Resume pc-eng-001 (16BitFit revisit) after Sean&#39;s Gate-1 sign-off** (2026-09-14, paused at pass 17/26 with `STRATEGY PASS WITH ACCEPTANCES`). Sean reads the human readouts in `readout/` (strategy, discovery, metrics, gate-1 — written per `productcraft/templates/readout.md`) and ratifies the five acceptances in `audits/gate-1.md` (fill `accepted by Sean &lt;date&gt;: &lt;why&gt;` on rows 1–5, or send one back for a repair) and rules the budget variance: stages 4–7 need ~11 passes, 9 remain — raise the cap to 30 or stop at 26. Then session three runs stages 4–7 with the loop cap: Growth (Opus, thin lane), Business (Opus, thin lane), Delivery + handoff verdict, Leadership, their audits, the close gate, Close. Labels for passes 1–17 in `productcraft/ledger/engagements/pc-eng-001-16bitfit-revisit/trace/eval.html`. The seven Strategist challenges still land on 16BitFit-App #5/#6/#9/#10/#11/#1 for his ruling. Kit gaps for Close: Agent tool and Codex footer report one token total; `templates/strategy-pov.md` lacks Diagnosis/framing-only homes; a drafting pass must list each ledger entry as a path output (kit README); no `readout` record kind and no `open` kind (pass-00 reused `close`); the corpus-citation check charges an in-place redraft with citations its earlier revision made; a seat put prose inside `## Moves` (template should say the section is machine-read). Resume with `/wayfinder 278`."
+                data-headline="pc-eng-001 (16BitFit revisit) D+14 outcome record due 2026-09-30** (closed 2026-09-16, `ADMINISTRATIVE CLOSE — OUTCOME PENDING D+14`, close gate `TRAIN PASS WITH ACCEPTANCES`). Sean owes, from the readouts in `productcraft/ledger/engagements/pc-eng-001-16bitfit-revisit/readout/`: (1) nine dated dispositions in `audits/gate-close.md` (`accepted by Sean &lt;date&gt;: &lt;why&gt;` or send one back as a one-off repair — the four bounced key results, two memo-standing findings, K4&#39;s owner, the roster floor, the fee branch); (2) freeze the P0-equivalent denominator at five (fee refusal, roster floor, real-device import contract, voluntary-vs-prompted separation, on-device harm response) and give each a D+14 disposition: shipped / scheduled-with-date / explicitly-deferred-with-reason; (3) 31 labels in `trace/eval.html` (Copy label rows → `trace/labels.md`); (4) rulings on the seven challenges at 16BitFit-App #5/#6/#9/#10/#11/#1 and the tracker plan in `readout/roadmap.md`; (5) the first two acts the Leadership packet names: the Apple developer-account lookup and the named candidate list, count only. A dated use event (a ticket ruled, a prototype session scheduled, the lookup done) is what the D+14 record needs."
                 data-subheadline=""
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            Resume pc-eng-001 (16BitFit revisit) after Sean&#39;s Gate-1 sign-off** (2026-09-14, paused at pass 17/26 with `STRATEGY PASS WITH ACCEPTANCES`). Sean reads the human readouts in `readout/` (strategy, discovery, metrics, gate-1 — written per `productcraft/templates/readout.md`) and ratifies the five acceptances in `audits/gate-1.md` (fill `accepted by Sean &lt;date&gt;: &lt;why&gt;` on rows 1–5, or send one back for a repair) and rules the budget variance: stages 4–7 need ~11 passes, 9 remain — raise the cap to 30 or stop at 26. Then session three runs stages 4–7 with the loop cap: Growth (Opus, thin lane), Business (Opus, thin lane), Delivery + handoff verdict, Leadership, their audits, the close gate, Close. Labels for passes 1–17 in `productcraft/ledger/engagements/pc-eng-001-16bitfit-revisit/trace/eval.html`. The seven Strategist challenges still land on 16BitFit-App #5/#6/#9/#10/#11/#1 for his ruling. Kit gaps for Close: Agent tool and Codex footer report one token total; `templates/strategy-pov.md` lacks Diagnosis/framing-only homes; a drafting pass must list each ledger entry as a path output (kit README); no `readout` record kind and no `open` kind (pass-00 reused `close`); the corpus-citation check charges an in-place redraft with citations its earlier revision made; a seat put prose inside `## Moves` (template should say the section is machine-read). Resume with `/wayfinder 278`.
+            pc-eng-001 (16BitFit revisit) D+14 outcome record due 2026-09-30** (closed 2026-09-16, `ADMINISTRATIVE CLOSE — OUTCOME PENDING D+14`, close gate `TRAIN PASS WITH ACCEPTANCES`). Sean owes, from the readouts in `productcraft/ledger/engagements/pc-eng-001-16bitfit-revisit/readout/`: (1) nine dated dispositions in `audits/gate-close.md` (`accepted by Sean &lt;date&gt;: &lt;why&gt;` or send one back as a one-off repair — the four bounced key results, two memo-standing findings, K4&#39;s owner, the roster floor, the fee branch); (2) freeze the P0-equivalent denominator at five (fee refusal, roster floor, real-device import contract, voluntary-vs-prompted separation, on-device harm response) and give each a D+14 disposition: shipped / scheduled-with-date / explicitly-deferred-with-reason; (3) 31 labels in `trace/eval.html` (Copy label rows → `trace/labels.md`); (4) rulings on the seven challenges at 16BitFit-App #5/#6/#9/#10/#11/#1 and the tracker plan in `readout/roadmap.md`; (5) the first two acts the Leadership packet names: the Apple developer-account lookup and the named candidate list, count only. A dated use event (a ticket ruled, a prototype session scheduled, the lookup done) is what the D+14 record needs.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-ab2cefd4"
+                data-details=""
+                data-headline="Productcraft kit and template gaps from the first train** (2026-09-16, at pc-eng-001 Close; the kit ticket the master skill&#39;s Close step names). Trace kit: the Agent tool and the Codex footer each report one token total (records carry a transcript sum / a total under `output`); no `open` record kind (pass-00 and pass-18 reused `close`) and no `readout` kind; the corpus-citation line charges an in-place redraft with citations its earlier revision made (inherited citations should consult prior revisions&#39; passes); the Moves line cannot verify moves against overwritten revisions (182 of 246 at Close) — the transcript-replay rung on the map&#39;s fog list; a drafting pass must list each ledger entry as a path output (write into the kit README). Templates: `strategy-pov.md` lacks a Diagnosis and a framing-only section (the seat added both); every seat template should say `## Moves` is machine-read and holds no prose (the Insights plan put a sentence there); the memo `state:` vocabulary should mirror the ledger&#39;s. Process: replace a fresh adversarial re-audit after a repair with a `holds / residual` verification pass; forbid a seat from ruling material in audit stance on a defect it raised in its own drafting pass (L5, L6); the ledger id reservation blocks left gaps (fine) but `dNN` allocation should be a coordinator helper."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Productcraft kit and template gaps from the first train** (2026-09-16, at pc-eng-001 Close; the kit ticket the master skill&#39;s Close step names). Trace kit: the Agent tool and the Codex footer each report one token total (records carry a transcript sum / a total under `output`); no `open` record kind (pass-00 and pass-18 reused `close`) and no `readout` kind; the corpus-citation line charges an in-place redraft with citations its earlier revision made (inherited citations should consult prior revisions&#39; passes); the Moves line cannot verify moves against overwritten revisions (182 of 246 at Close) — the transcript-replay rung on the map&#39;s fog list; a drafting pass must list each ledger entry as a path output (write into the kit README). Templates: `strategy-pov.md` lacks a Diagnosis and a framing-only section (the seat added both); every seat template should say `## Moves` is machine-read and holds no prose (the Insights plan put a sentence there); the memo `state:` vocabulary should mirror the ledger&#39;s. Process: replace a fresh adversarial re-audit after a repair with a `holds / residual` verification pass; forbid a seat from ruling material in audit stance on a defect it raised in its own drafting pass (L5, L6); the ledger id reservation blocks left gaps (fine) but `dNN` allocation should be a coordinator helper.
           </div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
@@ -5145,7 +5175,7 @@ knowledge/concepts/cost-capped-agentic-workflows.md — contradicts vault-mainte
       <div class="kanban-column-header">
         <span class="column-label">Done</span>
         <span class="column-count">21</span>
-          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#3FB950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,4.3 8.7,2.7 16.3,2.7 24.0,2.7 31.7,1.0 39.3,1.0 47.0,11.0"/></svg></span>
+          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#3FB950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,3.0 8.7,3.0 16.3,3.0 24.0,1.0 31.7,1.0 39.3,3.0 47.0,11.0"/></svg></span>
       </div>
         <button type="button" class="ticket" data-source="manual"
                 data-id="manual-137e3f11"
@@ -5467,7 +5497,7 @@ knowledge/concepts/cost-capped-agentic-workflows.md — contradicts vault-mainte
   <strong>Built by Sean Winslow</strong>.
   Multi-agent fleet on macOS launchd, 99% local-first inference.
   <a href="https://github.com/seanwinslow28/agent-fleet-observability">View source</a>
-  · last build 2026-09-16 10:00 UTC
+  · last build 2026-09-17 10:00 UTC
 </footer>  <script src="assets/motion.js?v=fecca888" defer></script>
   <script src="assets/kanban-modal.js?v=45838d0f" defer></script>
 </body>
