@@ -23,7 +23,7 @@
     <span class="brand-wordmark">Agent Fleet Observability</span>
   </div>
   <span class="status-pill mono"><span class="status-pill-dot" data-state="healthy" aria-hidden="true">●</span> 6/8 HEALTHY</span>
-  <span class="subtitle" style="margin-left: auto;">2026-10-01 10:00 UTC</span>
+  <span class="subtitle" style="margin-left: auto;">2026-10-02 10:00 UTC</span>
   <nav style="display: flex; gap: 4px;">
     <a class="nav-link " href="./index.html">/fleet</a>
     <a class="nav-link active" href="./kanban.html">/kanban</a>
@@ -34,8 +34,8 @@
 
     <h1 class="kanban-hero-display" id="kanban-hero-headline">
       <span class="num"
-            data-countup="392"
-            aria-label="392">392</span>
+            data-countup="395"
+            aria-label="395">395</span>
       <span class="label">tickets this week</span>
     </h1>
     <p class="kanban-hero-prose">
@@ -45,7 +45,7 @@
     </p>
 
   <div class="kanban-hero-breakdown">
-      20 lint · 1 eval · 371 manual
+      20 lint · 1 eval · 374 manual
   </div>
 </section>
 <div class="kanban-filters">
@@ -56,7 +56,7 @@
     <button class="filter-chip eval" data-source="eval" data-active="true" aria-pressed="true">
       ● Eval 1    </button>
     <button class="filter-chip manual" data-source="manual" data-active="true" aria-pressed="true">
-      ● Manual 371    </button>
+      ● Manual 374    </button>
 </div>
 
 <div class="kanban-board">
@@ -398,7 +398,7 @@ knowledge/concepts/corroboration-depth-as-a-gradient-signal.md — contradicts t
     <div class="kanban-column" data-column="todo">
       <div class="kanban-column-header">
         <span class="column-label">ToDo</span>
-        <span class="column-count">347</span>
+        <span class="column-count">348</span>
           <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#FF5C46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,11.0 8.7,11.0 16.3,11.0 24.0,11.0 31.7,11.0 39.3,11.0 47.0,11.0"/></svg></span>
       </div>
         <button type="button" class="ticket" data-source="eval"
@@ -413,6 +413,35 @@ knowledge/concepts/corroboration-depth-as-a-gradient-signal.md — contradicts t
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="eval" aria-hidden="true"></span>
             eval
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-768440a0"
+                data-details=""
+                data-headline="Review the `/craftwork` recipe text before #328 closes** (2026-10-01, from craftwork build 5, https://github.com/seanwinslow28/code-brain/issues/328). Read `.claude/skills/craftwork/SKILL.md` and say ship, amend or reject; the ticket stays open and assigned until then, and the map&#39;s Decisions line is appended at close. Two lines adopted by recommendation, not ruled on #282, to confirm or strike: (1) a rule two teams both need goes to `craftwork/law.md` on its own ticket with its origin named, never copied; (2) `generic-drift` sits in a voice-bearing team&#39;s `taxonomy.md` as a sighted shape from scaffold. One question the ruling left open: a team whose output is only sometimes voice-bearing (recommendation: declare voice-bearing, open the other engagements in a plain mode)."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Review the `/craftwork` recipe text before #328 closes** (2026-10-01, from craftwork build 5, https://github.com/seanwinslow28/code-brain/issues/328). Read `.claude/skills/craftwork/SKILL.md` and say ship, amend or reject; the ticket stays open and assigned until then, and the map&#39;s Decisions line is appended at close. Two lines adopted by recommendation, not ruled on #282, to confirm or strike: (1) a rule two teams both need goes to `craftwork/law.md` on its own ticket with its origin named, never copied; (2) `generic-drift` sits in a voice-bearing team&#39;s `taxonomy.md` as a sighted shape from scaffold. One question the ruling left open: a team whose output is only sometimes voice-bearing (recommendation: declare voice-bearing, open the other engagements in a plain mode).
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-a6c4be95"
+                data-details=""
+                data-headline="Code-brain&#39;s tracked content-machine trace test fails on this MacBook: `test_run_folders_are_ignored_by_git`** (2026-10-01, found on #325). It asks `git check-ignore` about `creative-studio/content-machine/pieces/x/trace/…`, but since #308 that folder is a symlink into `pencil-and-prompt`, and git refuses a pathspec beyond a symbolic link. It passes in a clean checkout, so it is an environment fault, not a privacy leak. Decide whether the code-brain copy keeps this test, which the private repo already owns, or probes the ignore rule without crossing the link."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Code-brain&#39;s tracked content-machine trace test fails on this MacBook: `test_run_folders_are_ignored_by_git`** (2026-10-01, found on #325). It asks `git check-ignore` about `creative-studio/content-machine/pieces/x/trace/…`, but since #308 that folder is a symlink into `pencil-and-prompt`, and git refuses a pathspec beyond a symbolic link. It passes in a clean checkout, so it is an environment fault, not a privacy leak. Decide whether the code-brain copy keeps this test, which the private repo already owns, or probes the ignore rule without crossing the link.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
           </div>
         </button>
         <button type="button" class="ticket" data-source="manual"
@@ -504,20 +533,6 @@ knowledge/concepts/corroboration-depth-as-a-gradient-signal.md — contradicts t
           </div>
         </button>
         <button type="button" class="ticket" data-source="manual"
-                data-id="manual-942c4cf7"
-                data-details=""
-                data-headline="Productcraft handoff contract: verbatim frozen copies collide with &#34;reasoning never crosses&#34;** (2026-09-30, Gate 2 of pc-eng-002, accepted once by Sean as `pc-eng-002.d191`). The copies carry each seat&#39;s repair notes, audit dispositions, loopbacks and Moves, which are process trace. Fix it in `productcraft/templates/handoff-contract.md` § 1 and `handoff-brief.md` before the next handoff. Candidate shapes: a copy form that strips named process sections under a stated rule, with the hash taken after stripping; or a standing &#34;process sections are not inputs&#34; clause the receiving intake confirms."
-                data-subheadline=""
-                aria-haspopup="dialog">
-          <div class="ticket-headline">
-            Productcraft handoff contract: verbatim frozen copies collide with &#34;reasoning never crosses&#34;** (2026-09-30, Gate 2 of pc-eng-002, accepted once by Sean as `pc-eng-002.d191`). The copies carry each seat&#39;s repair notes, audit dispositions, loopbacks and Moves, which are process trace. Fix it in `productcraft/templates/handoff-contract.md` § 1 and `handoff-brief.md` before the next handoff. Candidate shapes: a copy form that strips named process sections under a stated rule, with the hash taken after stripping; or a standing &#34;process sections are not inputs&#34; clause the receiving intake confirms.
-          </div>
-          <div class="ticket-meta">
-            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
-            manual
-          </div>
-        </button>
-        <button type="button" class="ticket" data-source="manual"
                 data-id="manual-a9cc1953"
                 data-details=""
                 data-headline="Productcraft trace kit: rung-0 line 7 counts the handoff brief as a second stage-6 draft** (2026-09-30, from pc-eng-002 pass-35). The base manifest funds the brief as its own Delivery pass at stage 6, and the record kinds have no brief-shaped kind, so `check.py` reports stage 6 with two drafts. Decide between a `brief` kind and teaching line 7 that Delivery&#39;s second stage-6 draft is the brief (`handoff/outbound/brief.md` as its output). Confirm with a failing test first; never relabel the pass record."
@@ -589,13 +604,13 @@ knowledge/concepts/corroboration-depth-as-a-gradient-signal.md — contradicts t
           </div>
         </button>
         <button type="button" class="ticket" data-source="manual"
-                data-id="manual-e14c7d51"
+                data-id="manual-91584b20"
                 data-details=""
-                data-headline="Productcraft trace kit: meter Claude passes from the Agent tool&#39;s reported total, not the transcript** (2026-09-30, from pc-eng-002). Summing a subagent transcript&#39;s per-message `usage` fields (pc-eng-001&#39;s method) is wrong: usage repeats on each content block and `output_tokens` there are partial streaming counts (one repair summed to 1,575 output tokens). pc-eng-002&#39;s records now carry `meter: total` from the Agent tool&#39;s `subagent_tokens`. Write that into `productcraft/trace/README.md` and the master skill&#39;s dispatch-forms paragraph; decide whether pc-eng-001&#39;s Claude meters (and the registry numbers built on them) get a dated correction."
+                data-headline="Productcraft trace kit: meter Claude passes from the Agent tool&#39;s reported total, not the transcript** (2026-09-30, from pc-eng-002). Summing a subagent transcript&#39;s per-message `usage` fields (pc-eng-001&#39;s method) is wrong: usage repeats on each content block and `output_tokens` there are partial streaming counts (one repair summed to 1,575 output tokens). pc-eng-002&#39;s records now carry `meter: total` from the Agent tool&#39;s `subagent_tokens`. Write that into `craftwork/trace/README.md` (the kit&#39;s home since #325) and the master skill&#39;s dispatch-forms paragraph; decide whether pc-eng-001&#39;s Claude meters (and the registry numbers built on them) get a dated correction."
                 data-subheadline=""
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            Productcraft trace kit: meter Claude passes from the Agent tool&#39;s reported total, not the transcript** (2026-09-30, from pc-eng-002). Summing a subagent transcript&#39;s per-message `usage` fields (pc-eng-001&#39;s method) is wrong: usage repeats on each content block and `output_tokens` there are partial streaming counts (one repair summed to 1,575 output tokens). pc-eng-002&#39;s records now carry `meter: total` from the Agent tool&#39;s `subagent_tokens`. Write that into `productcraft/trace/README.md` and the master skill&#39;s dispatch-forms paragraph; decide whether pc-eng-001&#39;s Claude meters (and the registry numbers built on them) get a dated correction.
+            Productcraft trace kit: meter Claude passes from the Agent tool&#39;s reported total, not the transcript** (2026-09-30, from pc-eng-002). Summing a subagent transcript&#39;s per-message `usage` fields (pc-eng-001&#39;s method) is wrong: usage repeats on each content block and `output_tokens` there are partial streaming counts (one repair summed to 1,575 output tokens). pc-eng-002&#39;s records now carry `meter: total` from the Agent tool&#39;s `subagent_tokens`. Write that into `craftwork/trace/README.md` (the kit&#39;s home since #325) and the master skill&#39;s dispatch-forms paragraph; decide whether pc-eng-001&#39;s Claude meters (and the registry numbers built on them) get a dated correction.
           </div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
@@ -871,21 +886,6 @@ knowledge/concepts/corroboration-depth-as-a-gradient-signal.md — contradicts t
           </div>
         </button>
         <button type="button" class="ticket" data-source="manual"
-                data-id="manual-702cb5cb"
-                data-details=""
-                data-headline="Adopt the trace kit in Systemcraft for its next engagement** (2026-09-11, from #272). The evals-and-trace design applies forward to every -craft team; Systemcraft&#39;s next engagement (creative-partner harness, content machine, or Groundwork — its own ticket) should run with per-pass records, a labels file, the rung-0 checker and the local HTML viewer from `productcraft/trace/` (#290), plus a `## Moves` closing section in each seat&#39;s artifact. Systemcraft&#39;s map owns its law, so this lands as a Systemcraft ticket, not a Productcraft one; retrofitting past engagements stays out of scope."
-                data-subheadline=""
-                aria-haspopup="dialog">
-          <div class="ticket-headline">
-            Adopt the trace kit in Systemcraft for its next engagement** (2026-09-11, from #272). The evals-and-trace design applies forward to every -craft team; Systemcraft&#39;s next engagement (creative-partner harness, content machine, or Groundwork — its own ticket) should run with per-pass records, a labels file, the rung-0 checker and the local HTML viewer from `productcraft/trace/` (#290), plus a `## Moves` closing section in each seat&#39;s artifact. Systemcraft&#39;s map owns its law, so this lands as a Systemcraft ticket, not a Productcraft one; retrofitting past engagements stays out of scope.
-          </div>
-          <div class="ticket-meta">
-            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
-            manual
-              · <span class="agent-dot agent-dot--unknown"></span>@Sean
-          </div>
-        </button>
-        <button type="button" class="ticket" data-source="manual"
                 data-id="manual-f17def99"
                 data-details=""
                 data-headline="Each craft team as its own public showcase repo (systemcraft, productcraft, designcraft, devcraft, ...) for the portfolio** (2026-09-10, Sean&#39;s ask). Only the public machinery moves (bench, templates, lanes, README, master skill); the ledger and corpus repos stay private forever. Decide the plumbing first: the master skill lives in `.claude/skills/` by house rule while the studio folder sits at the repo root, so a standalone repo needs either an installer export of a team as a bundle or a git subtree per studio folder, never two hand-maintained copies. Gate: after the `craftwork` method extraction (#282) and the per-team README-as-portfolio tickets, and after at least a third team exists so the layout is copied from a pattern. Portfolio project pages link to these repos."
@@ -916,27 +916,43 @@ knowledge/concepts/corroboration-depth-as-a-gradient-signal.md — contradicts t
           </div>
         </button>
         <button type="button" class="ticket" data-source="manual"
-                data-id="manual-607184c5"
+                data-id="manual-0460330a"
                 data-details=""
-                data-headline="Backport the Productcraft delegation ruling to Systemcraft: prune the escalation triggers, re-pin the ladder, fix the seat files&#39; drift (2026-09-09, from #267). Systemcraft&#39;s master skill still carries the five triggers that fired opus→fable on nearly every draft in eng-002: &#34;milestone artifact — feeds a gate&#34;, &#34;novel engagement shape&#34; and &#34;hard-to-reverse commitment&#34; are true of almost every pass in a design train, so the ladder was correct per pass and blind in aggregate. eng-003/eng-004 worked around it by declaring every seat on Codex at Open, which you confirmed on 2026-09-09 was broader than your intent (you wanted Codex as the escalation target replacing Fable, with per-seat Claude baselines kept). #267 ratified for Productcraft: four triggers only (gate FAIL, audit bounced substance, thin lane decided at Route, owner-directed); rungs Sonnet 5 → Opus 5 → Codex GPT-5.6 Sol High → Codex Sol xhigh → ask you; the gate runs on the vendor that did not last write its anchor artifact; `model:` names the actual runtime; Codex `ultra` forbidden. Backport to `.claude/skills/systemcraft/SKILL.md` §Model deviations, `systemcraft/templates/red-team-protocol.md` (vendor rule), and the `model:` lines in `systemcraft/bench/*.md`, with a CHANGELOG entry. Also: the `codex:rescue` plugin leaves `--model` unset and inherits `~/.codex/config.toml`&#39;s default, which switched to `gpt-6-astra` on 2026-09-09; every studio dispatch must pin `--model gpt-5.6-sol` explicitly. — assigned: Sean Addendum 2026-09-21 (#286): the runtime registry (`productcraft/templates/runtime-registry.md` — rows, standings, trial protocol, `meter_source` vocabulary) rides along with this backport; Systemcraft inherits it unchanged until `craftwork` extracts the shared copy. Addendum 2026-09-29 (#321):** the Agent tool&#39;s `opus` / `sonnet` aliases now launch Opus 5.5 / Sonnet 5.5, so Systemcraft&#39;s Claude seats have almost certainly drifted off their written `model:` lines the same way Productcraft&#39;s did. Productcraft re-ruled to the 5.5 generation and added an alias probe at Route plus trace-kit rung-0 line 11 (runtime vs transcript model stamps); the backport decides whether Systemcraft follows or pins."
+                data-headline="Which crafts get a -craft team — the roster deep dive (2026-09-09, from the Productcraft partner session). Productcraft is the second studio built by the Systemcraft method; the org rule is now that every team takes the -craft suffix. A separate session decides which further crafts earn a team: named so far are design, dev, marketing, creative brainstorm, prose writing, script writing, and joke writing. Standing principle for every craft team: your own work is pulled first and takes precedence for voice; craft research and books come second, for fundamentals. Gate: after Productcraft&#39;s first engagement, when the studio-building method gets extracted as a public skill (working name `craftwork`). Amended 2026-10-01 (#282): the gate is now the `craftwork` skill ticket landing (https://github.com/seanwinslow28/code-brain/issues/328). The output is a verdict per candidate — studio / skill / not now** — tested against `craftwork`&#39;s three-seat floor (below three distinct seats with distinct artifacts, build a skill instead) and its voice-bearing declaration (does the output carry Sean&#39;s voice? then an own-work layer, `generic-drift` watched, and critique or draft-from-seed chosen per engagement). Sean&#39;s framing for the creative crafts: the trains exist to be real creative partners who know what a good script or joke looks like and still know his voice, so they never go generic or lame. Designcraft and Devcraft carry their own exploration tickets below. Each craft judged a studio then starts the recipe with its own partner session and wayfinder map."
                 data-subheadline=""
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            Backport the Productcraft delegation ruling to Systemcraft: prune the escalation triggers, re-pin the ladder, fix the seat files&#39; drift (2026-09-09, from #267). Systemcraft&#39;s master skill still carries the five triggers that fired opus→fable on nearly every draft in eng-002: &#34;milestone artifact — feeds a gate&#34;, &#34;novel engagement shape&#34; and &#34;hard-to-reverse commitment&#34; are true of almost every pass in a design train, so the ladder was correct per pass and blind in aggregate. eng-003/eng-004 worked around it by declaring every seat on Codex at Open, which you confirmed on 2026-09-09 was broader than your intent (you wanted Codex as the escalation target replacing Fable, with per-seat Claude baselines kept). #267 ratified for Productcraft: four triggers only (gate FAIL, audit bounced substance, thin lane decided at Route, owner-directed); rungs Sonnet 5 → Opus 5 → Codex GPT-5.6 Sol High → Codex Sol xhigh → ask you; the gate runs on the vendor that did not last write its anchor artifact; `model:` names the actual runtime; Codex `ultra` forbidden. Backport to `.claude/skills/systemcraft/SKILL.md` §Model deviations, `systemcraft/templates/red-team-protocol.md` (vendor rule), and the `model:` lines in `systemcraft/bench/*.md`, with a CHANGELOG entry. Also: the `codex:rescue` plugin leaves `--model` unset and inherits `~/.codex/config.toml`&#39;s default, which switched to `gpt-6-astra` on 2026-09-09; every studio dispatch must pin `--model gpt-5.6-sol` explicitly. — assigned: Sean Addendum 2026-09-21 (#286): the runtime registry (`productcraft/templates/runtime-registry.md` — rows, standings, trial protocol, `meter_source` vocabulary) rides along with this backport; Systemcraft inherits it unchanged until `craftwork` extracts the shared copy. Addendum 2026-09-29 (#321):** the Agent tool&#39;s `opus` / `sonnet` aliases now launch Opus 5.5 / Sonnet 5.5, so Systemcraft&#39;s Claude seats have almost certainly drifted off their written `model:` lines the same way Productcraft&#39;s did. Productcraft re-ruled to the 5.5 generation and added an alias probe at Route plus trace-kit rung-0 line 11 (runtime vs transcript model stamps); the backport decides whether Systemcraft follows or pins.
+            Which crafts get a -craft team — the roster deep dive (2026-09-09, from the Productcraft partner session). Productcraft is the second studio built by the Systemcraft method; the org rule is now that every team takes the -craft suffix. A separate session decides which further crafts earn a team: named so far are design, dev, marketing, creative brainstorm, prose writing, script writing, and joke writing. Standing principle for every craft team: your own work is pulled first and takes precedence for voice; craft research and books come second, for fundamentals. Gate: after Productcraft&#39;s first engagement, when the studio-building method gets extracted as a public skill (working name `craftwork`). Amended 2026-10-01 (#282): the gate is now the `craftwork` skill ticket landing (https://github.com/seanwinslow28/code-brain/issues/328). The output is a verdict per candidate — studio / skill / not now** — tested against `craftwork`&#39;s three-seat floor (below three distinct seats with distinct artifacts, build a skill instead) and its voice-bearing declaration (does the output carry Sean&#39;s voice? then an own-work layer, `generic-drift` watched, and critique or draft-from-seed chosen per engagement). Sean&#39;s framing for the creative crafts: the trains exist to be real creative partners who know what a good script or joke looks like and still know his voice, so they never go generic or lame. Designcraft and Devcraft carry their own exploration tickets below. Each craft judged a studio then starts the recipe with its own partner session and wayfinder map.
           </div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
             manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
           </div>
         </button>
         <button type="button" class="ticket" data-source="manual"
-                data-id="manual-aa4dd7d8"
+                data-id="manual-a2098a3e"
                 data-details=""
-                data-headline="Which crafts get a -craft team — the roster deep dive** (2026-09-09, from the Productcraft partner session). Productcraft is the second studio built by the Systemcraft method; the org rule is now that every team takes the -craft suffix. A separate session decides which further crafts earn a team: named so far are design, dev, marketing, creative brainstorm, prose writing, script writing, and joke writing. Standing principle for every craft team: your own work is pulled first and takes precedence for voice; craft research and books come second, for fundamentals. Gate: after Productcraft&#39;s first engagement, when the studio-building method gets extracted as a public skill (working name `craftwork`)."
+                data-headline="Explore Designcraft — does design earn a -craft studio, and what would its seats be?** (2026-10-01, from #282). Concrete pull already exists: Productcraft&#39;s Delivery seat writes design-set stories as a flagged placeholder until a design team exists, and the handoff contract&#39;s bindings make Productcraft → Designcraft a second pair. Run after the `craftwork` skill lands (https://github.com/seanwinslow28/code-brain/issues/328), as recipe step 1 — a partner session that names candidate seats against the three-seat floor, makes the voice-bearing declaration, and sketches the corpus (design/UX competency was routed here from Productcraft&#39;s research on 2026-09-09). Feeds the roster deep dive&#39;s verdict."
                 data-subheadline=""
                 aria-haspopup="dialog">
           <div class="ticket-headline">
-            Which crafts get a -craft team — the roster deep dive** (2026-09-09, from the Productcraft partner session). Productcraft is the second studio built by the Systemcraft method; the org rule is now that every team takes the -craft suffix. A separate session decides which further crafts earn a team: named so far are design, dev, marketing, creative brainstorm, prose writing, script writing, and joke writing. Standing principle for every craft team: your own work is pulled first and takes precedence for voice; craft research and books come second, for fundamentals. Gate: after Productcraft&#39;s first engagement, when the studio-building method gets extracted as a public skill (working name `craftwork`).
+            Explore Designcraft — does design earn a -craft studio, and what would its seats be?** (2026-10-01, from #282). Concrete pull already exists: Productcraft&#39;s Delivery seat writes design-set stories as a flagged placeholder until a design team exists, and the handoff contract&#39;s bindings make Productcraft → Designcraft a second pair. Run after the `craftwork` skill lands (https://github.com/seanwinslow28/code-brain/issues/328), as recipe step 1 — a partner session that names candidate seats against the three-seat floor, makes the voice-bearing declaration, and sketches the corpus (design/UX competency was routed here from Productcraft&#39;s research on 2026-09-09). Feeds the roster deep dive&#39;s verdict.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+              · <span class="agent-dot agent-dot--unknown"></span>@Sean
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-4ec2c3aa"
+                data-details=""
+                data-headline="Explore Devcraft — does engineering earn a -craft studio, and what would its seats be?** (2026-10-01, from #282). Concrete pull already exists: it is the downstream of Productcraft&#39;s execution breakdown and Systemcraft&#39;s Gate 3, and the home of Jev&#39;s recommended first real test, a log-only `PreToolUse` shadow guard (#301). Run after the `craftwork` skill lands (https://github.com/seanwinslow28/code-brain/issues/328), as recipe step 1 — a partner session that names candidate seats against the three-seat floor, makes the voice-bearing declaration, and sketches the corpus and its handoff bindings. Feeds the roster deep dive&#39;s verdict."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            Explore Devcraft — does engineering earn a -craft studio, and what would its seats be?** (2026-10-01, from #282). Concrete pull already exists: it is the downstream of Productcraft&#39;s execution breakdown and Systemcraft&#39;s Gate 3, and the home of Jev&#39;s recommended first real test, a log-only `PreToolUse` shadow guard (#301). Run after the `craftwork` skill lands (https://github.com/seanwinslow28/code-brain/issues/328), as recipe step 1 — a partner session that names candidate seats against the three-seat floor, makes the voice-bearing declaration, and sketches the corpus and its handoff bindings. Feeds the roster deep dive&#39;s verdict.
           </div>
           <div class="ticket-meta">
             <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
@@ -5532,9 +5548,37 @@ knowledge/concepts/corroboration-depth-as-a-gradient-signal.md — contradicts t
     <div class="kanban-column" data-column="done">
       <div class="kanban-column-header">
         <span class="column-label">Done</span>
-        <span class="column-count">25</span>
-          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#3FB950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,2.7 8.7,2.7 16.3,2.7 24.0,1.0 31.7,2.7 39.3,2.7 47.0,11.0"/></svg></span>
+        <span class="column-count">27</span>
+          <span class="column-spark"><svg viewBox="0 0 48 12" width="48" height="12" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;"><polyline fill="none" stroke="#3FB950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="1.0,2.7 8.7,2.7 16.3,1.0 24.0,2.7 31.7,2.7 39.3,2.7 47.0,11.0"/></svg></span>
       </div>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-d5e88252"
+                data-details=""
+                data-headline="DONE 2026-10-01 — Systemcraft runs on the shared law and traces from eng-005; the delegation backport and the trace-kit adoption are carried.** Both inbox tickets were superseded by and closed with https://github.com/seanwinslow28/code-brain/issues/327. Systemcraft&#39;s seats pin `claude-opus-5-5` / `claude-sonnet-5-5`. Its master skill points to the four-trigger ladder in `craftwork/law.md` (Codex GPT-5.6 Sol High, pinned, no Fable). Its CLAUDE.md gains rules 8 and 9 and the canon line, its ledger entries use the shared schema, and `systemcraft/trace/studio.py` lets the shared kit check and render its engagements. The alias probe matched every seat file. eng-005&#39;s Open amendment awaits Sean&#39;s ratification in the private ledger."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            DONE 2026-10-01 — Systemcraft runs on the shared law and traces from eng-005; the delegation backport and the trace-kit adoption are carried.** Both inbox tickets were superseded by and closed with https://github.com/seanwinslow28/code-brain/issues/327. Systemcraft&#39;s seats pin `claude-opus-5-5` / `claude-sonnet-5-5`. Its master skill points to the four-trigger ladder in `craftwork/law.md` (Codex GPT-5.6 Sol High, pinned, no Fable). Its CLAUDE.md gains rules 8 and 9 and the canon line, its ledger entries use the shared schema, and `systemcraft/trace/studio.py` lets the shared kit check and render its engagements. The alias probe matched every seat file. eng-005&#39;s Open amendment awaits Sean&#39;s ratification in the private ledger.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+          </div>
+        </button>
+        <button type="button" class="ticket" data-source="manual"
+                data-id="manual-9c75bb81"
+                data-details=""
+                data-headline="DONE 2026-10-01 — verbatim frozen copies no longer collide with &#34;reasoning never crosses&#34;.** Fixed on https://github.com/seanwinslow28/code-brain/issues/326: the handoff contract is shared law at `craftwork/handoff-contract.md`, Productcraft&#39;s pair specifics and its strip list live in `productcraft/templates/handoff-binding-systemcraft.md`, Systemcraft&#39;s return template carries its own strip list, and `craftwork/trace/freeze.py` strips what a binding names before hashing (kit 0.10.0). eng-005&#39;s inbound copies stand under `pc-eng-002.d191`; the rule first applies to eng-005&#39;s return."
+                data-subheadline=""
+                aria-haspopup="dialog">
+          <div class="ticket-headline">
+            DONE 2026-10-01 — verbatim frozen copies no longer collide with &#34;reasoning never crosses&#34;.** Fixed on https://github.com/seanwinslow28/code-brain/issues/326: the handoff contract is shared law at `craftwork/handoff-contract.md`, Productcraft&#39;s pair specifics and its strip list live in `productcraft/templates/handoff-binding-systemcraft.md`, Systemcraft&#39;s return template carries its own strip list, and `craftwork/trace/freeze.py` strips what a binding names before hashing (kit 0.10.0). eng-005&#39;s inbound copies stand under `pc-eng-002.d191`; the rule first applies to eng-005&#39;s return.
+          </div>
+          <div class="ticket-meta">
+            <span class="ticket-source-dot" data-source="manual" aria-hidden="true"></span>
+            manual
+          </div>
+        </button>
         <button type="button" class="ticket" data-source="manual"
                 data-id="manual-949f4ead"
                 data-details=""
@@ -5911,7 +5955,7 @@ knowledge/concepts/corroboration-depth-as-a-gradient-signal.md — contradicts t
   <strong>Built by Sean Winslow</strong>.
   Multi-agent fleet on macOS launchd, 99% local-first inference.
   <a href="https://github.com/seanwinslow28/agent-fleet-observability">View source</a>
-  · last build 2026-10-01 10:00 UTC
+  · last build 2026-10-02 10:00 UTC
 </footer>  <script src="assets/motion.js?v=fecca888" defer></script>
   <script src="assets/kanban-modal.js?v=45838d0f" defer></script>
 </body>
