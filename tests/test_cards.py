@@ -29,7 +29,7 @@ def test_a_verdict_the_checker_did_not_write_is_ignored(brain):
 
 
 def test_the_card_leads_with_one_plain_sentence(brain):
-    assert card(brain, SOURDOUGH)["headline"] == "Every check passed."
+    assert card(brain, BIKE)["headline"] == "1 citation could not be confirmed."
     assert card(brain, HOUSEPLANT)["headline"] == "Quote-match failed: 1 quote isn't on the page it cites."
 
 
@@ -86,7 +86,7 @@ def test_a_malformed_ticket_asks_only_whether_the_lane_is_right(brain):
 
 
 def test_a_brief_asks_lane_then_keep_then_the_judgement_sentence_verbatim(brain):
-    qs = card(brain, SOURDOUGH)["questions"]
+    qs = card(brain, BIKE)["questions"]
     assert [q["field"] for q in qs] == ["lane_agree", "deliverable", "judgement"]
     assert qs[2]["question"] == "Each claim is supported by the passage quoted for it."
 
@@ -135,3 +135,16 @@ def test_an_unreadable_ticket_is_listed_not_fatal(brain):
 def test_a_calibration_attempt_holds_back_the_agents_own_summary(brain):
     assert card(brain, TEA)["details"]["summary"] is None
     assert card(brain, TEA)["details"]["run_log"] is False
+
+
+def test_when_the_judge_alone_decides_the_lane_it_stays_hidden_until_the_judgement(brain):
+    for tid in (SOURDOUGH, TEA):  # judge pass -> Verified, judge fail -> Unverified-done
+        c = card(brain, tid)
+        assert c["lane_hidden"] is True
+        assert c["headline"] == "Every command passed; the judge's answer shows once your label is saved."
+        assert [q["field"] for q in c["questions"]] == ["judgement", "lane_agree", "deliverable"]
+
+
+def test_a_lane_some_other_check_decided_shows_at_once(brain):
+    for tid in (HOUSEPLANT, NO_GOAL, BIKE):
+        assert card(brain, tid)["lane_hidden"] is False

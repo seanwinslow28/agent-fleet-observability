@@ -138,3 +138,14 @@ def test_a_peek_is_a_recorded_write(base, brain):
     status, data = post(base + "/api/peek", {"id": SOURDOUGH, "attempt": 1})
     assert status == 200 and data["result"] == "pass"
     assert "judge_seen_first: true" in (brain / "queue" / f"{SOURDOUGH}.md").read_text()
+
+
+def test_a_rebound_page_cant_borrow_an_allowed_forwarded_host(brain):
+    server = make_server(brain, "127.0.0.1", 0, allow_hosts=["mini.tailnet.example:8780"])
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    url = f"http://127.0.0.1:{server.server_address[1]}"
+    try:
+        headers = {"Host": "evil.example:8780", "X-Forwarded-Host": "mini.tailnet.example:8780"}
+        assert get(url + "/api/review", headers)[0] == 403
+    finally:
+        server.shutdown()

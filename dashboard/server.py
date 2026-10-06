@@ -31,8 +31,10 @@ class Handler(BaseHTTPRequestHandler):
     server_version = "swcb-dashboard"
 
     def _allowed(self) -> bool:
-        host = self.headers.get("X-Forwarded-Host") or self.headers.get("Host")
-        if host not in self.hosts:
+        # Every name the request carries must be allowed: after DNS rebinding, a hostile page is
+        # "same-origin" and can set X-Forwarded-Host itself, but not the Host its browser sends.
+        names = [h for h in (self.headers.get("Host"), self.headers.get("X-Forwarded-Host")) if h is not None]
+        if not names or any(h not in self.hosts for h in names):
             self._json({"error": "this page answers only to its own address"}, HTTPStatus.FORBIDDEN)
             return False
         # Tailscale serve sets this header itself and drops any copy a client sends.

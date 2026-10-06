@@ -19,12 +19,10 @@ import yaml
 LANES = ["Blocked", "Unverified-done", "Verified", "Needs-decision"]
 TICKET_ID = re.compile(r"\d{4}-\d{2}-\d{2}-[a-z0-9][a-z0-9-]*")
 ADVISORY_BADGE = "cross-vendor judge, unvalidated; reads agent-written text"
-# The checker's sentences that name the judge's answer, and what the card says
-# instead until Sean's label is saved (#23 Amendment 3: the judge stays blind).
-BLIND = {
-    "every command passed but the judge said fail": "every command passed; the judge's answer shows once your label is saved",
-    "the graduated judge said pass": "the graduated judge answered; its answer shows once your label is saved",
-}
+# When every other check passed, the judge alone picks Verified or Unverified-done, so
+# the lane would give its answer away (#23 Amendment 3). Until Sean has answered the
+# judgement sentence, such a card hides its lane and says this instead (Sean, 2026-10-06).
+BLIND_WHY = "every command passed; the judge's answer shows once your label is saved"
 
 
 class NotACard(LookupError):
@@ -159,8 +157,9 @@ def _card(brain: Path, path: Path) -> dict:
         raise NotACard(f"{ticket_id} attempt {attempt} is decided")
 
     lane = verdict.get("lane") or "Blocked"
-    if not label and verdict.get("why") in BLIND:
-        verdict = {**verdict, "why": BLIND[verdict["why"]]}
+    lane_hidden = not label and _judge_decides(verdict)
+    if lane_hidden:
+        verdict = {**verdict, "why": BLIND_WHY}
     worker = verdict.get("worker") if isinstance(verdict.get("worker"), dict) else {}
     calibration = bool(worker.get("calibration"))
     judge = verdict.get("judge") if isinstance(verdict.get("judge"), dict) else None
@@ -182,6 +181,7 @@ def _card(brain: Path, path: Path) -> dict:
         "attempt": attempt,
         "closed": path.parent.name == "done",
         "lane": lane,
+        "lane_hidden": lane_hidden,
         "reason": verdict.get("reason"),
         "calibration": calibration,
         "title": _title(body) or ticket_id,
@@ -205,10 +205,18 @@ def _card(brain: Path, path: Path) -> dict:
             if worker.get("agent") and not (calibration and not label) else None,
             "checked_at": verdict.get("checked_at"),
         },
-        "questions": _questions(lane, verdict, deliverable is not None, judgement),
+        "questions": _questions(lane, verdict, deliverable is not None, judgement, judgement_first=lane_hidden),
         "label": label,
         "peeked": bool(entry and entry.get("judge_seen_first")),
     }
+
+
+def _judge_decides(verdict: dict) -> bool:
+    checks = [k for k in verdict.get("checks") or [] if isinstance(k, dict)]
+    judged = [k for k in checks if k.get("kind") == "judgement"]
+    return (verdict.get("lane") in ("Verified", "Unverified-done") and not verdict.get("unconfirmed_citations")
+            and bool(judged) and all(k.get("result") in ("pass", "fail") for k in judged)
+            and all(k.get("result") == "pass" for k in checks if k.get("kind") != "judgement"))
 
 
 def _check(k: dict, verdict: dict) -> dict:
@@ -292,7 +300,8 @@ def _audio(brain: Path, ticket_id: str, attempt: int, verdict: dict) -> dict:
     return {"ready": False, "why": said or "no audio for this attempt"}
 
 
-def _questions(lane: str, verdict: dict, has_deliverable: bool, judgement: dict | None) -> list[dict]:
+def _questions(lane: str, verdict: dict, has_deliverable: bool, judgement: dict | None, *,
+               judgement_first: bool = False) -> list[dict]:
     why = str(verdict.get("why") or "it gave no reason")
     qs = [{"field": "lane_agree", "question": f"Does it belong in {lane.replace('-', ' ')}?",
            "explainer": f"The checker put it there because {why.rstrip('.')}."}]
@@ -302,6 +311,8 @@ def _questions(lane: str, verdict: dict, has_deliverable: bool, judgement: dict 
     if judgement and judgement.get("sentence"):
         qs.append({"field": "judgement", "question": judgement["sentence"],
                    "explainer": "Answer it yourself from the evidence. The judge's answer shows once you save."})
+    if judgement_first:
+        qs.insert(0, qs.pop())
     return qs
 
 

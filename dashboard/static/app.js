@@ -181,6 +181,10 @@ function render(entering) {
 }
 
 function stamp(c) {
+  // The judge alone picked this lane: it shows only once Sean has answered the judgement sentence.
+  if (c.lane_hidden && (S.answers[key(c)] || {}).judgement === undefined) {
+    return `<span class="nostamp">Lane shows after your first answer</span>`;
+  }
   return `<span class="stamp ${esc(c.lane)}">${esc(laneWord(c.lane))}${c.calibration ? ` <span class="cal">calibration</span>` : ""}</span>`;
 }
 
@@ -298,7 +302,7 @@ function ask(c) {
       <button class="btn primary" data-act="answer|${q.field}|${yes}">Yes</button>
       <button class="btn" data-act="answer|${q.field}|${no}">No</button>
     </div>
-    <div class="after">${step > 0 ? `<button class="linkish" data-act="back">Change my last answer</button>` : ""}${peek}</div>${err}</div>`;
+    <div class="after">${step > (c.lane_hidden ? 1 : 0) ? `<button class="linkish" data-act="back">Change my last answer</button>` : ""}${peek}</div>${err}</div>`;
 }
 
 function judgeLine(c, peeked) {
