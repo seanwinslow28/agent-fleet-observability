@@ -1,0 +1,5 @@
+# Vercel serves only the holding page until public mode is built (PRODUCT.md).
+# The private dashboard never deploys: it runs on the Mini.
+/*
+!index.html
+!vercel.json
