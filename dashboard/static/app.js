@@ -6,6 +6,7 @@
 const $app = document.getElementById("app");
 const S = {
   cards: [],
+  unreadable: [],     // ticket files the server couldn't read, shown so nothing waits unseen
   at: 0,              // index of the card on screen
   answers: {},        // card key -> {field: value}
   step: {},           // card key -> index of the question on screen
@@ -30,7 +31,9 @@ async function load(keepId) {
   try {
     const r = await fetch("/api/review", { cache: "no-store" });
     if (!r.ok) throw new Error(`the server answered ${r.status}`);
-    S.cards = (await r.json()).cards;
+    const data = await r.json();
+    S.cards = data.cards;
+    S.unreadable = data.unreadable || [];
     S.loadError = null;
   } catch (e) {
     S.loadError = `Couldn't read the brain: ${e.message}. Last good: ${S.cards.length ? "the cards below" : "nothing yet"}.`;
@@ -76,14 +79,14 @@ const ACT = {
     if (data) {
       if (data.card) S.cards[S.at] = data.card;
       else S.cards[S.at] = { ...c, label: data.label, finished: true, details: { ...c.details, worker: data.worker } };
-      if (c.judge?.answered) await fetchJudge(S.cards[S.at], false);
+      if (c.judge?.answered) await fetchJudge(S.cards[S.at]);
     }
     render();
   },
   async peek() {
     const c = S.cards[S.at];
-    S.peeked[key(c)] = true;
-    await fetchJudge(c, true);
+    const data = await post("/api/peek", { id: c.id, attempt: c.attempt });
+    if (data) { S.peeked[key(c)] = true; S.judge[key(c)] = data; }
     render();
   },
   openSendBack() {
@@ -102,8 +105,8 @@ const ACT = {
   done() { S.cards.splice(S.at, 1); stopAudio(); load(); },
   listen() {
     const c = S.cards[S.at];
-    if (!audio.paused && audio.dataset.id === c.id) { audio.pause(); return render(); }
-    if (audio.dataset.id !== c.id) { audio.src = `/audio/${encodeURIComponent(c.id)}.mp3`; audio.dataset.id = c.id; }
+    if (!audio.paused && audio.dataset.id === key(c)) { audio.pause(); return render(); }
+    if (audio.dataset.id !== key(c)) { audio.src = `/audio/${encodeURIComponent(c.id)}.mp3?attempt=${c.attempt}`; audio.dataset.id = key(c); }
     audio.play().catch((e) => { S.error = `Couldn't play the audio: ${e.message}.`; render(); });
     render();
   },
@@ -112,9 +115,9 @@ audio.addEventListener("pause", () => render());
 audio.addEventListener("ended", () => render());
 function stopAudio() { if (!audio.paused) audio.pause(); }
 
-async function fetchJudge(c, peek) {
+async function fetchJudge(c) {
   try {
-    const r = await fetch(`/api/judge?id=${encodeURIComponent(c.id)}&attempt=${c.attempt}${peek ? "&peek=1" : ""}`, { cache: "no-store" });
+    const r = await fetch(`/api/judge?id=${encodeURIComponent(c.id)}&attempt=${c.attempt}`, { cache: "no-store" });
     if (r.ok) S.judge[key(c)] = await r.json();
   } catch (_) { /* the judge line just won't show */ }
 }
@@ -144,8 +147,10 @@ function render(entering) {
     $app.innerHTML = `<div class="empty"><p>${esc(S.loadError)}</p></div>`;
     return;
   }
+  const unread = S.unreadable.length
+    ? `<div class="err">${S.unreadable.map((u) => `Can't read ${esc(u.file)}: ${esc(u.why)}`).join("<br>")}</div>` : "";
   if (!S.cards.length) {
-    $app.innerHTML = `<div class="empty"><h1>Nothing needs you</h1><p>Every card is labeled and decided.</p></div>`;
+    $app.innerHTML = `<div class="empty"><h1>Nothing needs you</h1><p>Every card is labeled and decided.</p></div>${unread}`;
     return;
   }
   const c = S.cards[S.at], k = key(c);
@@ -153,7 +158,7 @@ function render(entering) {
   // Keep whatever Sean opened (an evidence row, More details) open across a re-render of the same card.
   const open = entering ? [] : [...$app.querySelectorAll("details[open]")].map((d) => d.dataset.k);
   $app.innerHTML = `
-    ${S.loadError ? `<div class="err">${esc(S.loadError)}</div>` : ""}
+    ${S.loadError ? `<div class="err">${esc(S.loadError)}</div>` : ""}${unread}
     <div class="pager">
       <button data-act="prev" ${S.at === 0 ? "disabled" : ""}>Previous</button>
       <span class="tnum">${S.at + 1} of ${S.cards.length} · about 3 minutes each</span>
@@ -181,7 +186,7 @@ function stamp(c) {
 
 function listen(c) {
   if (!c.audio?.ready) return `<button class="btn listen" disabled title="${esc(c.audio?.why || "No audio")}">No audio</button>`;
-  const playing = !audio.paused && audio.dataset.id === c.id;
+  const playing = !audio.paused && audio.dataset.id === key(c);
   return `<button class="btn listen" data-act="listen" aria-pressed="${playing}">${playing ? "Pause" : "Listen"}</button>`;
 }
 
@@ -270,6 +275,8 @@ function ask(c) {
   if (c.label) return decide(c) + err;
   const qs = c.questions, step = Math.min(S.step[k] || 0, qs.length);
   const steps = `<div class="steps" aria-hidden="true">${qs.map((_, i) => `<i class="${i <= step ? "on" : ""}"></i>`).join("")}</div>`;
+  if (c.peeked) S.peeked[k] = true;
+  if (S.peeked[k] && S.judge[k] === undefined && c.judge?.answered) { S.judge[k] = null; fetchJudge(c).then(() => render()); }
   const peek = c.judge?.answered && !S.peeked[k]
     ? `<button class="linkish" data-act="peek">Peek at the judge (takes this card out of the judge's test)</button>` : "";
   const peekLine = S.peeked[k] ? judgeLine(c, true) : "";

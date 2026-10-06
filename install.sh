@@ -32,6 +32,15 @@ fi
 [[ -x "${TAILSCALE}" ]] || { echo "The Tailscale CLI isn't at ${TAILSCALE}." >&2; exit 1; }
 
 (cd "${REPO_DIR}" && "${UV}" sync --frozen --no-dev --quiet)
+
+# The page answers only to the Mini's own tailnet names, and only for Sean's tailnet login,
+# which Tailscale serve vouches for on every request.
+read -r SHORT FQDN LOGIN < <("${TAILSCALE}" status --self --json | /usr/bin/python3 -c '
+import json, sys
+d = json.load(sys.stdin)
+fqdn = d["Self"]["DNSName"].rstrip(".")
+print(fqdn.split(".")[0], fqdn, d["User"][str(d["Self"]["UserID"])]["LoginName"])')
+[[ -n "${LOGIN:-}" ]] || { echo "Couldn't read this machine's tailnet name and login; is Tailscale up?" >&2; exit 1; }
 mkdir -p "$(dirname "${LOG}")"
 
 cat > "${PLIST}" <<PLIST
@@ -54,6 +63,12 @@ cat > "${PLIST}" <<PLIST
     <string>127.0.0.1</string>
     <string>--port</string>
     <string>${PORT}</string>
+    <string>--allow-host</string>
+    <string>${SHORT}:${PORT}</string>
+    <string>--allow-host</string>
+    <string>${FQDN}:${PORT}</string>
+    <string>--require-user</string>
+    <string>${LOGIN}</string>
   </array>
   <key>WorkingDirectory</key><string>${REPO_DIR}</string>
   <key>EnvironmentVariables</key><dict>
@@ -70,13 +85,16 @@ PLIST
 plutil -lint "${PLIST}" >/dev/null
 
 launchctl bootout "${DOMAIN}/${LABEL}" 2>/dev/null || true
+for _ in 1 2 3 4 5 6 7 8 9 10; do  # bootstrap right after bootout can fail with "5: Input/output error"
+  launchctl print "${DOMAIN}/${LABEL}" >/dev/null 2>&1 || break
+  sleep 1
+done
 launchctl bootstrap "${DOMAIN}" "${PLIST}"
 "${TAILSCALE}" serve --bg --http="${PORT}" "http://127.0.0.1:${PORT}"
 
 for _ in 1 2 3 4 5 6 7 8 9 10; do
-  if curl -fsS "http://127.0.0.1:${PORT}/api/review" >/dev/null 2>&1; then
-    host="$("${TAILSCALE}" status --self --json | /usr/bin/python3 -c 'import json,sys; print(json.load(sys.stdin)["Self"]["DNSName"].split(".")[0])')"
-    echo "[dashboard install] ${LABEL} is up: http://${host}:${PORT} on the tailnet."
+  if curl -fsS -H "Tailscale-User-Login: ${LOGIN}" "http://127.0.0.1:${PORT}/api/review" >/dev/null 2>&1; then
+    echo "[dashboard install] ${LABEL} is up: http://${SHORT}:${PORT} on the tailnet."
     exit 0
   fi
   sleep 1

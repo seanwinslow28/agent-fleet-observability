@@ -17,9 +17,8 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlparse
 
-from dashboard.cards import (TICKET_ID, NotACard, card, cards, judge_answer, label_for, latest_verdict, split_doc,
-                             ticket_path)
-from dashboard.labels import ReviewError, act, save_label
+from dashboard.cards import NotACard, TICKET_ID, card, judge_answer, latest_verdict, review
+from dashboard.labels import ReviewError, act, record_peek, save_label
 
 STATIC = Path(__file__).parent / "static"
 RUN_LOG_LIMIT = 256 * 1024  # the last 256 KB of a run's tool log
@@ -27,11 +26,29 @@ RUN_LOG_LIMIT = 256 * 1024  # the last 256 KB of a run's tool log
 
 class Handler(BaseHTTPRequestHandler):
     brain: Path  # set by make_server
+    hosts: set[str]  # the names this page is reached by; anything else is refused (DNS rebinding)
+    user: str | None  # the tailnet login Tailscale serve must vouch for, when set
     server_version = "swcb-dashboard"
+
+    def _allowed(self) -> bool:
+        host = self.headers.get("X-Forwarded-Host") or self.headers.get("Host")
+        if host not in self.hosts:
+            self._json({"error": "this page answers only to its own address"}, HTTPStatus.FORBIDDEN)
+            return False
+        # Tailscale serve sets this header itself and drops any copy a client sends.
+        if self.user and self.headers.get("Tailscale-User-Login") != self.user:
+            self._json({"error": "only Sean's own devices, over Tailscale"}, HTTPStatus.FORBIDDEN)
+            return False
+        return True
 
     # -- reads --
 
+    def do_HEAD(self) -> None:  # noqa: N802
+        self.do_GET()
+
     def do_GET(self) -> None:  # noqa: N802 (http.server's name)
+        if not self._allowed():
+            return
         url = urlparse(self.path)
         path = unquote(url.path)
         query = {k: v[0] for k, v in parse_qs(url.query).items()}
@@ -44,7 +61,7 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json({"error": "not found"}, HTTPStatus.NOT_FOUND)
             return self._file(target)
         if path == "/api/review":
-            return self._json({"cards": cards(self.brain)})
+            return self._json(review(self.brain))
         if path == "/api/judge":
             return self._judge(query)
         if m := re.fullmatch(r"/audio/([^/]+)\.mp3", path):
@@ -54,12 +71,15 @@ class Handler(BaseHTTPRequestHandler):
         return self._json({"error": "not found"}, HTTPStatus.NOT_FOUND)
 
     def _judge(self, query: dict) -> None:
+        """The judge's answer, once the label is saved or a peek is recorded."""
         ticket_id, attempt = query.get("id", ""), query.get("attempt", "")
-        path = ticket_path(self.brain, ticket_id)
-        if path is None or not attempt.isdigit():
+        try:
+            c = card(self.brain, ticket_id)
+        except NotACard:
+            c = None  # decided already: nothing left to blind
+        if not attempt.isdigit() or not TICKET_ID.fullmatch(ticket_id):
             return self._json({"error": "not found"}, HTTPStatus.NOT_FOUND)
-        meta, _ = split_doc(path.read_text(encoding="utf-8"))
-        if not label_for(meta, int(attempt)) and query.get("peek") != "1":
+        if c and c["attempt"] == int(attempt) and not c["label"] and not c["peeked"]:
             return self._json({"error": "Save your label first, or peek."}, HTTPStatus.CONFLICT)
         return self._json(judge_answer(self.brain, ticket_id, int(attempt)))
 
@@ -68,9 +88,10 @@ class Handler(BaseHTTPRequestHandler):
         if not TICKET_ID.fullmatch(ticket_id) or not target.is_file():
             return self._json({"error": "not found"}, HTTPStatus.NOT_FOUND)
         data = target.read_bytes()
+        plain = {"Accept-Ranges": "bytes", "Cache-Control": "no-cache"}
         m = re.fullmatch(r"bytes=(\d*)-(\d*)", self.headers.get("Range", ""))
         if not m or (not m.group(1) and not m.group(2)):
-            return self._send(HTTPStatus.OK, data, "audio/mpeg", {"Accept-Ranges": "bytes"})
+            return self._send(HTTPStatus.OK, data, "audio/mpeg", plain)
         if m.group(1):
             start, end = int(m.group(1)), int(m.group(2)) if m.group(2) else len(data) - 1
         else:  # bytes=-N: the last N bytes
@@ -80,11 +101,15 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(HTTPStatus.REQUESTED_RANGE_NOT_SATISFIABLE, b"", "audio/mpeg",
                               {"Content-Range": f"bytes */{len(data)}"})
         return self._send(HTTPStatus.PARTIAL_CONTENT, data[start:end + 1], "audio/mpeg",
-                          {"Accept-Ranges": "bytes", "Content-Range": f"bytes {start}-{end}/{len(data)}"})
+                          {**plain, "Content-Range": f"bytes {start}-{end}/{len(data)}"})
 
     def _run_log(self, ticket_id: str, attempt: int) -> None:
         target = self.brain / ".runtime" / "runs" / ticket_id / str(attempt) / "tools.jsonl"
-        if not TICKET_ID.fullmatch(ticket_id) or not target.is_file():
+        try:
+            hidden = (c := card(self.brain, ticket_id))["attempt"] == attempt and not c["details"]["run_log"]
+        except NotACard:
+            hidden = False
+        if not TICKET_ID.fullmatch(ticket_id) or not target.is_file() or hidden:
             return self._json({"error": "not found"}, HTTPStatus.NOT_FOUND)
         data = target.read_bytes()[-RUN_LOG_LIMIT:]
         return self._send(HTTPStatus.OK, data, "text/plain; charset=utf-8")
@@ -92,6 +117,8 @@ class Handler(BaseHTTPRequestHandler):
     # -- writes --
 
     def do_POST(self) -> None:  # noqa: N802
+        if not self._allowed():
+            return
         if self.headers.get("Content-Type", "").split(";")[0].strip() != "application/json":
             return self._json({"error": "send JSON"}, HTTPStatus.UNSUPPORTED_MEDIA_TYPE)
         # A browser always sends Origin on a cross-site POST, and JSON forces a preflight this
@@ -113,6 +140,9 @@ class Handler(BaseHTTPRequestHandler):
                                    seconds=body.get("seconds"))
             elif path == "/api/action":
                 label = act(self.brain, ticket_id, attempt, str(body.get("action")), note=body.get("note"))
+            elif path == "/api/peek":
+                record_peek(self.brain, ticket_id, attempt)
+                return self._json(judge_answer(self.brain, ticket_id, attempt))
             else:
                 return self._json({"error": "not found"}, HTTPStatus.NOT_FOUND)
         except (ReviewError, ValueError, AttributeError) as exc:
@@ -153,9 +183,14 @@ class Handler(BaseHTTPRequestHandler):
         sys.stderr.write(f"{self.log_date_time_string()} {fmt % args}\n")
 
 
-def make_server(brain: Path, bind: str, port: int) -> ThreadingHTTPServer:
-    handler = type("BrainHandler", (Handler,), {"brain": Path(brain).expanduser().resolve()})
-    return ThreadingHTTPServer((bind, port), handler)
+def make_server(brain: Path, bind: str, port: int, *, allow_hosts: list[str] | None = None,
+                require_user: str | None = None) -> ThreadingHTTPServer:
+    handler = type("BrainHandler", (Handler,), {"brain": Path(brain).expanduser().resolve(),
+                                                "hosts": set(allow_hosts or []), "user": require_user})
+    server = ThreadingHTTPServer((bind, port), handler)
+    bound = server.server_address[1]
+    handler.hosts |= {f"127.0.0.1:{bound}", f"localhost:{bound}"}
+    return server
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -163,12 +198,16 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--brain", required=True, type=Path)
     parser.add_argument("--bind", required=True, help="the Mini's tailnet address, or 127.0.0.1 to try it locally")
     parser.add_argument("--port", type=int, default=8780)
+    parser.add_argument("--allow-host", action="append", default=[],
+                        help="another host:port the page is reached by, e.g. the Mini's tailnet name")
+    parser.add_argument("--require-user", help="the tailnet login Tailscale serve must vouch for")
     args = parser.parse_args(argv)
     if args.bind in ("0.0.0.0", "::", ""):
         parser.error("bind to the tailnet address, never every interface")
     if not (args.brain.expanduser() / "queue").is_dir():
         parser.error(f"{args.brain} has no queue/ folder; is it the brain?")
-    server = make_server(args.brain, args.bind, args.port)
+    server = make_server(args.brain, args.bind, args.port, allow_hosts=args.allow_host,
+                         require_user=args.require_user)
     print(f"dashboard on http://{args.bind}:{server.server_address[1]}, reading {args.brain}", flush=True)
     server.serve_forever()
     return 0

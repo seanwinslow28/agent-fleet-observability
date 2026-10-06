@@ -114,7 +114,7 @@ def test_send_back_leaves_a_draft_in_the_queue_with_the_note(brain):
     m, _ = meta(ticket(brain, HOUSEPLANT))
     assert m["status"] == "draft"
     assert m["verdicts"][0]["verdict"] == "fail"
-    assert m["verdicts"][0]["note"] == "Drop the fiddle-leaf claim and rerun."
+    assert m["verdicts"][0]["rerun_note"] == "Drop the fiddle-leaf claim and rerun."
     assert HOUSEPLANT not in [c["id"] for c in cards(brain)]
 
 
@@ -144,3 +144,77 @@ def test_a_peek_is_recorded(brain):
     save_label(brain, SOURDOUGH, 1, YES, critique=None, judge_seen_first=True, seconds=1)
     m, _ = meta(ticket(brain, SOURDOUGH))
     assert m["verdicts"][0]["judge_seen_first"] is True
+
+
+def test_comments_and_timestamps_in_the_frontmatter_survive(brain):
+    path = ticket(brain, SOURDOUGH)
+    text = path.read_text().replace("status: ready\n", "status: ready  # Sean's\nlast_edit: 2026-10-06T21:00:00-04:00\n")
+    path.write_text(text)
+    save_label(brain, SOURDOUGH, 1, YES, critique=None, judge_seen_first=False, seconds=1)
+    after = path.read_text()
+    assert "status: ready  # Sean's" in after and "last_edit: 2026-10-06T21:00:00-04:00" in after
+
+
+def test_a_frontmatter_the_checker_reads_is_read_the_same_way(brain):
+    path = ticket(brain, SOURDOUGH)
+    text = path.read_text()
+    path.write_text("﻿" + text.replace("\n---\n\n#", "\n--- \n\n#", 1))
+    save_label(brain, SOURDOUGH, 1, YES, critique=None, judge_seen_first=False, seconds=1)
+    m, _ = meta(path)
+    assert m["status"] == "ready" and m["type"] == "research-brief" and len(m["verdicts"]) == 1
+
+
+def test_a_broken_frontmatter_is_never_rewritten(brain):
+    path = ticket(brain, SOURDOUGH)
+    broken = path.read_text().replace("status: ready", "status: [ready")
+    path.write_text(broken)
+    with pytest.raises(ReviewError):
+        save_label(brain, SOURDOUGH, 1, YES, critique=None, judge_seen_first=False, seconds=1)
+    assert path.read_text() == broken
+
+
+def test_no_temp_file_is_left_in_the_queue(brain):
+    save_label(brain, SOURDOUGH, 1, YES, critique=None, judge_seen_first=False, seconds=1)
+    assert not [p for p in (brain / "queue").iterdir() if p.name.startswith(".")]
+
+
+def test_send_back_keeps_the_critique_beside_the_rerun_note(brain):
+    save_label(brain, HOUSEPLANT, 1, {**YES, "deliverable": "fail"}, critique="Claim 2 is made up.",
+               judge_seen_first=False, seconds=1)
+    act(brain, HOUSEPLANT, 1, "send_back", note="Rerun without the fig.")
+    label = meta(ticket(brain, HOUSEPLANT))[0]["verdicts"][0]
+    assert label["note"] == "Claim 2 is made up." and label["rerun_note"] == "Rerun without the fig."
+
+
+def test_send_back_on_a_closed_ticket_returns_it_to_the_queue(brain):
+    ticket(brain, SOURDOUGH).rename(ticket(brain, SOURDOUGH, done=True))
+    save_label(brain, SOURDOUGH, 1, YES, critique=None, judge_seen_first=False, seconds=1)
+    act(brain, SOURDOUGH, 1, "send_back", note="Again, please.")
+    assert ticket(brain, SOURDOUGH).is_file() and not ticket(brain, SOURDOUGH, done=True).exists()
+    assert meta(ticket(brain, SOURDOUGH))[0]["status"] == "draft"
+
+
+def test_a_peek_is_recorded_in_the_file_before_the_label(brain):
+    from dashboard.labels import record_peek
+    record_peek(brain, SOURDOUGH, 1)
+    assert meta(ticket(brain, SOURDOUGH))[0]["verdicts"][0]["judge_seen_first"] is True
+    assert SOURDOUGH in [c["id"] for c in cards(brain)]
+    save_label(brain, SOURDOUGH, 1, YES, critique=None, judge_seen_first=False, seconds=1)
+    (label,) = meta(ticket(brain, SOURDOUGH))[0]["verdicts"]
+    assert label["judge_seen_first"] is True and label["lane_agree"] is True
+
+
+def test_the_dashboard_waits_for_the_sync_lock(brain):
+    import fcntl
+    import threading
+    lock = brain / ".runtime" / "locks" / "sync.lock"
+    lock.parent.mkdir(parents=True, exist_ok=True)
+    fd = open(lock, "w")
+    fcntl.flock(fd, fcntl.LOCK_EX)
+    done = threading.Event()
+    t = threading.Thread(target=lambda: (save_label(brain, SOURDOUGH, 1, YES, critique=None,
+                                                    judge_seen_first=False, seconds=1), done.set()))
+    t.start()
+    assert not done.wait(0.5)
+    fcntl.flock(fd, fcntl.LOCK_UN)
+    assert done.wait(5)

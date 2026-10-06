@@ -31,17 +31,34 @@ class NotACard(LookupError):
     pass
 
 
+class Unreadable(NotACard):
+    """A ticket file the dashboard can't read, listed on the page rather than hidden."""
+
+
 # -- the brain's files --
 
+# The checker's own frontmatter rule (agents/checker/tickets.py), so both read a ticket the same way.
+FRONTMATTER = re.compile(r"\A---\n(.*?)\n---[ \t]*(?:\n(.*))?\Z", re.S)
+
+
+def split_text(text: str) -> tuple[str, str]:
+    """A ticket's frontmatter text and its body. ValueError if it has none the checker can read."""
+    match = FRONTMATTER.match(text.removeprefix("\ufeff").replace("\r\n", "\n"))
+    if not match:
+        raise ValueError("its frontmatter isn't between two `---` lines")
+    return match.group(1) + "\n", match.group(2) or ""
+
+
 def split_doc(text: str) -> tuple[dict, str]:
-    """A ticket's YAML frontmatter and the body after it."""
-    if not text.startswith("---\n"):
-        return {}, text
-    end = text.find("\n---\n", 4)
-    if end < 0:
-        return {}, text
-    meta = yaml.safe_load(text[4:end + 1]) or {}
-    return (meta if isinstance(meta, dict) else {}), text[end + 5:]
+    """A ticket's YAML frontmatter, parsed, and the body after it. ValueError if unreadable."""
+    head, body = split_text(text)
+    try:
+        meta = yaml.safe_load(head) or {}
+    except yaml.YAMLError as exc:
+        raise ValueError(f"its frontmatter isn't valid YAML ({str(exc).splitlines()[0]})") from exc
+    if not isinstance(meta, dict):
+        raise ValueError("its frontmatter isn't a set of fields")
+    return meta, body
 
 
 def ticket_path(brain: Path, ticket_id: str) -> Path | None:
@@ -87,21 +104,35 @@ def latest_verdict(brain: Path, ticket_id: str) -> tuple[int, dict | None]:
 
 
 def label_for(meta: dict, attempt: int) -> dict | None:
+    """The attempt's entry in `verdicts:`, which may hold only a recorded peek so far."""
     labels = [v for v in meta.get("verdicts") or [] if isinstance(v, dict) and v.get("attempt") == attempt]
     return labels[-1] if labels else None
 
 
+def saved(entry: dict | None) -> bool:
+    """Whether Sean's label is saved: a peek alone writes an entry with no answers yet."""
+    return bool(entry) and "lane_agree" in entry
+
+
 # -- the cards --
 
-def cards(brain: Path) -> list[dict]:
+def review(brain: Path) -> dict:
+    """Every card, plus every ticket file that can't be read, so nothing waits unseen."""
     brain = Path(brain)
-    found = []
+    found, unreadable = [], []
     for path in sorted([*(brain / "queue").glob("*.md"), *(brain / "queue" / "done").glob("*.md")]):
         try:
             found.append(_card(brain, path))
+        except Unreadable as exc:
+            unreadable.append({"file": str(path.relative_to(brain)), "why": str(exc)})
         except NotACard:
             continue
-    return sorted(found, key=lambda c: (LANES.index(c["lane"]) if c["lane"] in LANES else len(LANES), c["id"]))
+    found.sort(key=lambda c: (LANES.index(c["lane"]) if c["lane"] in LANES else len(LANES), c["id"]))
+    return {"cards": found, "unreadable": unreadable}
+
+
+def cards(brain: Path) -> list[dict]:
+    return review(brain)["cards"]
 
 
 def card(brain: Path, ticket_id: str) -> dict:
@@ -117,12 +148,13 @@ def _card(brain: Path, path: Path) -> dict:
         raise NotACard(f"{path.name} isn't a ticket")
     try:
         meta, body = split_doc(path.read_text(encoding="utf-8"))
-    except (OSError, yaml.YAMLError) as exc:
-        raise NotACard(f"{path.name} can't be read: {exc}") from exc
+    except (OSError, ValueError) as exc:
+        raise Unreadable(f"it can't be read: {exc}") from exc
     attempt, verdict = latest_verdict(brain, ticket_id)
     if not verdict:
         raise NotACard(f"{ticket_id} has no verdict")
-    label = label_for(meta, attempt)
+    entry = label_for(meta, attempt)
+    label = entry if saved(entry) else None
     if label and "verdict" in label:
         raise NotACard(f"{ticket_id} attempt {attempt} is decided")
 
@@ -163,16 +195,19 @@ def _card(brain: Path, path: Path) -> dict:
         "details": {
             "worker": None if calibration and not label else
             (f"{worker.get('agent')} on {worker.get('model')}" if worker else None),
-            "run_log": (runs / "tools.jsonl").is_file(),
+            # The run log and the agent's summary can name the model, so a calibration attempt
+            # holds them back until the label is saved, like the worker.
+            "run_log": (runs / "tools.jsonl").is_file() and not (calibration and not label),
             "drew_on": [str(n) for n in meta.get("notes") or []],
             "flags": flags,
             "notes": [str(n) for n in verdict.get("notes") or []],
             "summary": _read(brain / "work" / str(worker.get("agent")) / ticket_id / "result.md")
-            if worker.get("agent") else None,
+            if worker.get("agent") and not (calibration and not label) else None,
             "checked_at": verdict.get("checked_at"),
         },
         "questions": _questions(lane, verdict, deliverable is not None, judgement),
         "label": label,
+        "peeked": bool(entry and entry.get("judge_seen_first")),
     }
 
 

@@ -83,8 +83,7 @@ def test_writes_refuse_another_sites_origin(base):
 def test_the_judge_waits_for_the_label_unless_sean_peeks(base):
     url = f"{base}/api/judge?id={SOURDOUGH}&attempt=1"
     assert get(url)[0] == 409
-    status, _, body = get(url + "&peek=1")
-    assert status == 200 and json.loads(body)["result"] == "pass"
+    assert get(url + "&peek=1")[0] == 409  # a peek is a recorded write, never a read
     post(base + "/api/label", {"id": SOURDOUGH, "attempt": 1, "answers": YES})
     assert json.loads(get(url)[2])["critique"] == "Each quote supports its claim."
 
@@ -108,7 +107,34 @@ def test_a_calibration_label_reveals_the_worker(base):
     assert data["worker"] == "researcher on claude-sonnet-5-5"
 
 
-def test_writes_accept_the_page_tailscale_forwarded(base):
-    status, _ = post(base + "/api/label", {"id": SOURDOUGH, "attempt": 1, "answers": YES},
-                     origin="http://mini.tailnet.example:8780", forwarded_host="mini.tailnet.example:8780")
-    assert status == 200
+def test_writes_accept_the_page_tailscale_forwarded(brain):
+    server = make_server(brain, "127.0.0.1", 0, allow_hosts=["mini.tailnet.example:8780"])
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    url = f"http://127.0.0.1:{server.server_address[1]}"
+    try:
+        status, _ = post(url + "/api/label", {"id": SOURDOUGH, "attempt": 1, "answers": YES},
+                         origin="http://mini.tailnet.example:8780", forwarded_host="mini.tailnet.example:8780")
+        assert status == 200
+    finally:
+        server.shutdown()
+
+
+def test_another_host_name_is_refused(base):
+    assert get(base + "/api/review", {"Host": "evil.example:80"})[0] == 403
+
+
+def test_a_required_tailnet_user_gates_every_request(brain):
+    server = make_server(brain, "127.0.0.1", 0, require_user="sean@example.com")
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    url = f"http://127.0.0.1:{server.server_address[1]}"
+    try:
+        assert get(url + "/api/review")[0] == 403
+        assert get(url + "/api/review", {"Tailscale-User-Login": "sean@example.com"})[0] == 200
+    finally:
+        server.shutdown()
+
+
+def test_a_peek_is_a_recorded_write(base, brain):
+    status, data = post(base + "/api/peek", {"id": SOURDOUGH, "attempt": 1})
+    assert status == 200 and data["result"] == "pass"
+    assert "judge_seen_first: true" in (brain / "queue" / f"{SOURDOUGH}.md").read_text()

@@ -122,3 +122,16 @@ def test_nothing_on_an_unlabeled_card_says_what_the_judge_answered(brain):
 
 def test_a_judges_fail_alone_doesnt_withhold_the_audio(brain):
     assert card(brain, TEA)["audio"] == {"ready": True, "why": None}
+
+
+def test_an_unreadable_ticket_is_listed_not_fatal(brain):
+    (brain / "queue" / "2026-10-07-bad-bytes.md").write_bytes(b"---\nstatus: draft\n---\n\n# caf\xe9\n")
+    from dashboard.cards import review
+    data = review(brain)
+    assert len(data["cards"]) == 5
+    assert [u["file"] for u in data["unreadable"]] == ["queue/2026-10-07-bad-bytes.md"]
+
+
+def test_a_calibration_attempt_holds_back_the_agents_own_summary(brain):
+    assert card(brain, TEA)["details"]["summary"] is None
+    assert card(brain, TEA)["details"]["run_log"] is False
