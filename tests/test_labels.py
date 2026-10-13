@@ -51,6 +51,23 @@ def test_any_no_needs_a_critique(brain):
     assert m["verdicts"][0]["note"] == "Claim 2 is made up."
 
 
+def test_a_judgement_fail_must_name_a_marker_on_the_card(brain):
+    no = {**YES, "judgement": "fail"}
+    with pytest.raises(ReviewError, match=r"marker.*\[1\], \[2\] or \[3\]"):
+        save_label(brain, HOUSEPLANT, 1, no, critique="Claim 2 is made up.", judge_seen_first=False, seconds=1)
+    with pytest.raises(ReviewError, match=r"\[9\]"):
+        save_label(brain, HOUSEPLANT, 1, no, critique="[9] is made up.", judge_seen_first=False, seconds=1)
+    assert "verdicts" not in meta(ticket(brain, HOUSEPLANT))[0]
+    save_label(brain, HOUSEPLANT, 1, no, critique="[2] says direct sun; the page says indirect.",
+               judge_seen_first=False, seconds=1)
+    assert meta(ticket(brain, HOUSEPLANT))[0]["verdicts"][0]["judgement"] == "fail"
+
+
+def test_a_marker_from_the_findings_counts(brain):
+    save_label(brain, SOURDOUGH, 1, {**YES, "judgement": "fail"}, critique="The passage for [4] is about rye.",
+               judge_seen_first=False, seconds=1)
+
+
 def test_every_question_on_the_card_must_be_answered(brain):
     with pytest.raises(ReviewError, match="judgement"):
         save_label(brain, SOURDOUGH, 1, {"lane_agree": True, "deliverable": "pass"}, critique=None,
@@ -132,8 +149,8 @@ def test_drop_closes_the_ticket_as_dropped(brain):
 
 
 def test_a_calibration_label_is_the_whole_decision(brain):
-    save_label(brain, TEA, 2, {**YES, "deliverable": "fail", "judgement": "fail"}, critique="Five minutes is wrong.",
-               judge_seen_first=False, seconds=1)
+    save_label(brain, TEA, 2, {**YES, "deliverable": "fail", "judgement": "fail"},
+               critique="[2] Five minutes is wrong.", judge_seen_first=False, seconds=1)
     m, _ = meta(ticket(brain, TEA, done=True))
     label = m["verdicts"][1]
     assert label["attempt"] == 2 and label["calibration"] is True and label["verdict"] == "fail"

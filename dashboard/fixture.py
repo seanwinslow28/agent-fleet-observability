@@ -62,8 +62,8 @@ def _checks(quote_match: tuple[str, str], judge: tuple[str, str]) -> list[dict]:
     return rows
 
 
-def _row(claim, marker, url, quote, status, passage=None, why=None):
-    row = {"section": "Answer", "claim": claim, "marker": marker, "url": url, "quote": quote, "status": status}
+def _row(claim, marker, url, quote, status, passage=None, why=None, section="Answer"):
+    row = {"section": section, "claim": claim, "marker": marker, "url": url, "quote": quote, "status": status}
     if passage:
         row["passage"] = passage
     if why:
@@ -86,6 +86,21 @@ SOURDOUGH = [
          "https://bakers-notes.example.org/feeding-schedule",
          "a steady twice-daily feed did more for reliability than any temperature tweak", "found",
          "Over the season, a steady twice-daily feed did more for reliability than any temperature tweak we tried."),
+    _row("Above 30 degrees the rise slows sharply.", 1,
+         "https://bakers-notes.example.org/starter-temperature",
+         "with the rise slowing sharply above 30", "found",
+         "We fed the same starter at five temperatures for two weeks. Its peak activity came between 24 and 27 °C, "
+         "with the rise slowing sharply above 30.", section="Findings"),
+    _row("A cooler starter tastes more sour.", 2,
+         "https://fermentation-lab.example.net/cool-kitchens",
+         "though the flavour turned more sour", "found",
+         "Cool kitchens are the usual culprit. In our trials, at 19 °C the starter needed roughly double the time "
+         "to peak, though the flavour turned more sour.", section="Findings"),
+    _row("A proofing box holds 26 degrees within half a degree.", 4,
+         "https://kitchen-kit.example.com/proofing-box",
+         "held 26 °C within half a degree overnight", "found",
+         "Set to 26, the box held 26 °C within half a degree overnight, even in a 17-degree kitchen.",
+         section="Findings"),
 ]
 
 BIKE = [
@@ -133,7 +148,8 @@ TEA = [
 
 
 def _brief(title: str, answer: str, rows: list[dict]) -> str:
-    sources = "\n".join(f"[{r['marker']}] {r['url']} — \"{r['quote']}\"" for r in rows)
+    first = {r["marker"]: r for r in reversed(rows)}  # one Sources line per marker
+    sources = "\n".join(f"[{m}] {r['url']} — \"{r['quote']}\"" for m, r in sorted(first.items()))
     return (f"---\nwritten_by: agent\nagent: researcher\n---\n\n## Answer\n\n{answer}\n\n## Findings\n\n"
             f"The details behind the answer, with every paragraph cited [1].\n\n## Gaps\n\nNone found.\n\n"
             f"## Sources\n\n{sources}\n")
@@ -219,7 +235,7 @@ def build(brain: Path) -> Path:
     _finished(brain, tid, 1, lane="Verified", why="every check passed", reason=None, title=title,
               answer="Keep it between 24 and 27 degrees Celsius. Below 20 it still works, but takes about twice as "
                      "long to peak, and a steady twice-daily feed matters more than the exact number.",
-              rows=SOURDOUGH, quote_match=("pass", "all 3 quotes found on the pages they cite"),
+              rows=SOURDOUGH, quote_match=("pass", "all 6 quotes found on the pages they cite"),
               judge_result="pass", critique="Each quote supports its claim.")
 
     # Unverified-done: a page didn't load, so one citation is unconfirmed.

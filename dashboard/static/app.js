@@ -14,6 +14,7 @@ const S = {
   judge: {},          // card key -> the judge's answer, once fetched
   shownAt: {},        // card key -> when the card first came on screen (seconds-per-card)
   sending: {},        // card key -> the send-back note box's text, once open
+  critique: {},       // card key -> the what's-wrong box's text, kept across a refused save
   busy: false,
   error: null,
   loadError: null,
@@ -73,7 +74,7 @@ const ACT = {
   back() { const k = key(S.cards[S.at]); S.step[k] = Math.max((S.step[k] || 0) - 1, 0); render(); },
   async save() {
     const c = S.cards[S.at], k = key(c);
-    const critique = document.getElementById("critique")?.value ?? "";
+    const critique = S.critique[k] ?? "";
     const seconds = Math.round((Date.now() - (S.shownAt[k] || Date.now())) / 1000);
     const data = await post("/api/label", { id: c.id, attempt: c.attempt, answers: S.answers[k] || {}, critique, judge_seen_first: !!S.peeked[k], seconds });
     if (data) {
@@ -133,6 +134,13 @@ $app.addEventListener("click", (e) => {
   const [name, ...args] = el.dataset.act.split("|");
   const parsed = args.map((a) => (a === "true" ? true : a === "false" ? false : a));
   ACT[name]?.(...parsed);
+});
+// Keep what Sean types, so a refused save or a re-render never wipes it.
+$app.addEventListener("input", (e) => {
+  const c = S.cards[S.at];
+  if (!c) return;
+  if (e.target.id === "critique") S.critique[key(c)] = e.target.value;
+  if (e.target.id === "note") S.sending[key(c)] = e.target.value;
 });
 document.addEventListener("keydown", (e) => {
   if (e.target.closest("textarea, input")) return;
@@ -205,17 +213,16 @@ function paras(text) {
 
 function evidence(c) {
   if (!c.evidence.length) return "";
-  const main = c.evidence.filter((r) => r.section === "Answer");
-  const rest = c.evidence.filter((r) => r.section !== "Answer");
-  const shown = main.length ? main : rest, hidden = main.length ? rest : [];
+  // Every row shows, Findings included, each with its marker: a judgement no names the row that fails (#128).
+  const sections = [...new Set(["Answer", ...c.evidence.map((r) => r.section)])]
+    .filter((s) => c.evidence.some((r) => r.section === s));
   const rows = (list) => { let last = null; return list.map((r) => { const html = evRow(r, r.claim === last); last = r.claim; return html; }).join(""); };
+  const head = (s) => (sections.length > 1 ? `<p class="evsec">From the ${esc(String(s ?? "brief").toLowerCase())}</p>` : "");
   const counts = c.evidence.reduce((n, r) => ((n[r.status] = (n[r.status] || 0) + 1), n), {});
   const tally = [["found", "found"], ["missing", "not on the page"], ["unconfirmed", "didn't load"]]
     .filter(([s]) => counts[s]).map(([s, w]) => `${counts[s]} ${w}`).join(" · ");
   return `<p class="lab">Evidence <span class="small tnum">· ${esc(tally)}</span></p>
-    <div class="ev">${rows(shown)}
-      ${hidden.length ? `<details class="more-ev" data-k="findings"><summary>${hidden.length} more from the findings</summary>${rows(hidden)}</details>` : ""}
-    </div>`;
+    <div class="ev">${sections.map((s) => head(s) + rows(c.evidence.filter((r) => r.section === s))).join("")}</div>`;
 }
 
 function evRow(r, repeat) {
@@ -230,6 +237,7 @@ function evRow(r, repeat) {
     open = `<p>${highlight(r.passage || "", r.quote || "")}</p>`;
   }
   return `<details class="evr ${esc(r.status)}" data-k="${esc(k)}"><summary>
+      <span class="mk tnum">${r.marker != null ? `[${esc(r.marker)}]` : ""}</span>
       <span class="c ${repeat ? "again" : ""}">${repeat ? "Same claim, another source" : esc(r.claim)}</span>
       <span class="m" aria-hidden="true">${glyph}</span><span class="sr">${esc(word)}</span>
       <span class="h">${esc(r.host)}</span></summary>
@@ -288,20 +296,24 @@ function ask(c) {
     // every question answered and at least one no: one sentence first
     return `<div class="ask">${steps}${peekLine}
       <p class="askq">What's wrong, in one sentence?</p>
-      <p class="askx">It goes into the ticket with your label, and becomes the send-back note.</p>
+      <p class="askx">${(S.answers[k] || {}).judgement === "fail"
+        ? `You said a claim isn't supported, so name its marker, like [${esc(c.evidence[0]?.marker ?? 3)}]. ` : ""}It goes into the ticket with your label, and becomes the send-back note.</p>
       <label class="sr" for="critique">What's wrong</label>
-      <textarea id="critique" maxlength="600"></textarea>
+      <textarea id="critique" maxlength="600">${esc(S.critique[k] ?? "")}</textarea>
       <div class="yn"><button class="btn primary ${S.busy ? "busy" : ""}" data-act="save">Save label</button></div>
       <div class="after"><button class="linkish" data-act="back">Change my last answer</button></div>${err}</div>`;
   }
   const q = qs[step], yes = q.field === "lane_agree" ? "true" : "pass", no = q.field === "lane_agree" ? "false" : "fail";
-  return `<div class="ask">${steps}${peekLine}
-    <p class="askq">${q.field === "judgement" ? `“${esc(q.question)}”` : esc(q.question)}</p>
-    <p class="askx">${esc(q.explainer)}</p>
-    <div class="yn">
+  const yn = `<div class="yn">
       <button class="btn primary" data-act="answer|${q.field}|${yes}">Yes</button>
       <button class="btn" data-act="answer|${q.field}|${no}">No</button>
-    </div>
+    </div>`;
+  // The type's sentence sits right beside its Yes and No, so the answer is to that sentence and nothing looser.
+  const body = q.field === "judgement"
+    ? `<div class="judgerow"><p class="askq">“${esc(q.question)}”</p>${yn}</div><p class="askx">${esc(q.explainer)}</p>`
+    : `<p class="askq">${esc(q.question)}</p><p class="askx">${esc(q.explainer)}</p>${yn}`;
+  return `<div class="ask">${steps}${peekLine}
+    ${body}
     <div class="after">${step > (c.lane_hidden ? 1 : 0) ? `<button class="linkish" data-act="back">Change my last answer</button>` : ""}${peek}</div>${err}</div>`;
 }
 

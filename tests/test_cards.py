@@ -62,7 +62,7 @@ def test_judge_answer_reads_the_verdict_and_critique(brain):
 
 def test_evidence_rows_map_each_claim_to_its_source_host(brain):
     rows = card(brain, SOURDOUGH)["evidence"]
-    assert [r["status"] for r in rows] == ["found"] * 3
+    assert [r["status"] for r in rows] == ["found"] * 6
     assert rows[0]["host"] == "bakers-notes.example.org"
     assert "24 and 27 °C" in rows[0]["passage"]
 
@@ -148,3 +148,14 @@ def test_when_the_judge_alone_decides_the_lane_it_stays_hidden_until_the_judgeme
 def test_a_lane_some_other_check_decided_shows_at_once(brain):
     for tid in (HOUSEPLANT, NO_GOAL, BIKE):
         assert card(brain, tid)["lane_hidden"] is False
+
+
+def test_every_evidence_row_reaches_the_card_with_its_marker_findings_included(brain):
+    rows = card(brain, SOURDOUGH)["evidence"]
+    assert [r["section"] for r in rows] == ["Answer"] * 3 + ["Findings"] * 3
+    assert [r["marker"] for r in rows] == [1, 2, 3, 1, 2, 4]
+
+
+def test_the_judgement_explainer_asks_about_support_and_the_marker(brain):
+    (q,) = [q for q in card(brain, BIKE)["questions"] if q["field"] == "judgement"]
+    assert "not whether" in q["explainer"] and "names the marker" in q["explainer"]

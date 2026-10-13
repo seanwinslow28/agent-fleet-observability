@@ -22,6 +22,7 @@ import datetime as dt
 import fcntl
 import io
 import os
+import re
 import threading
 import time
 from contextlib import contextmanager
@@ -32,6 +33,7 @@ from ruamel.yaml import YAML
 from dashboard.cards import NotACard, card, label_for, saved, split_doc, split_text, ticket_path
 
 LOCK_WAIT = 15  # seconds; a sync cycle takes a few
+MARKER = re.compile(r"\[(\d+)\]")
 _lock = threading.Lock()
 
 
@@ -57,6 +59,8 @@ def save_label(brain: Path, ticket_id: str, attempt: int, answers: dict, *, crit
         critique = (critique or "").strip()
         if (fields["lane_agree"] is False or "fail" in fields.values()) and not critique:
             raise ReviewError("Write one sentence on what's wrong first.")
+        if fields.get("judgement") == "fail":
+            _names_a_marker(critique, c["evidence"])
         fields["judge_seen_first"] = bool(judge_seen_first or (entry and entry.get("judge_seen_first")))
         if critique:
             fields["note"] = critique
@@ -73,6 +77,25 @@ def save_label(brain: Path, ticket_id: str, attempt: int, answers: dict, *, crit
             entry[k] = v
         doc.save()
         return dict(entry)
+
+
+def _names_a_marker(critique: str, evidence: list[dict]) -> None:
+    """A judgement fail names the marker of a row that doesn't hold up (#9 §5), one on this card if it has any."""
+    on_card = sorted({int(r["marker"]) for r in evidence if str(r.get("marker")).isdigit()})
+    named = sorted({int(n) for n in MARKER.findall(critique)})
+    if set(named) & set(on_card) or (named and not on_card):
+        return
+    which = (_either(on_card) if len(on_card) <= 6 else f"one from the evidence rows, like [{on_card[0]}]"
+             ) if on_card else "like [3]"
+    if named:
+        raise ReviewError(f"This card has no row marked {_either(named)}. "
+                          f"Name the marker that doesn't hold up: {which}.")
+    raise ReviewError(f"Name the marker of the row that doesn't hold up in your sentence: {which}.")
+
+
+def _either(markers: list[int]) -> str:
+    tags = [f"[{n}]" for n in markers]
+    return tags[0] if len(tags) == 1 else f"{', '.join(tags[:-1])} or {tags[-1]}"
 
 
 def record_peek(brain: Path, ticket_id: str, attempt: int) -> None:

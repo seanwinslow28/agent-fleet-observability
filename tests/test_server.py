@@ -67,6 +67,14 @@ def test_a_review_error_comes_back_in_plain_words(base):
     assert status == 400 and data["error"] == "Save the label first."
 
 
+def test_a_judgement_fail_without_a_marker_is_refused_in_plain_words(base, brain):
+    no = {**YES, "judgement": "fail"}
+    status, data = post(base + "/api/label", {"id": SOURDOUGH, "attempt": 1, "answers": no,
+                                              "critique": "It overstates things."})
+    assert status == 400 and data["error"].startswith("Name the marker")
+    assert "verdicts" not in (brain / "queue" / f"{SOURDOUGH}.md").read_text()
+
+
 def test_writes_refuse_anything_but_json(base):
     status, _ = post(base + "/api/label", {"id": SOURDOUGH}, content_type="text/plain")
     assert status == 415

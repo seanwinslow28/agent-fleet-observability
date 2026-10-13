@@ -310,7 +310,8 @@ def _questions(lane: str, verdict: dict, has_deliverable: bool, judgement: dict 
                    "explainer": "Yes if it answers your question well enough to use as it is."})
     if judgement and judgement.get("sentence"):
         qs.append({"field": "judgement", "question": judgement["sentence"],
-                   "explainer": "Answer it yourself from the evidence. The judge's answer shows once you save."})
+                   "explainer": "Yes only if every row's passage backs its claim, not whether the brief answers your "
+                                "question. A no names the marker of the row that fails. The judge's answer shows once you save."})
     if judgement_first:
         qs.insert(0, qs.pop())
     return qs
