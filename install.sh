@@ -3,6 +3,7 @@
 #
 #   ./install.sh                 load com.swcb.dashboard and forward tailnet port 8780 to it
 #   ./install.sh --uninstall     unload it and remove the forward
+#   ./install.sh --print         print the job file; install nothing
 #
 # The server listens on 127.0.0.1 only, so nothing on the home network reaches it.
 # Tailscale's own `serve` forwards http://<mini>:8780 on the tailnet to it, which also
@@ -18,6 +19,17 @@ PLIST="${HOME}/Library/LaunchAgents/${LABEL}.plist"
 UV="$(command -v uv || echo "${HOME}/.local/bin/uv")"
 TAILSCALE="$(command -v tailscale || echo /Applications/Tailscale.app/Contents/MacOS/Tailscale)"
 LOG="${BRAIN}/.runtime/logs/dashboard.launchd.log"
+# Start the job through Apple's shell, so launchd locks it to Apple's name (com.apple.sh)
+# instead of uv's fingerprint, which every uv update changes; a changed fingerprint makes
+# launchd kill the job's next run. The line keeps the shell in place (given a bare command
+# macOS's sh replaces itself), passes launchd's stop (TERM) on, and exits with the job's own
+# code. An interrupt (INT) is passed on too, but a backgrounded command starts with INT
+# ignored, so it may not react; launchd never stops a job with INT.
+JOB_SHELL_LINE="$(cat <<'LINE'
+child=; sig=; trap 'sig=TERM; [ -n "$child" ] && kill -TERM "$child" 2>/dev/null' TERM; trap 'sig=INT; [ -n "$child" ] && kill -INT "$child" 2>/dev/null' INT; "$0" "$@" & child=$!; [ -n "$sig" ] && kill -"$sig" "$child" 2>/dev/null; while :; do sig=; wait "$child"; status=$?; [ "$status" -gt 128 ] && [ -n "$sig" ] && continue; break; done; exit "$status"
+LINE
+)"
+JOB_SHELL_LINE_XML="${JOB_SHELL_LINE//&/&amp;}"
 
 if [[ "${1:-}" == "--uninstall" ]]; then
   launchctl bootout "${DOMAIN}/${LABEL}" 2>/dev/null || true
@@ -31,7 +43,7 @@ fi
 [[ -x "${UV}" ]] || { echo "uv isn't installed." >&2; exit 1; }
 [[ -x "${TAILSCALE}" ]] || { echo "The Tailscale CLI isn't at ${TAILSCALE}." >&2; exit 1; }
 
-(cd "${REPO_DIR}" && "${UV}" sync --frozen --no-dev --quiet)
+[[ "${1:-}" == "--print" ]] || (cd "${REPO_DIR}" && "${UV}" sync --frozen --no-dev --quiet)
 
 # The page answers only to the Mini's own tailnet names, and only for Sean's tailnet login,
 # which Tailscale serve vouches for on every request.
@@ -41,7 +53,13 @@ d = json.load(sys.stdin)
 fqdn = d["Self"]["DNSName"].rstrip(".")
 print(fqdn.split(".")[0], fqdn, d["User"][str(d["Self"]["UserID"])]["LoginName"])')
 [[ -n "${LOGIN:-}" ]] || { echo "Couldn't read this machine's tailnet name and login; is Tailscale up?" >&2; exit 1; }
-mkdir -p "$(dirname "${LOG}")"
+if [[ "${1:-}" == "--print" ]]; then
+  PRINT_DIR="$(mktemp -d)"
+  trap 'rm -rf "${PRINT_DIR}"' EXIT
+  PLIST="${PRINT_DIR}/${LABEL}.plist"
+else
+  mkdir -p "$(dirname "${LOG}")"
+fi
 
 cat > "${PLIST}" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
@@ -49,6 +67,9 @@ cat > "${PLIST}" <<PLIST
 <plist version="1.0"><dict>
   <key>Label</key><string>${LABEL}</string>
   <key>ProgramArguments</key><array>
+    <string>/bin/sh</string>
+    <string>-c</string>
+    <string>${JOB_SHELL_LINE_XML}</string>
     <string>${UV}</string>
     <string>run</string>
     <string>--frozen</string>
@@ -83,6 +104,10 @@ cat > "${PLIST}" <<PLIST
 </dict></plist>
 PLIST
 plutil -lint "${PLIST}" >/dev/null
+if [[ "${1:-}" == "--print" ]]; then
+  cat "${PLIST}"
+  exit 0
+fi
 
 launchctl bootout "${DOMAIN}/${LABEL}" 2>/dev/null || true
 for _ in 1 2 3 4 5 6 7 8 9 10; do  # bootstrap right after bootout can fail with "5: Input/output error"
